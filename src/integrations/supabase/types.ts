@@ -14,7 +14,220 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      caption_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          image_id: string
+          prompt_used: string | null
+          tone: string
+          total_captions: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_id: string
+          prompt_used?: string | null
+          tone: string
+          total_captions?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_id?: string
+          prompt_used?: string | null
+          tone?: string
+          total_captions?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "caption_sessions_image_id_fkey"
+            columns: ["image_id"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "caption_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      captions: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          image_id: string
+          is_edited: boolean
+          is_favorite: boolean
+          original_content: string | null
+          tone: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          image_id: string
+          is_edited?: boolean
+          is_favorite?: boolean
+          original_content?: string | null
+          tone: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_id?: string
+          is_edited?: boolean
+          is_favorite?: boolean
+          original_content?: string | null
+          tone?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "captions_image_id_fkey"
+            columns: ["image_id"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "captions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      images: {
+        Row: {
+          created_at: string
+          file_size: number | null
+          filename: string
+          height: number | null
+          id: string
+          is_nsfw: boolean
+          nsfw_checked: boolean
+          url: string
+          user_id: string
+          width: number | null
+        }
+        Insert: {
+          created_at?: string
+          file_size?: number | null
+          filename: string
+          height?: number | null
+          id?: string
+          is_nsfw?: boolean
+          nsfw_checked?: boolean
+          url: string
+          user_id: string
+          width?: number | null
+        }
+        Update: {
+          created_at?: string
+          file_size?: number | null
+          filename?: string
+          height?: number | null
+          id?: string
+          is_nsfw?: boolean
+          nsfw_checked?: boolean
+          url?: string
+          user_id?: string
+          width?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "images_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_api_keys: {
+        Row: {
+          created_at: string
+          encrypted_key: string
+          id: string
+          is_active: boolean
+          provider: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          encrypted_key: string
+          id?: string
+          is_active?: boolean
+          provider?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          encrypted_key?: string
+          id?: string
+          is_active?: boolean
+          provider?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_api_keys_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
