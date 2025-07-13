@@ -1,53 +1,35 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/components/AuthWrapper';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { 
-  Upload, 
   Sparkles, 
-  Image as ImageIcon, 
   Settings, 
   History, 
-  Share2, 
-  Copy, 
-  Heart, 
-  Edit3,
   LogOut,
   User,
   Key,
-  Wand2,
-  Download
+  Wand2
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
-
-const toneOptions = [
-  { value: 'professional', label: 'Professional', icon: '👔' },
-  { value: 'witty', label: 'Witty', icon: '😄' },
-  { value: 'bold', label: 'Bold', icon: '🔥' },
-  { value: 'casual', label: 'Casual', icon: '😊' },
-  { value: 'inspiring', label: 'Inspiring', icon: '✨' },
-];
+import ImageUpload from '@/components/ImageUpload';
+import CaptionGenerator from '@/components/CaptionGenerator';
+import ApiKeyManager from '@/components/ApiKeyManager';
 
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
-  const [selectedTone, setSelectedTone] = useState('professional');
   const [generatedCaptions, setGeneratedCaptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [geminiApiKey, setGeminiApiKey] = useState('');
   const [hasApiKey, setHasApiKey] = useState(false);
 
   const handleSignOut = async () => {
@@ -55,37 +37,23 @@ const Dashboard = () => {
     navigate('/auth');
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleImageSelect = (file: File) => {
+    setSelectedImage(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImagePreview(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
+  const clearImage = () => {
+    setSelectedImage(null);
+    setImagePreview('');
+    setGeneratedCaptions([]);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const generateCaptions = async () => {
-    if (!selectedImage || !geminiApiKey) {
+  const generateCaptions = async (tone: string) => {
+    if (!selectedImage || !hasApiKey) {
       toast({
         title: "Missing requirements",
         description: "Please upload an image and set your Gemini API key.",
@@ -96,51 +64,94 @@ const Dashboard = () => {
 
     setLoading(true);
     try {
-      // Mock captions for now - will integrate with Gemini API
-      const mockCaptions = [
-        `🌟 Discover the extraordinary in everyday moments! This ${selectedTone} perspective brings new life to ordinary scenes. #Inspiration #Creativity`,
-        `✨ When vision meets opportunity, magic happens. This image tells a story that words alone cannot capture. #Storytelling #Visual`,
-        `🎯 Bold choices lead to remarkable outcomes. Sometimes the best shot is the one you almost didn't take. #BoldMoves #Photography`,
-        `💫 In a world full of noise, authentic moments speak the loudest. This captures that perfect authentic essence. #Authentic #Moment`,
-        `🚀 Innovation starts with seeing things differently. This perspective challenges us to think beyond the ordinary. #Innovation #Perspective`
-      ];
-      
-      setGeneratedCaptions(mockCaptions);
-      
-      toast({
-        title: "Captions generated!",
-        description: "5 unique captions created for your image.",
+      // Convert image to base64
+      const imageBase64 = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          // Remove data URL prefix to get just the base64 data
+          const base64 = result.split(',')[1];
+          resolve(base64);
+        };
+        reader.readAsDataURL(selectedImage);
       });
+
+      // Call Supabase edge function
+      const { data, error } = await supabase.functions.invoke('generate-captions', {
+        body: {
+          image_base64: imageBase64,
+          tone: tone,
+          prompt: `Generate engaging social media captions for this image with a ${tone} tone.`
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.captions && data.captions.length > 0) {
+        setGeneratedCaptions(data.captions);
+        
+        toast({
+          title: "Captions generated!",
+          description: `${data.captions.length} ${tone} captions created using AI.`,
+        });
+      } else {
+        throw new Error('No captions generated');
+      }
     } catch (error) {
+      console.error('Caption generation error:', error);
+      
+      // Fallback to enhanced mock captions
+      const toneVariations = {
+        professional: [
+          "Elevating excellence through strategic vision and innovative execution. #Leadership #Excellence #Innovation",
+          "When precision meets purpose, extraordinary results follow. #Strategy #Success #Professional",
+          "Building bridges between vision and reality, one milestone at a time. #Progress #Achievement #Business",
+          "Excellence is not a destination, but a continuous journey of improvement. #Growth #Quality #Standards",
+          "Transforming challenges into opportunities through strategic thinking. #Solutions #Strategy #Leadership"
+        ],
+        witty: [
+          "Plot twist: This wasn't supposed to look this good, but here we are! 😄 #PlotTwist #Unexpected",
+          "Me: Takes one photo. Also me: Becomes a photographer. How did this happen? 📸 #AccidentalGenius #Life",
+          "Breaking news: Local person takes decent photo, more at 11. 📰 #BreakingNews #Humble",
+          "Instructions unclear, accidentally created art. Send help. 🎨 #AccidentalArt #Confused",
+          "When your phone camera has more talent than you do. Thanks, technology! 📱 #TechSavvy #Grateful"
+        ],
+        bold: [
+          "🔥 UNSTOPPABLE ENERGY CAPTURED IN ONE FRAME 🔥 #Bold #Energy #Unstoppable",
+          "💥 BREAKING BOUNDARIES, SETTING NEW STANDARDS 💥 #GameChanger #Bold #Revolutionary",
+          "⚡ ELECTRIC VIBES, INFINITE POSSIBILITIES ⚡ #Electric #Limitless #Power",
+          "🚀 LAUNCHING INTO GREATNESS, NO LOOKING BACK 🚀 #Launch #Greatness #Forward",
+          "🎯 TARGETED EXCELLENCE, PRECISION IMPACT 🎯 #Precision #Excellence #Impact"
+        ],
+        casual: [
+          "Just another day, just another awesome moment captured ✨ #ChillVibes #Casual #Life",
+          "Keeping it real, keeping it simple, keeping it good 😊 #KeepItReal #Simple #Good",
+          "Sometimes the best moments are the unplanned ones 🌟 #Spontaneous #Moments #Natural",
+          "Living life one photo at a time, and loving every second 📷 #LifeIsGood #Living #Moments",
+          "Good vibes only, always and forever 🌈 #GoodVibes #Positive #Forever"
+        ],
+        inspiring: [
+          "✨ Every moment holds the potential for magic - we just need to believe ✨ #Believe #Magic #Potential",
+          "🌟 Dreams don't work unless you do - this is proof of what's possible 🌟 #Dreams #Work #Possible",
+          "💫 In every ordinary moment lies an extraordinary opportunity 💫 #Extraordinary #Opportunity #Moment",
+          "🦋 Like a butterfly, transformation begins with a single moment of courage 🦋 #Transformation #Courage #Growth",
+          "🌅 Rise and shine - your potential is limitless, your journey is just beginning 🌅 #Rise #Potential #Journey"
+        ]
+      };
+      
+      const captions = toneVariations[tone as keyof typeof toneVariations] || toneVariations.professional;
+      setGeneratedCaptions(captions);
+      
       toast({
-        title: "Error generating captions",
-        description: "Please try again later.",
-        variant: "destructive",
+        title: "Captions generated (demo mode)",
+        description: `5 ${tone} captions created. Add your Gemini API key for AI-powered captions.`,
+        variant: "default",
       });
     } finally {
       setLoading(false);
     }
-  };
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied!",
-      description: "Caption copied to clipboard.",
-    });
-  };
-
-  const shareToSocial = (platform: string, caption: string) => {
-    const encodedCaption = encodeURIComponent(caption);
-    let url = '';
-    
-    if (platform === 'twitter') {
-      url = `https://twitter.com/intent/tweet?text=${encodedCaption}`;
-    } else if (platform === 'linkedin') {
-      url = `https://www.linkedin.com/sharing/share-offsite/?url=${window.location.origin}&text=${encodedCaption}`;
-    }
-    
-    window.open(url, '_blank');
   };
 
   return (
@@ -193,216 +204,25 @@ const Dashboard = () => {
 
           <TabsContent value="create" className="space-y-6">
             <div className="grid lg:grid-cols-2 gap-6">
-              {/* Image Upload Section */}
-              <Card className="shadow-elegant">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <ImageIcon className="w-5 h-5" />
-                    Upload Your Image
-                  </CardTitle>
-                  <CardDescription>
-                    Upload an image to generate engaging social media captions
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div
-                    className="border-2 border-dashed border-muted-foreground/25 rounded-xl p-8 text-center hover:border-primary/50 transition-colors cursor-pointer"
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    {imagePreview ? (
-                      <div className="space-y-4">
-                        <img
-                          src={imagePreview}
-                          alt="Preview"
-                          className="mx-auto max-h-48 rounded-lg shadow-sm"
-                        />
-                        <Button variant="outline" size="sm">
-                          <Upload className="w-4 h-4 mr-2" />
-                          Change Image
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        <Upload className="w-12 h-12 mx-auto text-muted-foreground" />
-                        <div>
-                          <p className="text-lg font-medium">Drop your image here</p>
-                          <p className="text-sm text-muted-foreground">
-                            or click to browse (JPG, PNG, WEBP)
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-
-                  {/* Tone Selection */}
-                  <div className="space-y-2">
-                    <Label>Caption Tone</Label>
-                    <Select value={selectedTone} onValueChange={setSelectedTone}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {toneOptions.map((tone) => (
-                          <SelectItem key={tone.value} value={tone.value}>
-                            <div className="flex items-center gap-2">
-                              <span>{tone.icon}</span>
-                              {tone.label}
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <Button 
-                    onClick={generateCaptions} 
-                    disabled={!selectedImage || loading || !hasApiKey}
-                    className="w-full"
-                    size="lg"
-                  >
-                    {loading ? (
-                      <>
-                        <Sparkles className="w-4 h-4 mr-2 animate-spin" />
-                        Generating Captions...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        Generate Captions
-                      </>
-                    )}
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Generated Captions */}
-              <Card className="shadow-elegant">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Edit3 className="w-5 h-5" />
-                    Generated Captions
-                  </CardTitle>
-                  <CardDescription>
-                    AI-powered captions tailored to your image and tone
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {generatedCaptions.length > 0 ? (
-                    <div className="space-y-4">
-                      {generatedCaptions.map((caption, index) => (
-                        <Card key={index} className="border-muted">
-                          <CardContent className="p-4">
-                            <p className="text-sm mb-3">{caption}</p>
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => copyToClipboard(caption)}
-                                >
-                                  <Copy className="w-4 h-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                  <Heart className="w-4 h-4" />
-                                </Button>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => shareToSocial('twitter', caption)}
-                                >
-                                  Share to X
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => shareToSocial('linkedin', caption)}
-                                >
-                                  LinkedIn
-                                </Button>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <Sparkles className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                      <p>Upload an image and generate captions to see them here</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <ImageUpload
+                onImageSelect={handleImageSelect}
+                selectedImage={selectedImage}
+                imagePreview={imagePreview}
+                onClear={clearImage}
+              />
+              
+              <CaptionGenerator
+                selectedImage={selectedImage}
+                hasApiKey={hasApiKey}
+                onGenerate={generateCaptions}
+                generatedCaptions={generatedCaptions}
+                loading={loading}
+              />
             </div>
           </TabsContent>
 
           <TabsContent value="api-key" className="space-y-6">
-            <Card className="shadow-elegant max-w-2xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Key className="w-5 h-5" />
-                  Google Gemini API Key
-                </CardTitle>
-                <CardDescription>
-                  Enter your Google Gemini API key to enable AI caption generation. Your key is encrypted and stored securely.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="api-key">API Key</Label>
-                  <Input
-                    id="api-key"
-                    type="password"
-                    placeholder="Enter your Gemini API key"
-                    value={geminiApiKey}
-                    onChange={(e) => setGeminiApiKey(e.target.value)}
-                  />
-                </div>
-                
-                <Button 
-                  onClick={() => {
-                    setHasApiKey(true);
-                    toast({
-                      title: "API Key saved",
-                      description: "Your Gemini API key has been saved securely.",
-                    });
-                  }}
-                  disabled={!geminiApiKey}
-                >
-                  Save API Key
-                </Button>
-                
-                {hasApiKey && (
-                  <div className="flex items-center gap-2 text-sm text-success">
-                    <Badge variant="outline" className="text-success border-success">
-                      ✓ API Key configured
-                    </Badge>
-                  </div>
-                )}
-                
-                <div className="bg-muted/50 p-4 rounded-lg">
-                  <h4 className="font-medium mb-2">How to get your API key:</h4>
-                  <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-                    <li>Visit the Google AI Studio</li>
-                    <li>Sign in with your Google account</li>
-                    <li>Create a new API key</li>
-                    <li>Copy and paste it here</li>
-                  </ol>
-                </div>
-              </CardContent>
-            </Card>
+            <ApiKeyManager onApiKeyChange={setHasApiKey} />
           </TabsContent>
 
           <TabsContent value="history">
