@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/components/AuthWrapper';
+import { useUser } from '@clerk/clerk-react';
 import Landing from './Landing';
 
 const Index = () => {
-  const { user } = useAuth();
+  const { isSignedIn } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
+    if (isSignedIn) {
       navigate('/dashboard');
     }
-  }, [user, navigate]);
+  }, [isSignedIn, navigate]);
 
   return <Landing />;
 };

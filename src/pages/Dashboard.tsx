@@ -3,27 +3,24 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useAuth } from '@/components/AuthWrapper';
+import { useUser, UserButton } from '@clerk/clerk-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Sparkles, 
   Settings, 
   History, 
-  LogOut,
   User,
   Key,
   Wand2
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useNavigate } from 'react-router-dom';
 import ImageUpload from '@/components/ImageUpload';
 import CaptionGenerator from '@/components/CaptionGenerator';
 import ApiKeyManager from '@/components/ApiKeyManager';
 
 const Dashboard = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useUser();
   const { toast } = useToast();
   
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -32,10 +29,6 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [hasApiKey, setHasApiKey] = useState(false);
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate('/auth');
-  };
 
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);
@@ -169,14 +162,16 @@ const Dashboard = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm">
-              <User className="w-4 h-4 mr-2" />
-              {user?.email}
-            </Button>
-            <Button variant="ghost" size="sm" onClick={handleSignOut}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </Button>
+            <span className="text-sm text-muted-foreground">
+              {user?.primaryEmailAddress?.emailAddress}
+            </span>
+            <UserButton 
+              appearance={{
+                elements: {
+                  avatarBox: "w-8 h-8"
+                }
+              }}
+            />
           </div>
         </div>
       </header>
@@ -253,7 +248,7 @@ const Dashboard = () => {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label>Email</Label>
-                  <Input value={user?.email || ''} disabled />
+                  <Input value={user?.primaryEmailAddress?.emailAddress || ''} disabled />
                 </div>
                 
                 <div className="space-y-2">

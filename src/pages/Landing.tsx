@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { SignedIn, SignedOut, SignInButton, SignUpButton } from '@clerk/clerk-react';
 import { 
   Sparkles, 
   Upload, 
@@ -82,6 +83,7 @@ const testimonials = [
 ];
 
 const Landing = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
@@ -97,15 +99,23 @@ const Landing = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <Link to="/auth">
-              <Button variant="ghost">Sign In</Button>
-            </Link>
-            <Link to="/auth">
-              <Button variant="hero">
-                Get Started Free
+            <SignedOut>
+              <SignInButton fallbackRedirectUrl="/dashboard">
+                <Button variant="ghost">Sign In</Button>
+              </SignInButton>
+              <SignUpButton fallbackRedirectUrl="/dashboard">
+                <Button variant="hero">
+                  Get Started Free
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <Button variant="hero" onClick={() => navigate('/dashboard')}>
+                Go to Dashboard
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-            </Link>
+            </SignedIn>
           </div>
         </div>
       </header>
