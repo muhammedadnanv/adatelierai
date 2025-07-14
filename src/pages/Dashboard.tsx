@@ -74,7 +74,8 @@ const Dashboard = () => {
         body: {
           image_base64: imageBase64,
           tone: tone,
-          prompt: `Generate engaging social media captions for this image with a ${tone} tone.`
+          prompt: `Generate engaging social media captions for this image with a ${tone} tone.`,
+          userId: user?.id
         }
       });
 

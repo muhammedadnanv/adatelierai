@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Key, ExternalLink, Shield, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/components/AuthWrapper';
+import { useUser } from '@clerk/clerk-react';
 
 interface ApiKeyManagerProps {
   onApiKeyChange: (hasKey: boolean) => void;
@@ -20,14 +20,14 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
   const [showKey, setShowKey] = useState(false);
   const [hasStoredKey, setHasStoredKey] = useState(false);
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { user } = useUser();
 
   useEffect(() => {
     checkExistingApiKey();
   }, [user]);
 
   const checkExistingApiKey = async () => {
-    if (!user) return;
+    if (!user?.id) return;
 
     try {
       const { data, error } = await supabase
@@ -50,7 +50,7 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
   };
 
   const saveApiKey = async () => {
-    if (!user || !apiKey.trim()) {
+    if (!user?.id || !apiKey.trim()) {
       toast({
         title: "Invalid API key",
         description: "Please enter a valid Gemini API key.",
@@ -104,7 +104,7 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
   };
 
   const removeApiKey = async () => {
-    if (!user) return;
+    if (!user?.id) return;
 
     setLoading(true);
     

@@ -14,29 +14,35 @@ serve(async (req) => {
   }
 
   try {
-    const { image_base64, tone, prompt } = await req.json();
+    const { image_base64, tone, prompt, userId } = await req.json();
     
-    // Get user from auth header
+    // Create Supabase admin client (no user auth needed with Clerk)
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    
-    if (!user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+    // Get user ID from Clerk token in Authorization header
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Missing authorization header' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    // Get user's API key
+    if (!userId) {
+      return new Response(JSON.stringify({ error: 'User ID required' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Get user's API key using the user ID from Clerk
     const { data: apiKeyData, error: apiKeyError } = await supabaseClient
       .from('user_api_keys')
       .select('encrypted_key')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .eq('provider', 'gemini')
       .eq('is_active', true)
       .single();
