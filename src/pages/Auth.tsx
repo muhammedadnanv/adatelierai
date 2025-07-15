@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SignIn, SignUp, useUser } from '@clerk/clerk-react';
+import { SignIn, SignUp, useUser, useClerk } from '@clerk/clerk-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Sparkles, Users, Zap } from 'lucide-react';
@@ -8,12 +8,25 @@ import { Sparkles, Users, Zap } from 'lucide-react';
 const Auth = () => {
   const navigate = useNavigate();
   const { isSignedIn } = useUser();
+  const clerk = useClerk();
 
   useEffect(() => {
     if (isSignedIn) {
       navigate('/dashboard');
     }
   }, [isSignedIn, navigate]);
+
+  // Handle any auth errors or incomplete sign-ups
+  useEffect(() => {
+    const handleAuthState = () => {
+      // If there's an incomplete sign-up, handle it
+      if (clerk.client?.signUp?.status === 'missing_requirements') {
+        console.log('Sign-up requires additional information');
+      }
+    };
+    
+    handleAuthState();
+  }, [clerk.client]);
 
   return (
     <div className="min-h-screen bg-gradient-subtle flex items-center justify-center p-4">
@@ -63,7 +76,7 @@ const Auth = () => {
                 
                 <div className="flex justify-center">
                   <SignIn 
-                    fallbackRedirectUrl="/dashboard"
+                    forceRedirectUrl="/dashboard"
                     appearance={{
                       elements: {
                         card: "shadow-none border-0 bg-transparent",
@@ -86,7 +99,7 @@ const Auth = () => {
                 
                 <div className="flex justify-center">
                   <SignUp 
-                    fallbackRedirectUrl="/dashboard"
+                    forceRedirectUrl="/dashboard"
                     appearance={{
                       elements: {
                         card: "shadow-none border-0 bg-transparent",
