@@ -3,32 +3,30 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useUser, UserButton } from '@clerk/clerk-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import { 
   Sparkles, 
   Settings, 
   History, 
-  User,
   Key,
-  Wand2
+  Wand2,
+  ArrowLeft
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useNavigate } from 'react-router-dom';
 import ImageUpload from '@/components/ImageUpload';
 import CaptionGenerator from '@/components/CaptionGenerator';
 import ApiKeyManager from '@/components/ApiKeyManager';
 
 const Dashboard = () => {
-  const { user } = useUser();
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [generatedCaptions, setGeneratedCaptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasApiKey, setHasApiKey] = useState(false);
-
 
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);
@@ -46,10 +44,10 @@ const Dashboard = () => {
   };
 
   const generateCaptions = async (tone: string) => {
-    if (!selectedImage || !hasApiKey) {
+    if (!selectedImage) {
       toast({
-        title: "Missing requirements",
-        description: "Please upload an image and set your Gemini API key.",
+        title: "Missing image",
+        description: "Please upload an image first.",
         variant: "destructive",
       });
       return;
@@ -57,46 +55,70 @@ const Dashboard = () => {
 
     setLoading(true);
     try {
-      // Convert image to base64
-      const imageBase64 = await new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const result = reader.result as string;
-          // Remove data URL prefix to get just the base64 data
-          const base64 = result.split(',')[1];
-          resolve(base64);
-        };
-        reader.readAsDataURL(selectedImage);
-      });
+      if (hasApiKey) {
+        // Try to use real API key for actual generation
+        const apiKey = localStorage.getItem('gemini-api-key');
+        if (apiKey) {
+          // Convert image to base64
+          const imageBase64 = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              const result = reader.result as string;
+              const base64 = result.split(',')[1];
+              resolve(base64);
+            };
+            reader.readAsDataURL(selectedImage);
+          });
 
-      // Call Supabase edge function
-      const { data, error } = await supabase.functions.invoke('generate-captions', {
-        body: {
-          image_base64: imageBase64,
-          tone: tone,
-          prompt: `Generate engaging social media captions for this image with a ${tone} tone.`,
-          userId: user?.id
+          // Call Gemini API directly
+          try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                contents: [{
+                  parts: [
+                    {
+                      text: `Generate 5 engaging social media captions for this image with a ${tone} tone. Each caption should be unique and compelling. Return only the captions, one per line, without numbers or bullet points.`
+                    },
+                    {
+                      inline_data: {
+                        mime_type: "image/jpeg",
+                        data: imageBase64
+                      }
+                    }
+                  ]
+                }]
+              })
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+              
+              if (generatedText) {
+                const captions = generatedText
+                  .split('\n')
+                  .filter((caption: string) => caption.trim())
+                  .slice(0, 5);
+                
+                setGeneratedCaptions(captions);
+                toast({
+                  title: "Captions generated!",
+                  description: `${captions.length} ${tone} captions created using AI.`,
+                });
+                return;
+              }
+            }
+          } catch (error) {
+            console.error('Gemini API error:', error);
+          }
         }
-      });
-
-      if (error) {
-        throw error;
       }
-
-      if (data?.captions && data.captions.length > 0) {
-        setGeneratedCaptions(data.captions);
-        
-        toast({
-          title: "Captions generated!",
-          description: `${data.captions.length} ${tone} captions created using AI.`,
-        });
-      } else {
-        throw new Error('No captions generated');
-      }
-    } catch (error) {
-      console.error('Caption generation error:', error);
       
-      // Fallback to enhanced mock captions
+      // Fallback to demo captions
       const toneVariations = {
         professional: [
           "Elevating excellence through strategic vision and innovative execution. #Leadership #Excellence #Innovation",
@@ -139,9 +161,18 @@ const Dashboard = () => {
       setGeneratedCaptions(captions);
       
       toast({
-        title: "Captions generated (demo mode)",
-        description: `5 ${tone} captions created. Add your Gemini API key for AI-powered captions.`,
+        title: hasApiKey ? "Captions generated!" : "Demo captions generated",
+        description: hasApiKey 
+          ? `5 ${tone} captions created using AI.` 
+          : `5 ${tone} demo captions created. Add your API key for AI-powered captions.`,
         variant: "default",
+      });
+    } catch (error) {
+      console.error('Caption generation error:', error);
+      toast({
+        title: "Error generating captions",
+        description: "Please try again later.",
+        variant: "destructive",
       });
     } finally {
       setLoading(false);
@@ -153,26 +184,24 @@ const Dashboard = () => {
       {/* Header */}
       <header className="border-b bg-white/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
-            <h1 className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-              Socialify
-            </h1>
-          </div>
-          
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-muted-foreground">
-              {user?.primaryEmailAddress?.emailAddress}
-            </span>
-            <UserButton 
-              appearance={{
-                elements: {
-                  avatarBox: "w-8 h-8"
-                }
-              }}
-            />
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <h1 className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+                Socialify
+              </h1>
+            </div>
           </div>
         </div>
       </header>
@@ -241,23 +270,23 @@ const Dashboard = () => {
           <TabsContent value="settings">
             <Card className="shadow-elegant max-w-2xl">
               <CardHeader>
-                <CardTitle>Account Settings</CardTitle>
+                <CardTitle>Application Settings</CardTitle>
                 <CardDescription>
-                  Manage your account preferences and settings
+                  Manage your preferences and settings
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input value={user?.primaryEmailAddress?.emailAddress || ''} disabled />
+                  <Label>Default Caption Tone</Label>
+                  <Input placeholder="Professional" />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label>Full Name</Label>
-                  <Input placeholder="Enter your full name" />
+                  <Label>Language Preference</Label>
+                  <Input placeholder="English" />
                 </div>
                 
-                <Button>Save Changes</Button>
+                <Button>Save Settings</Button>
               </CardContent>
             </Card>
           </TabsContent>

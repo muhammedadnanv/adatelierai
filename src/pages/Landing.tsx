@@ -1,8 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Link, useNavigate } from 'react-router-dom';
-import { SignedIn, SignedOut, SignInButton, SignUpButton } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Sparkles, 
   Upload, 
@@ -99,23 +98,12 @@ const Landing = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <SignedOut>
-              <SignInButton fallbackRedirectUrl="/dashboard">
-                <Button variant="ghost">Sign In</Button>
-              </SignInButton>
-              <SignUpButton fallbackRedirectUrl="/dashboard">
-                <Button variant="hero">
-                  Get Started Free
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <Button variant="hero" onClick={() => navigate('/dashboard')}>
-                Go to Dashboard
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </SignedIn>
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/dashboard')}
+            >
+              Get Started
+            </Button>
           </div>
         </div>
       </header>
@@ -141,12 +129,15 @@ const Landing = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/auth">
-                  <Button size="xl" variant="hero" className="w-full sm:w-auto">
-                    <Camera className="w-5 h-5 mr-2" />
-                    Start Creating Now
-                  </Button>
-                </Link>
+                <Button 
+                  size="xl" 
+                  variant="hero" 
+                  className="w-full sm:w-auto"
+                  onClick={() => navigate('/dashboard')}
+                >
+                  <Camera className="w-5 h-5 mr-2" />
+                  Start Creating Now
+                </Button>
                 <Button size="xl" variant="outline" className="w-full sm:w-auto">
                   <Users className="w-5 h-5 mr-2" />
                   Join 10k+ Creators
@@ -315,15 +306,18 @@ const Landing = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Link to="/auth">
-                  <Button size="xl" variant="secondary" className="w-full sm:w-auto">
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    Start Free Today
-                  </Button>
-                </Link>
+                <Button 
+                  size="xl" 
+                  variant="secondary" 
+                  className="w-full sm:w-auto"
+                  onClick={() => navigate('/dashboard')}
+                >
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Start Free Today
+                </Button>
                 <div className="flex items-center gap-2 text-sm opacity-90">
                   <CheckCircle className="w-4 h-4" />
-                  <span>No credit card required</span>
+                  <span>No setup required</span>
                 </div>
               </div>
             </CardContent>

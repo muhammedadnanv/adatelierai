@@ -7,8 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Key, ExternalLink, Shield, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import { useUser } from '@clerk/clerk-react';
 
 interface ApiKeyManagerProps {
   onApiKeyChange: (hasKey: boolean) => void;
@@ -16,41 +14,32 @@ interface ApiKeyManagerProps {
 
 const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
   const [apiKey, setApiKey] = useState('');
-  const [loading, setLoading] = useState(false);
   const [showKey, setShowKey] = useState(false);
   const [hasStoredKey, setHasStoredKey] = useState(false);
   const { toast } = useToast();
-  const { user } = useUser();
 
   useEffect(() => {
     checkExistingApiKey();
-  }, [user]);
+  }, []);
 
   const checkExistingApiKey = async () => {
-    if (!user?.id) return;
-
     try {
-      const { data, error } = await supabase
-        .from('user_api_keys')
-        .select('id, is_active')
-        .eq('user_id', user.id)
-        .eq('provider', 'gemini')
-        .eq('is_active', true)
-        .single();
-
-      if (data && !error) {
+      const storedKey = localStorage.getItem('gemini-api-key');
+      if (storedKey) {
         setHasStoredKey(true);
         onApiKeyChange(true);
+      } else {
+        setHasStoredKey(false);
+        onApiKeyChange(false);
       }
     } catch (error) {
-      // No existing key found
       setHasStoredKey(false);
       onApiKeyChange(false);
     }
   };
 
   const saveApiKey = async () => {
-    if (!user?.id || !apiKey.trim()) {
+    if (!apiKey.trim()) {
       toast({
         title: "Invalid API key",
         description: "Please enter a valid Gemini API key.",
@@ -59,38 +48,15 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
       return;
     }
 
-    setLoading(true);
-    
     try {
-      // Simple encryption (in production, use proper encryption)
-      const encryptedKey = btoa(apiKey);
-      
-      // Deactivate existing keys
-      await supabase
-        .from('user_api_keys')
-        .update({ is_active: false })
-        .eq('user_id', user.id)
-        .eq('provider', 'gemini');
-
-      // Insert new key
-      const { error } = await supabase
-        .from('user_api_keys')
-        .insert({
-          user_id: user.id,
-          provider: 'gemini',
-          encrypted_key: encryptedKey,
-          is_active: true
-        });
-
-      if (error) throw error;
-
+      localStorage.setItem('gemini-api-key', apiKey);
       setHasStoredKey(true);
       setApiKey(''); // Clear input for security
       onApiKeyChange(true);
       
       toast({
         title: "API Key saved",
-        description: "Your Gemini API key has been saved securely.",
+        description: "Your Gemini API key has been saved locally.",
       });
     } catch (error) {
       toast({
@@ -98,23 +64,12 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
         description: "Please try again later.",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
   const removeApiKey = async () => {
-    if (!user?.id) return;
-
-    setLoading(true);
-    
     try {
-      await supabase
-        .from('user_api_keys')
-        .update({ is_active: false })
-        .eq('user_id', user.id)
-        .eq('provider', 'gemini');
-
+      localStorage.removeItem('gemini-api-key');
       setHasStoredKey(false);
       onApiKeyChange(false);
       
@@ -128,8 +83,6 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
         description: "Please try again later.",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -142,7 +95,7 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
             Google Gemini API Key
           </CardTitle>
           <CardDescription>
-            Enter your Google Gemini API key to enable AI caption generation. Your key is encrypted and stored securely.
+            Enter your Google Gemini API key to enable AI caption generation. Your key is stored locally in your browser.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -172,10 +125,10 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
               
               <Button 
                 onClick={saveApiKey}
-                disabled={!apiKey.trim() || loading}
+                disabled={!apiKey.trim()}
                 className="w-full"
               >
-                {loading ? "Saving..." : "Save API Key"}
+                Save API Key
               </Button>
             </>
           ) : (
@@ -195,7 +148,6 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
                   variant="outline" 
                   size="sm"
                   onClick={removeApiKey}
-                  disabled={loading}
                 >
                   Remove Key
                 </Button>
@@ -233,7 +185,7 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
           <Alert>
             <Shield className="w-4 h-4" />
             <AlertDescription>
-              Your API key is encrypted and stored securely. We never share your keys with third parties.
+              Your API key is stored locally in your browser and never sent to our servers.
             </AlertDescription>
           </Alert>
         </CardContent>
