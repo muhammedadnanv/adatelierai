@@ -2,71 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Socialify Design System - Modern social media platform theme */
+/* Ad Atelier AI Design System - Professional creative AI platform theme */
 
 @layer base {
   :root {
-    /* Core brand colors */
-    --background: 0 0% 99%;
-    --foreground: 222 15% 12%;
+    /* Core brand colors - Ad Atelier AI palette */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 4%;
 
     /* Card system */
     --card: 0 0% 100%;
-    --card-foreground: 222 15% 12%;
+    --card-foreground: 0 0% 4%;
 
     /* Popover system */
     --popover: 0 0% 100%;
-    --popover-foreground: 222 15% 12%;
+    --popover-foreground: 0 0% 4%;
 
-    /* Primary - Creative purple/violet */
-    --primary: 267 84% 65%;
+    /* Primary - Deep Blue */
+    --primary: 220 96% 43%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 267 84% 75%;
+    --primary-glow: 220 96% 53%;
 
-    /* Secondary - Soft neutral */
-    --secondary: 220 9% 96%;
-    --secondary-foreground: 222 15% 12%;
+    /* Secondary - Light Gray */
+    --secondary: 0 0% 88%;
+    --secondary-foreground: 0 0% 4%;
 
     /* Muted system */
-    --muted: 220 9% 96%;
-    --muted-foreground: 220 9% 45%;
+    --muted: 0 0% 88%;
+    --muted-foreground: 0 0% 45%;
 
-    /* Accent - Vibrant coral/orange */
-    --accent: 15 86% 65%;
+    /* Accent - Mid Blue */
+    --accent: 212 100% 50%;
     --accent-foreground: 0 0% 100%;
-    --accent-glow: 15 86% 75%;
+    --accent-glow: 212 100% 60%;
 
-    /* Success - Creative green */
+    /* Success - Professional green */
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
 
     /* Warning - Attention yellow */
     --warning: 45 93% 58%;
-    --warning-foreground: 222 15% 12%;
+    --warning-foreground: 0 0% 4%;
 
     /* Destructive - Clear red */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     /* Border and input */
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 267 84% 65%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 220 96% 43%;
 
     /* Layout */
     --radius: 0.75rem;
 
-    /* Socialify specific colors */
-    --gradient-primary: linear-gradient(135deg, hsl(267 84% 65%), hsl(267 84% 75%));
-    --gradient-accent: linear-gradient(135deg, hsl(15 86% 65%), hsl(15 86% 75%));
-    --gradient-hero: linear-gradient(135deg, hsl(267 84% 65%) 0%, hsl(15 86% 65%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 99%) 0%, hsl(220 9% 98%) 100%);
+    /* Ad Atelier AI specific colors and gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(220 96% 43%), hsl(220 96% 53%));
+    --gradient-accent: linear-gradient(135deg, hsl(212 100% 50%), hsl(212 100% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(220 96% 43%) 0%, hsl(212 100% 50%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 98%) 100%);
 
     /* Shadows */
-    --shadow-primary: 0 10px 30px -10px hsl(267 84% 65% / 0.3);
-    --shadow-accent: 0 10px 30px -10px hsl(15 86% 65% / 0.3);
-    --shadow-elegant: 0 4px 20px -4px hsl(222 15% 12% / 0.1);
-    --shadow-glow: 0 0 40px hsl(267 84% 75% / 0.4);
+    --shadow-primary: 0 10px 30px -10px hsl(220 96% 43% / 0.3);
+    --shadow-accent: 0 10px 30px -10px hsl(212 100% 50% / 0.3);
+    --shadow-elegant: 0 4px 20px -4px hsl(0 0% 4% / 0.1);
+    --shadow-glow: 0 0 40px hsl(220 96% 53% / 0.4);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -134,6 +134,6 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-poppins;
   }
 }

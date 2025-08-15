@@ -64,7 +64,7 @@ const testimonials = [
   {
     name: "Sarah Johnson",
     role: "Content Creator",
-    content: "Socialify transformed my content game! The AI captions are spot-on and save me hours every week.",
+    content: "Ad Atelier AI transformed my content game! The AI captions are spot-on and save me hours every week.",
     rating: 5
   },
   {
@@ -92,8 +92,8 @@ const Landing = () => {
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
-            <h1 className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-              Socialify
+            <h1 className="text-xl font-bold font-montserrat bg-gradient-hero bg-clip-text text-transparent">
+              Ad Atelier AI
             </h1>
           </div>
           
@@ -118,7 +118,7 @@ const Landing = () => {
                   <Sparkles className="w-3 h-3 mr-1" />
                   AI-Powered Content Creation
                 </Badge>
-                <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+                <h1 className="text-4xl lg:text-6xl font-bold font-montserrat leading-tight">
                   Transform Your Images Into 
                   <span className="bg-gradient-hero bg-clip-text text-transparent"> Viral Content</span>
                 </h1>
@@ -159,7 +159,7 @@ const Landing = () => {
               <div className="absolute inset-0 bg-gradient-hero rounded-3xl blur-3xl opacity-20"></div>
               <img
                 src={heroImage}
-                alt="Socialify Hero"
+                alt="Ad Atelier AI Hero"
                 className="relative rounded-3xl shadow-2xl w-full h-auto"
               />
             </div>
@@ -334,8 +334,8 @@ const Landing = () => {
                 <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                   <Sparkles className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-                  Socialify
+                <h3 className="text-xl font-bold font-montserrat bg-gradient-hero bg-clip-text text-transparent">
+                  Ad Atelier AI
                 </h3>
               </div>
               <p className="text-muted-foreground">
@@ -372,7 +372,7 @@ const Landing = () => {
           </div>
           
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 Socialify. All rights reserved.</p>
+            <p>&copy; 2024 Ad Atelier AI. All rights reserved.</p>
           </div>
         </div>
       </footer>

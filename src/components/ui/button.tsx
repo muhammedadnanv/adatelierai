@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold font-poppins transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -16,7 +16,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground hover:scale-105 active:scale-95",
         link: "text-primary underline-offset-4 hover:underline",
         accent: "bg-gradient-accent text-accent-foreground shadow-accent hover:scale-105 hover:shadow-glow active:scale-95",
-        hero: "bg-gradient-hero text-primary-foreground shadow-glow text-base font-bold px-8 py-4 hover:scale-105 hover:shadow-glow active:scale-95",
+        hero: "bg-gradient-hero text-primary-foreground shadow-glow text-base font-bold font-montserrat px-8 py-4 hover:scale-105 hover:shadow-glow active:scale-95",
         success: "bg-success text-success-foreground shadow-sm hover:bg-success/90 hover:scale-105 active:scale-95",
         warning: "bg-warning text-warning-foreground shadow-sm hover:bg-warning/90 hover:scale-105 active:scale-95"
       },

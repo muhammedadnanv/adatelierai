@@ -198,8 +198,8 @@ const Dashboard = () => {
               <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <h1 className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-                Socialify
+              <h1 className="text-xl font-bold font-montserrat bg-gradient-hero bg-clip-text text-transparent">
+                Ad Atelier AI
               </h1>
             </div>
           </div>
