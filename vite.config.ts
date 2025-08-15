@@ -42,12 +42,12 @@ export default defineConfig(({ mode }) => ({
           }
         ]
       },
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'og-image.png'],
       manifest: {
-        name: 'Socialify - AI Caption Generator',
-        short_name: 'Socialify',
+        name: 'Ad Atelier AI - AI Caption Generator',
+        short_name: 'Ad Atelier AI',
         description: 'Transform your images into viral social media content with AI-powered captions',
-        theme_color: '#8B5CF6',
+        theme_color: '#0057D9',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',

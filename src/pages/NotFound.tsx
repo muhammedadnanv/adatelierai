@@ -12,8 +12,8 @@ const NotFound = () => {
             <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-              Socialify
+            <h1 className="text-3xl font-bold font-montserrat bg-gradient-hero bg-clip-text text-transparent">
+              Ad Atelier AI
             </h1>
           </div>
           <CardTitle className="text-4xl font-bold text-primary">404</CardTitle>

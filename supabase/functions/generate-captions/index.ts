@@ -14,48 +14,21 @@ serve(async (req) => {
   }
 
   try {
-    const { image_base64, tone, prompt, userId } = await req.json();
+    const { image_base64, tone, prompt, apiKey } = await req.json();
     
-    // Create Supabase admin client (no user auth needed with Clerk)
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
-
-    // Get user ID from Clerk token in Authorization header
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: 'Missing authorization header' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    if (!userId) {
-      return new Response(JSON.stringify({ error: 'User ID required' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    // Get user's API key using the user ID from Clerk
-    const { data: apiKeyData, error: apiKeyError } = await supabaseClient
-      .from('user_api_keys')
-      .select('encrypted_key')
-      .eq('user_id', userId)
-      .eq('provider', 'gemini')
-      .eq('is_active', true)
-      .single();
-
-    if (apiKeyError || !apiKeyData) {
-      return new Response(JSON.stringify({ error: 'No API key found' }), {
+    if (!apiKey) {
+      return new Response(JSON.stringify({ error: 'API key required' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    // Decrypt API key (simple base64 decoding - use proper encryption in production)
-    const geminiApiKey = atob(apiKeyData.encrypted_key);
+    if (!image_base64) {
+      return new Response(JSON.stringify({ error: 'Image data required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
     // Generate captions using Gemini API
     const geminiPrompt = `
@@ -73,7 +46,7 @@ ${prompt ? `Additional context: ${prompt}` : ''}
 Return only the captions, one per line, without numbering.
 `;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
