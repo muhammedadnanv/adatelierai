@@ -13,19 +13,18 @@ const DonationButton = () => {
   const handleDonation = async () => {
     setLoading(true);
     try {
-      // Simulate donation processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      // Show instructions for manual payment
       toast({
-        title: "Thank you for your support! 🙏",
-        description: "Your ₹50 donation helps us keep improving Ad Atelier AI.",
+        title: "Alternative Payment Methods",
+        description: "For other payment methods, please contact: adnanmuhammad4393@okicici",
+        duration: 5000,
       });
       
       setIsOpen(false);
     } catch (error) {
       toast({
-        title: "Donation failed",
-        description: "Please try again later.",
+        title: "Error",
+        description: "Please try UPI payment or contact support.",
         variant: "destructive",
       });
     } finally {
@@ -34,12 +33,12 @@ const DonationButton = () => {
   };
 
   const handleUPIPayment = () => {
-    const upiUrl = `upi://pay?pa=support@adatelierai.com&pn=Ad%20Atelier%20AI&am=50&cu=INR&tn=Support%20Ad%20Atelier%20AI%20Development`;
+    const upiUrl = `upi://pay?pa=adnanmuhammad4393@okicici&pn=Ad%20Atelier%20AI&am=50&cu=INR&tn=Support%20Ad%20Atelier%20AI%20Development`;
     window.open(upiUrl, '_blank');
     
     toast({
       title: "UPI Payment Initiated",
-      description: "Complete the payment in your UPI app.",
+      description: "Complete the ₹50 payment in your UPI app to support Ad Atelier AI.",
     });
   };
 
@@ -100,14 +99,14 @@ const DonationButton = () => {
               </div>
               
               <div className="text-xs text-center text-muted-foreground">
-                Secure payment processing • 100% goes to development
+                Secure UPI payment • Directly to adnanmuhammad4393@okicici
               </div>
             </CardContent>
           </Card>
           
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
-              Thank you for supporting open-source AI tools! 🚀
+              Thank you for supporting Ad Atelier AI development! 🚀
             </p>
           </div>
         </div>
