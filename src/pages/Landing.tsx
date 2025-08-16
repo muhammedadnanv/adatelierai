@@ -98,6 +98,21 @@ const Landing = () => {
           </div>
           
           <div className="flex items-center space-x-4">
+            {/* Product Hunt Badge */}
+            <a 
+              href="https://www.producthunt.com/products/ad-atelier-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-ad%E2%80%A3atelier%E2%80%A3ai" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hidden lg:block hover:opacity-80 transition-opacity"
+            >
+              <img 
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1005540&theme=light&t=1755261791027" 
+                alt="Ad Atelier AI - Transform Your Images Into Viral Content | Product Hunt" 
+                style={{ width: '250px', height: '54px' }} 
+                width="250" 
+                height="54" 
+              />
+            </a>
             <Button 
               variant="outline" 
               onClick={() => navigate('/dashboard')}
