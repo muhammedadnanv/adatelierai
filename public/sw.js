@@ -1,8 +1,7 @@
-const CACHE_NAME = 'socialify-v1';
+const CACHE_NAME = 'ad-atelier-ai-v1';
 const STATIC_ASSETS = [
   '/',
   '/dashboard',
-  '/auth',
   '/manifest.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png'
@@ -93,7 +92,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('Socialify', options)
+    self.registration.showNotification('Ad Atelier AI', options)
   );
 });
 
@@ -111,7 +110,7 @@ self.addEventListener('notificationclick', (event) => {
 async function processOfflineRequests() {
   // Process any offline caption generation requests
   try {
-    const db = await openDB('socialify-offline', 1);
+    const db = await openDB('ad-atelier-ai-offline', 1);
     const requests = await db.getAll('requests');
     
     for (const request of requests) {
