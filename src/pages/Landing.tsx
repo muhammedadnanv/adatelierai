@@ -2,89 +2,65 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Sparkles, 
-  Upload, 
-  Wand2, 
-  Share2, 
-  Shield, 
-  Zap, 
-  Users, 
-  Star,
-  ArrowRight,
-  CheckCircle,
-  Camera,
-  MessageSquare,
-  TrendingUp,
-  Lock
-} from 'lucide-react';
+import { Sparkles, Upload, Wand2, Share2, Shield, Zap, Users, Star, ArrowRight, CheckCircle, Camera, MessageSquare, TrendingUp, Lock } from 'lucide-react';
 import heroImage from '@/assets/hero-image.jpg';
-
-const features = [
-  {
-    icon: Upload,
-    title: "Easy Upload",
-    description: "Drag & drop your images or browse from your device. Supports all popular formats."
-  },
-  {
-    icon: Wand2,
-    title: "AI-Powered Generation",
-    description: "Generate 3-5 unique captions using Google Gemini AI with different tones and styles."
-  },
-  {
-    icon: MessageSquare,
-    title: "Multiple Tones",
-    description: "Professional, witty, bold, casual, or inspiring - choose the perfect tone for your audience."
-  },
-  {
-    icon: Share2,
-    title: "Native Sharing",
-    description: "Share directly to X (Twitter) and LinkedIn with optimized formatting."
-  },
-  {
-    icon: Shield,
-    title: "Secure & Private",
-    description: "Your API keys are encrypted and your images are processed securely."
-  },
-  {
-    icon: TrendingUp,
-    title: "Caption History",
-    description: "View, edit, and save your favorite captions for future reference."
-  }
-];
-
-const stats = [
-  { number: "10k+", label: "Creators" },
-  { number: "50k+", label: "Captions Generated" },
-  { number: "95%", label: "Satisfaction Rate" },
-  { number: "24/7", label: "AI Availability" }
-];
-
-const testimonials = [
-  {
-    name: "Sarah Johnson",
-    role: "Content Creator",
-    content: "Ad Atelier AI transformed my content game! The AI captions are spot-on and save me hours every week.",
-    rating: 5
-  },
-  {
-    name: "Mike Chen",
-    role: "Social Media Manager",
-    content: "The variety of tones and quick sharing features make this a must-have tool for any marketer.",
-    rating: 5
-  },
-  {
-    name: "Emma Davis",
-    role: "Small Business Owner",
-    content: "Finally, professional-quality captions without the professional price tag. Love the simplicity!",
-    rating: 5
-  }
-];
-
+const features = [{
+  icon: Upload,
+  title: "Easy Upload",
+  description: "Drag & drop your images or browse from your device. Supports all popular formats."
+}, {
+  icon: Wand2,
+  title: "AI-Powered Generation",
+  description: "Generate 3-5 unique captions using Google Gemini AI with different tones and styles."
+}, {
+  icon: MessageSquare,
+  title: "Multiple Tones",
+  description: "Professional, witty, bold, casual, or inspiring - choose the perfect tone for your audience."
+}, {
+  icon: Share2,
+  title: "Native Sharing",
+  description: "Share directly to X (Twitter) and LinkedIn with optimized formatting."
+}, {
+  icon: Shield,
+  title: "Secure & Private",
+  description: "Your API keys are encrypted and your images are processed securely."
+}, {
+  icon: TrendingUp,
+  title: "Caption History",
+  description: "View, edit, and save your favorite captions for future reference."
+}];
+const stats = [{
+  number: "10k+",
+  label: "Creators"
+}, {
+  number: "50k+",
+  label: "Captions Generated"
+}, {
+  number: "95%",
+  label: "Satisfaction Rate"
+}, {
+  number: "24/7",
+  label: "AI Availability"
+}];
+const testimonials = [{
+  name: "Sarah Johnson",
+  role: "Content Creator",
+  content: "Ad Atelier AI transformed my content game! The AI captions are spot-on and save me hours every week.",
+  rating: 5
+}, {
+  name: "Mike Chen",
+  role: "Social Media Manager",
+  content: "The variety of tones and quick sharing features make this a must-have tool for any marketer.",
+  rating: 5
+}, {
+  name: "Emma Davis",
+  role: "Small Business Owner",
+  content: "Finally, professional-quality captions without the professional price tag. Love the simplicity!",
+  rating: 5
+}];
 const Landing = () => {
   const navigate = useNavigate();
-  return (
-    <div className="min-h-screen bg-gradient-subtle">
+  return <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
       <header className="border-b bg-white/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -99,24 +75,13 @@ const Landing = () => {
           
           <div className="flex items-center space-x-4">
             {/* Product Hunt Badge */}
-            <a 
-              href="https://www.producthunt.com/products/ad-atelier-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-ad%E2%80%A3atelier%E2%80%A3ai" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hidden lg:block hover:opacity-80 transition-opacity"
-            >
-              <img 
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1005540&theme=light&t=1755261791027" 
-                alt="Ad Atelier AI - Transform Your Images Into Viral Content | Product Hunt" 
-                style={{ width: '250px', height: '54px' }} 
-                width="250" 
-                height="54" 
-              />
+            <a href="https://www.producthunt.com/products/ad-atelier-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-ad%E2%80%A3atelier%E2%80%A3ai" target="_blank" rel="noopener noreferrer" className="hidden lg:block hover:opacity-80 transition-opacity">
+              <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1005540&theme=light&t=1755261791027" alt="Ad Atelier AI - Transform Your Images Into Viral Content | Product Hunt" style={{
+              width: '250px',
+              height: '54px'
+            }} width="250" height="54" />
             </a>
-            <Button 
-              variant="outline" 
-              onClick={() => navigate('/dashboard')}
-            >
+            <Button variant="outline" onClick={() => navigate('/dashboard')}>
               Get Started
             </Button>
           </div>
@@ -144,39 +109,25 @@ const Landing = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  size="xl" 
-                  variant="hero" 
-                  className="w-full sm:w-auto"
-                  onClick={() => navigate('/dashboard')}
-                >
+                <Button size="xl" variant="hero" className="w-full sm:w-auto" onClick={() => navigate('/dashboard')}>
                   <Camera className="w-5 h-5 mr-2" />
                   Start Creating Now
                 </Button>
-                <Button size="xl" variant="outline" className="w-full sm:w-auto">
-                  <Users className="w-5 h-5 mr-2" />
-                  Join 10k+ Creators
-                </Button>
+                
               </div>
 
               {/* Stats */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 pt-8">
-                {stats.map((stat, index) => (
-                  <div key={index} className="text-center">
+                {stats.map((stat, index) => <div key={index} className="text-center">
                     <div className="text-2xl font-bold text-primary">{stat.number}</div>
                     <div className="text-sm text-muted-foreground">{stat.label}</div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
 
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-hero rounded-3xl blur-3xl opacity-20"></div>
-              <img
-                src={heroImage}
-                alt="Ad Atelier AI Hero"
-                className="relative rounded-3xl shadow-2xl w-full h-auto"
-              />
+              <img src={heroImage} alt="Ad Atelier AI Hero" className="relative rounded-3xl shadow-2xl w-full h-auto" />
             </div>
           </div>
         </div>
@@ -201,8 +152,7 @@ const Landing = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="shadow-elegant border-0 hover:shadow-glow transition-all duration-300">
+            {features.map((feature, index) => <Card key={index} className="shadow-elegant border-0 hover:shadow-glow transition-all duration-300">
                 <CardHeader>
                   <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center mb-4">
                     <feature.icon className="w-6 h-6 text-white" />
@@ -214,8 +164,7 @@ const Landing = () => {
                     {feature.description}
                   </CardDescription>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -233,27 +182,22 @@ const Landing = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                step: "01",
-                title: "Upload Your Image",
-                description: "Drag and drop any image or browse from your device. We support all popular formats.",
-                icon: Upload
-              },
-              {
-                step: "02", 
-                title: "Choose Your Tone",
-                description: "Select from professional, witty, bold, casual, or inspiring tones to match your brand.",
-                icon: Wand2
-              },
-              {
-                step: "03",
-                title: "Generate & Share",
-                description: "Get 3-5 unique captions instantly and share directly to your social platforms.",
-                icon: Share2
-              }
-            ].map((item, index) => (
-              <div key={index} className="text-center space-y-4">
+            {[{
+            step: "01",
+            title: "Upload Your Image",
+            description: "Drag and drop any image or browse from your device. We support all popular formats.",
+            icon: Upload
+          }, {
+            step: "02",
+            title: "Choose Your Tone",
+            description: "Select from professional, witty, bold, casual, or inspiring tones to match your brand.",
+            icon: Wand2
+          }, {
+            step: "03",
+            title: "Generate & Share",
+            description: "Get 3-5 unique captions instantly and share directly to your social platforms.",
+            icon: Share2
+          }].map((item, index) => <div key={index} className="text-center space-y-4">
                 <div className="relative">
                   <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto shadow-primary">
                     <item.icon className="w-8 h-8 text-white" />
@@ -264,8 +208,7 @@ const Landing = () => {
                 </div>
                 <h3 className="text-xl font-semibold">{item.title}</h3>
                 <p className="text-muted-foreground">{item.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -283,13 +226,10 @@ const Landing = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="shadow-elegant border-0">
+            {testimonials.map((testimonial, index) => <Card key={index} className="shadow-elegant border-0">
                 <CardHeader>
                   <div className="flex items-center gap-1 mb-2">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    ))}
+                    {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
                   </div>
                   <CardDescription className="text-base italic">
                     "{testimonial.content}"
@@ -301,8 +241,7 @@ const Landing = () => {
                     <div className="text-sm text-muted-foreground">{testimonial.role}</div>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -321,12 +260,7 @@ const Landing = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button 
-                  size="xl" 
-                  variant="secondary" 
-                  className="w-full sm:w-auto"
-                  onClick={() => navigate('/dashboard')}
-                >
+                <Button size="xl" variant="secondary" className="w-full sm:w-auto" onClick={() => navigate('/dashboard')}>
                   <Sparkles className="w-5 h-5 mr-2" />
                   Start Free Today
                 </Button>
@@ -391,8 +325,6 @@ const Landing = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Landing;
