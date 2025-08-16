@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import ImageUpload from '@/components/ImageUpload';
 import CaptionGenerator from '@/components/CaptionGenerator';
 import ApiKeyManager from '@/components/ApiKeyManager';
+import DonationButton from '@/components/DonationButton';
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -203,6 +204,8 @@ const Dashboard = () => {
               </h1>
             </div>
           </div>
+          
+          <DonationButton />
         </div>
       </header>
 
