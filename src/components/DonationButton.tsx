@@ -3,12 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Heart, Coffee, CreditCard, Gift } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Heart, Coffee, CreditCard, Gift, Smartphone } from 'lucide-react';
 
 const DonationButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const handleDonation = async () => {
     setLoading(true);
@@ -34,12 +36,27 @@ const DonationButton = () => {
 
   const handleUPIPayment = () => {
     const upiUrl = `upi://pay?pa=adnanmuhammad4393@okicici&pn=Ad%20Atelier%20AI&am=50&cu=INR&tn=Support%20Ad%20Atelier%20AI%20Development`;
-    window.open(upiUrl, '_blank');
+    
+    if (isMobile) {
+      // On mobile, directly navigate to UPI URL
+      window.location.href = upiUrl;
+    } else {
+      // On desktop, open in new tab/window
+      window.open(upiUrl, '_blank');
+    }
     
     toast({
       title: "UPI Payment Initiated",
-      description: "Complete the ₹50 payment in your UPI app to support Ad Atelier AI.",
+      description: isMobile 
+        ? "Opening your UPI app to complete the ₹50 payment." 
+        : "Complete the ₹50 payment in your UPI app to support Ad Atelier AI.",
+      duration: 4000,
     });
+    
+    // Close dialog after initiating payment on mobile for better UX
+    if (isMobile) {
+      setTimeout(() => setIsOpen(false), 1000);
+    }
   };
 
   return (
@@ -50,7 +67,7 @@ const DonationButton = () => {
           Support Us
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className={`sm:max-w-md ${isMobile ? 'w-[95vw] mx-2' : ''}`}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Gift className="w-5 h-5 text-primary" />
@@ -81,16 +98,16 @@ const DonationButton = () => {
               <div className="space-y-2">
                 <Button 
                   onClick={handleUPIPayment}
-                  className="w-full"
+                  className={`w-full ${isMobile ? 'h-12 text-base' : ''}`}
                   variant="default"
                 >
-                  <CreditCard className="w-4 h-4 mr-2" />
-                  Pay with UPI
+                  {isMobile ? <Smartphone className="w-5 h-5 mr-2" /> : <CreditCard className="w-4 h-4 mr-2" />}
+                  {isMobile ? 'Open UPI App' : 'Pay with UPI'}
                 </Button>
                 
                 <Button 
                   onClick={handleDonation}
-                  className="w-full"
+                  className={`w-full ${isMobile ? 'h-12' : ''}`}
                   variant="outline"
                   disabled={loading}
                 >
