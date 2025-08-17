@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Sparkles, Upload, Wand2, Share2, Shield, Zap, Users, Star, ArrowRight, CheckCircle, Camera, MessageSquare, TrendingUp, Lock } from 'lucide-react';
 import heroImage from '@/assets/hero-image.jpg';
 import DonationButton from '@/components/DonationButton';
@@ -308,9 +308,9 @@ const Landing = () => {
             <div>
               <h4 className="font-semibold mb-4">Legal</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-primary">Privacy</a></li>
-                <li><a href="#" className="hover:text-primary">Terms</a></li>
-                <li><a href="#" className="hover:text-primary">Security</a></li>
+                <li><Link to="/privacy" className="hover:text-primary">Privacy</Link></li>
+                <li><Link to="/terms" className="hover:text-primary">Terms</Link></li>
+                <li><Link to="/security" className="hover:text-primary">Security</Link></li>
               </ul>
             </div>
           </div>
