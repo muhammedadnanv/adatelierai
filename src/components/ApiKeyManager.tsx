@@ -87,14 +87,14 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <Card className="shadow-elegant max-w-2xl">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Key className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+            <Key className="w-4 h-4 md:w-5 md:h-5" />
             Google Gemini API Key
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-sm md:text-base">
             Enter your Google Gemini API key to enable AI caption generation. Your key is stored locally in your browser.
           </CardDescription>
         </CardHeader>
@@ -160,10 +160,10 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
       {/* Instructions */}
       <Card className="shadow-elegant max-w-2xl">
         <CardHeader>
-          <CardTitle className="text-lg">How to get your API key</CardTitle>
+          <CardTitle className="text-base md:text-lg">How to get your API key</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
+          <ol className="text-sm md:text-base text-muted-foreground space-y-2 list-decimal list-inside">
             <li>Visit Google AI Studio</li>
             <li>Sign in with your Google account</li>
             <li>Click "Get API key" in the menu</li>
@@ -177,14 +177,14 @@ const ApiKeyManager = ({ onApiKeyChange }: ApiKeyManagerProps) => {
               target="_blank" 
               rel="noopener noreferrer"
             >
-              <ExternalLink className="w-4 h-4 mr-2" />
+              <ExternalLink className="w-3 h-3 md:w-4 md:h-4 mr-2" />
               Open Google AI Studio
             </a>
           </Button>
 
           <Alert>
-            <Shield className="w-4 h-4" />
-            <AlertDescription>
+            <Shield className="w-3 h-3 md:w-4 md:h-4" />
+            <AlertDescription className="text-sm md:text-base">
               Your API key is stored locally in your browser and never sent to our servers.
             </AlertDescription>
           </Alert>

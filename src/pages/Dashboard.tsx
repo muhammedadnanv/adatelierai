@@ -184,54 +184,60 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
       <header className="border-b bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2 md:space-x-4 min-w-0 flex-1">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => navigate('/')}
-              className="flex items-center gap-2"
+              className="flex items-center gap-1 md:gap-2"
             >
-              <ArrowLeft className="w-4 h-4" />
-              Back
+              <ArrowLeft className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">Back</span>
             </Button>
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-white" />
+            <div className="flex items-center space-x-2 min-w-0">
+              <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-white" />
               </div>
-              <h1 className="text-xl font-bold font-montserrat bg-gradient-hero bg-clip-text text-transparent">
+              <h1 className="text-lg md:text-xl font-bold font-montserrat bg-gradient-hero bg-clip-text text-transparent truncate">
                 Ad Atelier AI
               </h1>
             </div>
           </div>
           
-          <DonationButton />
+          <div className="hidden sm:block">
+            <DonationButton />
+          </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4 md:py-8">
         <Tabs defaultValue="create" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-fit">
-            <TabsTrigger value="create" className="flex items-center gap-2">
-              <Wand2 className="w-4 h-4" />
-              Create
+          <TabsList className="grid w-full grid-cols-4 text-sm md:text-base">
+            <TabsTrigger value="create" className="flex items-center gap-1 md:gap-2 px-2 md:px-4">
+              <Wand2 className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">Create</span>
+              <span className="sm:hidden">New</span>
             </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center gap-2">
-              <History className="w-4 h-4" />
-              History
+            <TabsTrigger value="history" className="flex items-center gap-1 md:gap-2 px-2 md:px-4">
+              <History className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">History</span>
+              <span className="sm:hidden">List</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              Settings
+            <TabsTrigger value="settings" className="flex items-center gap-1 md:gap-2 px-2 md:px-4">
+              <Settings className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">Settings</span>
+              <span className="sm:hidden">Set</span>
             </TabsTrigger>
-            <TabsTrigger value="api-key" className="flex items-center gap-2">
-              <Key className="w-4 h-4" />
-              API Key
+            <TabsTrigger value="api-key" className="flex items-center gap-1 md:gap-2 px-2 md:px-4">
+              <Key className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">API Key</span>
+              <span className="sm:hidden">Key</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="create" className="space-y-6">
-            <div className="grid lg:grid-cols-2 gap-6">
+          <TabsContent value="create" className="space-y-4 md:space-y-6">
+            <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
               <ImageUpload
                 onImageSelect={handleImageSelect}
                 selectedImage={selectedImage}

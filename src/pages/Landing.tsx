@@ -64,17 +64,17 @@ const Landing = () => {
   return <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
       <header className="border-b bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
+            <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+              <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-white" />
             </div>
-            <h1 className="text-xl font-bold font-montserrat bg-gradient-hero bg-clip-text text-transparent">
+            <h1 className="text-lg md:text-xl font-bold font-montserrat bg-gradient-hero bg-clip-text text-transparent">
               Ad Atelier AI
             </h1>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
             {/* Product Hunt Badge */}
             <a href="https://www.producthunt.com/products/ad-atelier-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-ad%E2%80%A3atelier%E2%80%A3ai" target="_blank" rel="noopener noreferrer" className="hidden lg:block hover:opacity-80 transition-opacity">
               <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1005540&theme=light&t=1755261791027" alt="Ad Atelier AI - Transform Your Images Into Viral Content | Product Hunt" style={{
@@ -82,29 +82,32 @@ const Landing = () => {
               height: '54px'
             }} width="250" height="54" />
             </a>
-            <DonationButton />
-            <Button variant="outline" onClick={() => navigate('/dashboard')}>
-              Get Started
+            <div className="hidden sm:block">
+              <DonationButton />
+            </div>
+            <Button variant="outline" onClick={() => navigate('/dashboard')} size="sm">
+              <span className="hidden sm:inline">Get Started</span>
+              <span className="sm:hidden">Start</span>
             </Button>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 lg:py-32">
+      <section className="py-12 md:py-20 lg:py-32">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="space-y-8">
               <div className="space-y-4">
                 <Badge className="bg-primary/10 text-primary border-primary/20">
                   <Sparkles className="w-3 h-3 mr-1" />
                   AI-Powered Content Creation
                 </Badge>
-                <h1 className="text-4xl lg:text-6xl font-bold font-montserrat leading-tight">
+                <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-montserrat leading-tight">
                   Transform Your Images Into 
                   <span className="bg-gradient-hero bg-clip-text text-transparent"> Viral Content</span>
                 </h1>
-                <p className="text-xl text-muted-foreground">
+                <p className="text-lg sm:text-xl text-muted-foreground">
                   Upload any image and get 3-5 engaging social media captions instantly. 
                   Powered by Google Gemini AI with professional tone options.
                 </p>
@@ -112,8 +115,8 @@ const Landing = () => {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="xl" variant="hero" className="w-full sm:w-auto" onClick={() => navigate('/dashboard')}>
-                  <Camera className="w-5 h-5 mr-2" />
-                  Start Creating Now
+                  <Camera className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                  <span className="text-sm md:text-base">Start Creating Now</span>
                 </Button>
                 
               </div>
@@ -136,9 +139,9 @@ const Landing = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white/50">
+      <section className="py-12 md:py-20 bg-white/50">
         <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
+          <div className="text-center space-y-4 mb-8 md:mb-16">
             <Badge className="bg-accent/10 text-accent border-accent/20">
               <Zap className="w-3 h-3 mr-1" />
               Powerful Features
@@ -153,7 +156,7 @@ const Landing = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {features.map((feature, index) => <Card key={index} className="shadow-elegant border-0 hover:shadow-glow transition-all duration-300">
                 <CardHeader>
                   <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center mb-4">
@@ -172,9 +175,9 @@ const Landing = () => {
       </section>
 
       {/* How It Works */}
-      <section className="py-20">
+      <section className="py-12 md:py-20">
         <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
+          <div className="text-center space-y-4 mb-8 md:mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
               Three Simple Steps to <span className="text-accent">Viral Content</span>
             </h2>
@@ -183,7 +186,7 @@ const Landing = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {[{
             step: "01",
             title: "Upload Your Image",
@@ -216,9 +219,9 @@ const Landing = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-white/50">
+      <section className="py-12 md:py-20 bg-white/50">
         <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
+          <div className="text-center space-y-4 mb-8 md:mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold">
               Loved by <span className="text-primary">10,000+ Creators</span>
             </h2>
@@ -227,7 +230,7 @@ const Landing = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {testimonials.map((testimonial, index) => <Card key={index} className="shadow-elegant border-0">
                 <CardHeader>
                   <div className="flex items-center gap-1 mb-2">
@@ -249,10 +252,10 @@ const Landing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
+      <section className="py-12 md:py-20">
         <div className="container mx-auto px-4">
           <Card className="bg-gradient-hero text-white border-0 shadow-glow">
-            <CardContent className="p-12 text-center space-y-6">
+            <CardContent className="p-6 md:p-12 text-center space-y-4 md:space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
                 Ready to Create Viral Content?
               </h2>
@@ -263,11 +266,11 @@ const Landing = () => {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Button size="xl" variant="secondary" className="w-full sm:w-auto" onClick={() => navigate('/dashboard')}>
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  Start Free Today
+                  <Sparkles className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                  <span className="text-sm md:text-base">Start Free Today</span>
                 </Button>
-                <div className="flex items-center gap-2 text-sm opacity-90">
-                  <CheckCircle className="w-4 h-4" />
+                <div className="flex items-center gap-2 text-xs md:text-sm opacity-90">
+                  <CheckCircle className="w-3 h-3 md:w-4 md:h-4" />
                   <span>No setup required</span>
                 </div>
               </div>
@@ -277,9 +280,9 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t bg-white/50">
+      <footer className="py-8 md:py-12 border-t bg-white/50">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">

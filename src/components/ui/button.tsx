@@ -21,11 +21,11 @@ const buttonVariants = cva(
         warning: "bg-warning text-warning-foreground shadow-sm hover:bg-warning/90 hover:scale-105 active:scale-95"
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-lg px-3",
-        lg: "h-11 rounded-xl px-8",
-        xl: "h-14 rounded-2xl px-10 text-base",
-        icon: "h-10 w-10",
+        default: "h-9 md:h-10 px-3 md:px-4 py-2",
+        sm: "h-8 md:h-9 rounded-lg px-2 md:px-3 text-xs md:text-sm",
+        lg: "h-10 md:h-11 rounded-xl px-6 md:px-8",
+        xl: "h-12 md:h-14 rounded-2xl px-8 md:px-10 text-sm md:text-base",
+        icon: "h-8 w-8 md:h-10 md:w-10",
       },
     },
     defaultVariants: {

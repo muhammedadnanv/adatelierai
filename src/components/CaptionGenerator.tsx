@@ -117,20 +117,22 @@ const CaptionGenerator = ({
           >
             {loading ? (
               <>
-                <Sparkles className="w-4 h-4 mr-2 animate-spin" />
-                Generating Captions...
+                <Sparkles className="w-3 h-3 md:w-4 md:h-4 mr-2 animate-spin" />
+                <span className="hidden sm:inline">Generating Captions...</span>
+                <span className="sm:hidden">Generating...</span>
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4 mr-2" />
-                Generate 5 Captions
+                <Sparkles className="w-3 h-3 md:w-4 md:h-4 mr-2" />
+                <span className="hidden sm:inline">Generate 5 Captions</span>
+                <span className="sm:hidden">Generate</span>
               </>
             )}
           </Button>
 
           {!hasApiKey && (
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-              <p className="text-sm text-yellow-800">
+              <p className="text-xs md:text-sm text-yellow-800">
                 ⚠️ Please set your Gemini API key to generate captions
               </p>
             </div>
@@ -155,46 +157,50 @@ const CaptionGenerator = ({
               {generatedCaptions.map((caption, index) => (
                 <Card key={index} className="border-muted hover:shadow-sm transition-shadow">
                   <CardContent className="p-4">
-                    <div className="space-y-3">
-                      <div className="flex items-start justify-between">
-                        <Badge variant="outline" className="text-xs">
-                          Caption {index + 1}
-                        </Badge>
-                      </div>
-                      <p className="text-sm leading-relaxed">{caption}</p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyToClipboard(caption)}
-                          >
-                            <Copy className="w-4 h-4" />
-                            Copy
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <Heart className="w-4 h-4" />
-                            Save
-                          </Button>
+                      <div className="space-y-3">
+                        <div className="flex items-start justify-between">
+                          <Badge variant="outline" className="text-xs">
+                            Caption {index + 1}
+                          </Badge>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => shareToSocial('twitter', caption)}
-                          >
-                            Share to X
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => shareToSocial('linkedin', caption)}
-                          >
-                            LinkedIn
-                          </Button>
+                        <p className="text-sm leading-relaxed">{caption}</p>
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => copyToClipboard(caption)}
+                              className="flex-1 sm:flex-none"
+                            >
+                              <Copy className="w-3 h-3 md:w-4 md:h-4" />
+                              <span className="ml-1">Copy</span>
+                            </Button>
+                            <Button variant="ghost" size="sm" className="flex-1 sm:flex-none">
+                              <Heart className="w-3 h-3 md:w-4 md:h-4" />
+                              <span className="ml-1 hidden sm:inline">Save</span>
+                            </Button>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => shareToSocial('twitter', caption)}
+                              className="flex-1 sm:flex-none text-xs sm:text-sm"
+                            >
+                              <span className="hidden sm:inline">Share to X</span>
+                              <span className="sm:hidden">X</span>
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => shareToSocial('linkedin', caption)}
+                              className="flex-1 sm:flex-none text-xs sm:text-sm"
+                            >
+                              LinkedIn
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                    </div>
                   </CardContent>
                 </Card>
               ))}

@@ -80,7 +80,7 @@ const ImageUpload = ({ onImageSelect, selectedImage, imagePreview, onClear }: Im
       </CardHeader>
       <CardContent className="space-y-4">
         <div
-          className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 cursor-pointer ${
+          className={`border-2 border-dashed rounded-xl p-4 md:p-8 text-center transition-all duration-300 cursor-pointer ${
             isDragging
               ? 'border-primary bg-primary/5'
               : 'border-muted-foreground/25 hover:border-primary/50'
@@ -96,7 +96,7 @@ const ImageUpload = ({ onImageSelect, selectedImage, imagePreview, onClear }: Im
                 <img
                   src={imagePreview}
                   alt="Preview"
-                  className="mx-auto max-h-48 rounded-lg shadow-sm"
+                  className="mx-auto max-h-32 sm:max-h-48 rounded-lg shadow-sm"
                 />
                 <Button
                   variant="destructive"
@@ -107,12 +107,13 @@ const ImageUpload = ({ onImageSelect, selectedImage, imagePreview, onClear }: Im
                     onClear();
                   }}
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3 h-3 md:w-4 md:h-4" />
                 </Button>
               </div>
               <Button variant="outline" size="sm">
-                <Upload className="w-4 h-4 mr-2" />
-                Change Image
+                <Upload className="w-3 h-3 md:w-4 md:h-4 mr-2" />
+                <span className="hidden sm:inline">Change Image</span>
+                <span className="sm:hidden">Change</span>
               </Button>
               {selectedImage && (
                 <p className="text-xs text-muted-foreground">
@@ -121,11 +122,11 @@ const ImageUpload = ({ onImageSelect, selectedImage, imagePreview, onClear }: Im
               )}
             </div>
           ) : (
-            <div className="space-y-4">
-              <Upload className="w-12 h-12 mx-auto text-muted-foreground" />
+            <div className="space-y-3 md:space-y-4">
+              <Upload className="w-8 h-8 md:w-12 md:h-12 mx-auto text-muted-foreground" />
               <div>
-                <p className="text-lg font-medium">Drop your image here</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-base md:text-lg font-medium">Drop your image here</p>
+                <p className="text-xs md:text-sm text-muted-foreground">
                   or click to browse (JPG, PNG, WEBP - max 10MB)
                 </p>
               </div>
