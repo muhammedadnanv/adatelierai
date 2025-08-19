@@ -18,6 +18,7 @@ import ImageUpload from '@/components/ImageUpload';
 import CaptionGenerator from '@/components/CaptionGenerator';
 import ApiKeyManager from '@/components/ApiKeyManager';
 import DonationButton from '@/components/DonationButton';
+import DonationSettings from '@/components/DonationSettings';
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -277,27 +278,31 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="settings">
-            <Card className="shadow-elegant max-w-2xl">
-              <CardHeader>
-                <CardTitle>Application Settings</CardTitle>
-                <CardDescription>
-                  Manage your preferences and settings
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Default Caption Tone</Label>
-                  <Input placeholder="Professional" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label>Language Preference</Label>
-                  <Input placeholder="English" />
-                </div>
-                
-                <Button>Save Settings</Button>
-              </CardContent>
-            </Card>
+            <div className="space-y-6">
+              <Card className="shadow-elegant max-w-2xl">
+                <CardHeader>
+                  <CardTitle>Application Settings</CardTitle>
+                  <CardDescription>
+                    Manage your preferences and settings
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Default Caption Tone</Label>
+                    <Input placeholder="Professional" />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label>Language Preference</Label>
+                    <Input placeholder="English" />
+                  </div>
+                  
+                  <Button>Save Settings</Button>
+                </CardContent>
+              </Card>
+              
+              <DonationSettings />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
