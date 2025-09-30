@@ -115,7 +115,7 @@ const DonationSettings = () => {
           <>
             {/* Initial Delay */}
             <div className="space-y-2">
-              <Label htmlFor="initial-delay">Initial Delay (seconds)</Label>
+              <Label htmlFor="initial-delay" className="text-sm md:text-base">Initial Delay (seconds)</Label>
               <Input
                 id="initial-delay"
                 type="number"
@@ -126,6 +126,7 @@ const DonationSettings = () => {
                   ...prev, 
                   initialDelay: Math.max(10, parseInt(e.target.value) || 45)
                 }))}
+                className="text-sm md:text-base"
               />
               <p className="text-xs text-muted-foreground">
                 How long to wait before showing the first popup (10-300 seconds)
@@ -134,7 +135,7 @@ const DonationSettings = () => {
 
             {/* Repeat Interval */}
             <div className="space-y-2">
-              <Label htmlFor="repeat-interval">Repeat Interval (minutes)</Label>
+              <Label htmlFor="repeat-interval" className="text-sm md:text-base">Repeat Interval (minutes)</Label>
               <Input
                 id="repeat-interval"
                 type="number"
@@ -145,6 +146,7 @@ const DonationSettings = () => {
                   ...prev, 
                   repeatInterval: Math.max(5, parseInt(e.target.value) || 10)
                 }))}
+                className="text-sm md:text-base"
               />
               <p className="text-xs text-muted-foreground">
                 Time between popup appearances (5-60 minutes)
@@ -153,7 +155,7 @@ const DonationSettings = () => {
 
             {/* Max Dismissals */}
             <div className="space-y-2">
-              <Label htmlFor="max-dismissals">Maximum Dismissals</Label>
+              <Label htmlFor="max-dismissals" className="text-sm md:text-base">Maximum Dismissals</Label>
               <Input
                 id="max-dismissals"
                 type="number"
@@ -164,6 +166,7 @@ const DonationSettings = () => {
                   ...prev, 
                   maxDismissals: Math.max(1, parseInt(e.target.value) || 2)
                 }))}
+                className="text-sm md:text-base"
               />
               <p className="text-xs text-muted-foreground">
                 Maximum number of times user can dismiss before popup stops (1-10)

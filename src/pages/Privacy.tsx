@@ -8,38 +8,39 @@ const Privacy = () => {
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
       <header className="border-b bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
+        <div className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center space-x-2 min-w-0">
+            <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-primary rounded-lg flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-white" />
             </div>
-            <h1 className="text-xl font-bold font-montserrat bg-gradient-hero bg-clip-text text-transparent">
+            <h1 className="text-base md:text-xl font-bold font-montserrat bg-gradient-hero bg-clip-text text-transparent truncate">
               Ad Atelier AI
             </h1>
           </Link>
           
           <Link to="/">
-            <Button variant="outline">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
+            <Button variant="outline" size="sm">
+              <ArrowLeft className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+              <span className="hidden sm:inline">Back to Home</span>
+              <span className="sm:hidden">Back</span>
             </Button>
           </Link>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12 max-w-4xl">
-        <div className="space-y-8">
+      <main className="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
+        <div className="space-y-6 md:space-y-8">
           {/* Hero Section */}
-          <div className="text-center space-y-4">
-            <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto">
-              <Shield className="w-8 h-8 text-white" />
+          <div className="text-center space-y-3 md:space-y-4">
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto">
+              <Shield className="w-6 h-6 md:w-8 md:h-8 text-white" />
             </div>
-            <h1 className="text-4xl font-bold">Privacy Policy</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <h1 className="text-2xl md:text-4xl font-bold">Privacy Policy</h1>
+            <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
               Your privacy is important to us. This policy explains how we collect, use, and protect your information.
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs md:text-sm text-muted-foreground">
               Last updated: January 17, 2025
             </p>
           </div>
