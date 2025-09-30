@@ -21,7 +21,7 @@ const DonationPopup = ({ isOpen, onClose }: DonationPopupProps) => {
   const { toast } = useToast();
   const isMobile = useIsMobile();
 
-  const upiId = 'adatelier.ai@paytm';
+  const upiId = 'adnanmuhammad4393@okicici';
   const upiUrl = `upi://pay?pa=${upiId}&pn=Ad%20Atelier%20AI&am=50&tn=Support%20Ad%20Atelier%20AI%20Development`;
 
   // Generate QR code when component mounts
