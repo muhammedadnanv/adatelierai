@@ -10,8 +10,10 @@ import Terms from "./pages/Terms";
 import Security from "./pages/Security";
 import NotFound from "./pages/NotFound";
 import DonationPopup from "./components/DonationPopup";
+import AdvertisementPopup from "./components/AdvertisementPopup";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useDonationPopup } from "./hooks/useDonationPopup";
+import { useAdvertisementPopup } from "./hooks/useAdvertisementPopup";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +23,16 @@ const App = () => {
     repeatInterval: 600000, // 10 minutes
     maxDismissals: 2,
     sessionTimeout: 1800000, // 30 minutes
+  });
+
+  const { 
+    isVisible: isAdVisible, 
+    dismissPopup: dismissAdPopup 
+  } = useAdvertisementPopup({
+    initialDelay: 30000, // 30 seconds
+    repeatInterval: 900000, // 15 minutes
+    maxDismissals: 3,
+    sessionTimeout: 3600000, // 1 hour
   });
 
   return (
@@ -45,6 +57,12 @@ const App = () => {
           <DonationPopup
             isOpen={isVisible}
             onClose={dismissPopup}
+          />
+
+          {/* Global Advertisement Popup */}
+          <AdvertisementPopup
+            isOpen={isAdVisible}
+            onClose={dismissAdPopup}
           />
         </TooltipProvider>
       </QueryClientProvider>
