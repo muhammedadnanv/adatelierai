@@ -43,15 +43,6 @@ const CaptionGenerator = ({
       return;
     }
 
-    if (!hasApiKey) {
-      toast({
-        title: "API key required",
-        description: "Please set your Gemini API key in the API Key tab.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     await onGenerate(selectedTone);
   };
 
@@ -111,7 +102,7 @@ const CaptionGenerator = ({
 
           <Button 
             onClick={handleGenerate}
-            disabled={!selectedImage || loading || !hasApiKey}
+            disabled={!selectedImage || loading}
             className="w-full"
             size="lg"
           >
@@ -131,9 +122,9 @@ const CaptionGenerator = ({
           </Button>
 
           {!hasApiKey && (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-              <p className="text-xs md:text-sm text-yellow-800">
-                ⚠️ Please set your Gemini API key to generate captions
+            <div className="bg-accent/10 border border-accent/20 rounded-lg p-3">
+              <p className="text-xs md:text-sm text-accent-foreground">
+                💡 Add your Gemini API key for AI-powered captions. Demo captions available without key.
               </p>
             </div>
           )}
