@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -10,7 +10,8 @@ import {
   History, 
   Key,
   Wand2,
-  ArrowLeft
+  ArrowLeft,
+  Loader2
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +19,7 @@ import ImageUpload from '@/components/ImageUpload';
 import CaptionGenerator from '@/components/CaptionGenerator';
 import ApiKeyManager from '@/components/ApiKeyManager';
 import RazorpayPayment from '@/components/RazorpayPayment';
+import AccessCodeVerification from '@/components/AccessCodeVerification';
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -28,6 +30,31 @@ const Dashboard = () => {
   const [generatedCaptions, setGeneratedCaptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasApiKey, setHasApiKey] = useState(false);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [checkingAccess, setCheckingAccess] = useState(true);
+
+  useEffect(() => {
+    // Check if user has valid access code
+    const accessCode = localStorage.getItem('access_code');
+    setHasAccess(!!accessCode);
+    setCheckingAccess(false);
+  }, []);
+
+  const handleAccessVerified = () => {
+    setHasAccess(true);
+  };
+
+  if (checkingAccess) {
+    return (
+      <div className="min-h-screen bg-gradient-subtle flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!hasAccess) {
+    return <AccessCodeVerification onVerified={handleAccessVerified} />;
+  }
 
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);

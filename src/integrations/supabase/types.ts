@@ -14,13 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      payments: {
+        Row: {
+          access_code: string
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          razorpay_order_id: string
+          razorpay_payment_id: string
+          status: string
+          verified_at: string | null
+        }
+        Insert: {
+          access_code: string
+          amount: number
+          created_at?: string
+          currency?: string
+          id?: string
+          razorpay_order_id: string
+          razorpay_payment_id: string
+          status?: string
+          verified_at?: string | null
+        }
+        Update: {
+          access_code?: string
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          razorpay_order_id?: string
+          razorpay_payment_id?: string
+          status?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_access_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

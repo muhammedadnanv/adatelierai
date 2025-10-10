@@ -12,11 +12,8 @@ serve(async (req) => {
   }
 
   try {
-    const { amount } = await req.json();
-
-    if (!amount || amount <= 0) {
-      throw new Error('Invalid amount');
-    }
+    // Fixed amount of ₹399
+    const amount = 39900; // Amount in paise (₹399 * 100)
 
     const razorpayKeyId = 'rzp_live_RRgxSkgbXd5qsM';
     const razorpayKeySecret = Deno.env.get('RAZORPAY_KEY_SECRET');
