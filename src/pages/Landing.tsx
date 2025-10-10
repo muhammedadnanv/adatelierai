@@ -4,7 +4,6 @@ import { Badge } from '@/components/ui/badge';
 import { useNavigate, Link } from 'react-router-dom';
 import { Sparkles, Upload, Wand2, Share2, Shield, Zap, Users, Star, ArrowRight, CheckCircle, Camera, MessageSquare, TrendingUp, Lock } from 'lucide-react';
 import heroImage from '@/assets/hero-image.jpg';
-import DonationButton from '@/components/DonationButton';
 const features = [{
   icon: Upload,
   title: "Easy Upload",
@@ -82,9 +81,6 @@ const Landing = () => {
               height: '54px'
             }} width="250" height="54" />
             </a>
-            <div className="hidden sm:block">
-              <DonationButton />
-            </div>
             <Button variant="outline" onClick={() => navigate('/dashboard')} size="sm">
               <span className="hidden sm:inline">Get Started</span>
               <span className="sm:hidden">Start</span>

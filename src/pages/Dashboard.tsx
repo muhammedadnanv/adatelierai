@@ -17,8 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import ImageUpload from '@/components/ImageUpload';
 import CaptionGenerator from '@/components/CaptionGenerator';
 import ApiKeyManager from '@/components/ApiKeyManager';
-import DonationButton from '@/components/DonationButton';
-import DonationSettings from '@/components/DonationSettings';
+import RazorpayPayment from '@/components/RazorpayPayment';
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -205,10 +204,6 @@ const Dashboard = () => {
               </h1>
             </div>
           </div>
-          
-          <div className="hidden sm:block">
-            <DonationButton />
-          </div>
         </div>
       </header>
 
@@ -301,7 +296,7 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
               
-              <DonationSettings />
+              <RazorpayPayment />
             </div>
           </TabsContent>
         </Tabs>

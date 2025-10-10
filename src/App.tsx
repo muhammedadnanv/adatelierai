@@ -9,22 +9,13 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Security from "./pages/Security";
 import NotFound from "./pages/NotFound";
-import DonationPopup from "./components/DonationPopup";
 import AdvertisementPopup from "./components/AdvertisementPopup";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { useDonationPopup } from "./hooks/useDonationPopup";
 import { useAdvertisementPopup } from "./hooks/useAdvertisementPopup";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  const { isVisible, dismissPopup } = useDonationPopup({
-    initialDelay: 45000, // 45 seconds
-    repeatInterval: 600000, // 10 minutes
-    maxDismissals: 2,
-    sessionTimeout: 1800000, // 30 minutes
-  });
-
   const { 
     isVisible: isAdVisible, 
     dismissPopup: dismissAdPopup 
@@ -53,12 +44,6 @@ const App = () => {
             </Routes>
           </BrowserRouter>
           
-          {/* Global Donation Popup */}
-          <DonationPopup
-            isOpen={isVisible}
-            onClose={dismissPopup}
-          />
-
           {/* Global Advertisement Popup */}
           <AdvertisementPopup
             isOpen={isAdVisible}
