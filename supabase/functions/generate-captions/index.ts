@@ -14,7 +14,7 @@ serve(async (req) => {
   }
 
   try {
-    const { image_base64, tone, prompt, apiKey } = await req.json();
+    const { image_base64, tone, prompt, apiKey, platform = 'instagram' } = await req.json();
     
     if (!apiKey) {
       return new Response(JSON.stringify({ error: 'API key required' }), {
@@ -30,20 +30,65 @@ serve(async (req) => {
       });
     }
 
-    // Generate captions using Gemini API
-    const geminiPrompt = `
-Generate 5 engaging social media captions for this image with a ${tone} tone.
+    // Platform-specific optimization rules
+    const platformRules = {
+      instagram: {
+        maxLength: 2200,
+        hashtagCount: '20-30',
+        style: 'Visual-first with line breaks, use emojis generously',
+        algorithm: 'Prioritize engagement bait, use trending hashtags, include call-to-action'
+      },
+      linkedin: {
+        maxLength: 3000,
+        hashtagCount: '3-5',
+        style: 'Professional with value-driven content',
+        algorithm: 'Focus on industry insights, thought leadership, use fewer hashtags'
+      },
+      twitter: {
+        maxLength: 280,
+        hashtagCount: '1-2',
+        style: 'Concise and punchy, thread-friendly',
+        algorithm: 'Optimize for retweets, keep it short, use trending hashtags sparingly'
+      },
+      threads: {
+        maxLength: 500,
+        hashtagCount: '0-3',
+        style: 'Conversational and authentic',
+        algorithm: 'Focus on storytelling, minimal hashtags, encourage replies'
+      }
+    };
 
-Guidelines:
-- Each caption should be unique and engaging
-- Include relevant hashtags (2-3 per caption)
-- Keep captions under 280 characters
-- Use emojis appropriately
-- Match the ${tone} tone throughout
+    const rules = platformRules[platform] || platformRules.instagram;
+
+    // Generate captions with platform optimization
+    const geminiPrompt = `
+Generate 3 DISTINCT VARIATIONS of social media captions for this image optimized for ${platform.toUpperCase()} with a ${tone} tone.
+
+PLATFORM OPTIMIZATION FOR ${platform.toUpperCase()}:
+- Maximum length: ${rules.maxLength} characters
+- Style: ${rules.style}
+- Algorithm optimization: ${rules.algorithm}
+- Hashtag count: ${rules.hashtagCount}
+
+VARIATION REQUIREMENTS:
+- Variation A: Hook-focused (grab attention in first line)
+- Variation B: Story-driven (narrative approach)
+- Variation C: Direct and concise (straight to the point)
+
+Each variation must include:
+1. The caption text optimized for ${platform}
+2. Suggested hashtags (${rules.hashtagCount}) on a new line starting with "HASHTAGS:"
+3. Relevant keywords for discoverability on a new line starting with "KEYWORDS:"
+
+Format each variation as:
+VARIATION [A/B/C]:
+[caption text]
+HASHTAGS: #tag1 #tag2 #tag3
+KEYWORDS: keyword1, keyword2, keyword3
 
 ${prompt ? `Additional context: ${prompt}` : ''}
 
-Return only the captions, one per line, without numbering.
+Generate all 3 variations now.
 `;
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
@@ -67,7 +112,7 @@ Return only the captions, one per line, without numbering.
           temperature: 0.9,
           topK: 1,
           topP: 1,
-          maxOutputTokens: 2048,
+          maxOutputTokens: 3096,
         },
       }),
     });
@@ -84,13 +129,37 @@ Return only the captions, one per line, without numbering.
     const data = await response.json();
     const generatedText = data.candidates[0].content.parts[0].text;
     
-    // Split the text into individual captions
-    const captions = generatedText
-      .split('\n')
-      .filter((caption: string) => caption.trim().length > 0)
-      .slice(0, 5); // Ensure we only return 5 captions
+    // Parse variations with hashtags and keywords
+    const variations = [];
+    const variationMatches = generatedText.split(/VARIATION [ABC]:/i).filter(v => v.trim());
+    
+    for (const variation of variationMatches.slice(0, 3)) {
+      const lines = variation.split('\n').filter(l => l.trim());
+      let caption = '';
+      let hashtags = [];
+      let keywords = [];
+      
+      for (const line of lines) {
+        if (line.toUpperCase().startsWith('HASHTAGS:')) {
+          hashtags = line.replace(/HASHTAGS:/i, '').trim().split(/\s+/).filter(h => h.startsWith('#'));
+        } else if (line.toUpperCase().startsWith('KEYWORDS:')) {
+          keywords = line.replace(/KEYWORDS:/i, '').trim().split(',').map(k => k.trim());
+        } else if (!line.toUpperCase().startsWith('VARIATION')) {
+          caption += (caption ? '\n' : '') + line;
+        }
+      }
+      
+      if (caption.trim()) {
+        variations.push({
+          caption: caption.trim(),
+          hashtags,
+          keywords,
+          platform
+        });
+      }
+    }
 
-    return new Response(JSON.stringify({ captions }), {
+    return new Response(JSON.stringify({ variations }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 

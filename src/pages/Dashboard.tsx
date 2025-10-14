@@ -21,13 +21,20 @@ import ApiKeyManager from '@/components/ApiKeyManager';
 import RazorpayPayment from '@/components/RazorpayPayment';
 import AccessCodeVerification from '@/components/AccessCodeVerification';
 
+interface CaptionVariation {
+  caption: string;
+  hashtags: string[];
+  keywords: string[];
+  platform: string;
+}
+
 const Dashboard = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
-  const [generatedCaptions, setGeneratedCaptions] = useState<string[]>([]);
+  const [generatedCaptions, setGeneratedCaptions] = useState<CaptionVariation[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasApiKey, setHasApiKey] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
@@ -71,7 +78,7 @@ const Dashboard = () => {
     setGeneratedCaptions([]);
   };
 
-  const generateCaptions = async (tone: string) => {
+  const generateCaptions = async (tone: string, platform: string) => {
     if (!selectedImage) {
       toast({
         title: "Missing image",
@@ -98,101 +105,151 @@ const Dashboard = () => {
             reader.readAsDataURL(selectedImage);
           });
 
-          // Call Gemini API directly
+          // Call edge function
           try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-captions`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                contents: [{
-                  parts: [
-                    {
-                      text: `Generate 5 engaging social media captions for this image with a ${tone} tone. Each caption should be unique and compelling. Return only the captions, one per line, without numbers or bullet points.`
-                    },
-                    {
-                      inline_data: {
-                        mime_type: "image/jpeg",
-                        data: imageBase64
-                      }
-                    }
-                  ]
-                }]
+                image_base64: imageBase64,
+                tone,
+                platform,
+                apiKey
               })
             });
 
             if (response.ok) {
               const data = await response.json();
-              const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
               
-              if (generatedText) {
-                const captions = generatedText
-                  .split('\n')
-                  .filter((caption: string) => caption.trim())
-                  .slice(0, 5);
-                
-                setGeneratedCaptions(captions);
+              if (data.variations) {
+                setGeneratedCaptions(data.variations);
                 toast({
                   title: "Captions generated!",
-                  description: `${captions.length} ${tone} captions created using AI.`,
+                  description: `${data.variations.length} variations created for ${platform}.`,
                 });
                 return;
               }
             }
           } catch (error) {
-            console.error('Gemini API error:', error);
+            console.error('API error:', error);
           }
         }
       }
       
-      // Fallback to demo captions
-      const toneVariations = {
+      // Fallback to demo captions with hashtags
+      const demoVariations: Record<string, CaptionVariation[]> = {
         professional: [
-          "Elevating excellence through strategic vision and innovative execution. #Leadership #Excellence #Innovation",
-          "When precision meets purpose, extraordinary results follow. #Strategy #Success #Professional",
-          "Building bridges between vision and reality, one milestone at a time. #Progress #Achievement #Business",
-          "Excellence is not a destination, but a continuous journey of improvement. #Growth #Quality #Standards",
-          "Transforming challenges into opportunities through strategic thinking. #Solutions #Strategy #Leadership"
+          {
+            caption: "Elevating excellence through strategic vision and innovative execution.",
+            hashtags: ["#Leadership", "#Excellence", "#Innovation"],
+            keywords: ["leadership", "strategy", "innovation"],
+            platform
+          },
+          {
+            caption: "When precision meets purpose, extraordinary results follow.",
+            hashtags: ["#Strategy", "#Success", "#Professional"],
+            keywords: ["precision", "purpose", "results"],
+            platform
+          },
+          {
+            caption: "Building bridges between vision and reality, one milestone at a time.",
+            hashtags: ["#Progress", "#Achievement", "#Business"],
+            keywords: ["vision", "reality", "milestones"],
+            platform
+          }
         ],
         witty: [
-          "Plot twist: This wasn't supposed to look this good, but here we are! 😄 #PlotTwist #Unexpected",
-          "Me: Takes one photo. Also me: Becomes a photographer. How did this happen? 📸 #AccidentalGenius #Life",
-          "Breaking news: Local person takes decent photo, more at 11. 📰 #BreakingNews #Humble",
-          "Instructions unclear, accidentally created art. Send help. 🎨 #AccidentalArt #Confused",
-          "When your phone camera has more talent than you do. Thanks, technology! 📱 #TechSavvy #Grateful"
+          {
+            caption: "Plot twist: This wasn't supposed to look this good, but here we are! 😄",
+            hashtags: ["#PlotTwist", "#Unexpected", "#Surprise"],
+            keywords: ["unexpected", "surprise", "humor"],
+            platform
+          },
+          {
+            caption: "Me: Takes one photo. Also me: Becomes a photographer. How did this happen? 📸",
+            hashtags: ["#AccidentalGenius", "#Life", "#Photography"],
+            keywords: ["photography", "accidental", "life"],
+            platform
+          },
+          {
+            caption: "Breaking news: Local person takes decent photo, more at 11. 📰",
+            hashtags: ["#BreakingNews", "#Humble", "#Fun"],
+            keywords: ["news", "humble", "funny"],
+            platform
+          }
         ],
         bold: [
-          "🔥 UNSTOPPABLE ENERGY CAPTURED IN ONE FRAME 🔥 #Bold #Energy #Unstoppable",
-          "💥 BREAKING BOUNDARIES, SETTING NEW STANDARDS 💥 #GameChanger #Bold #Revolutionary",
-          "⚡ ELECTRIC VIBES, INFINITE POSSIBILITIES ⚡ #Electric #Limitless #Power",
-          "🚀 LAUNCHING INTO GREATNESS, NO LOOKING BACK 🚀 #Launch #Greatness #Forward",
-          "🎯 TARGETED EXCELLENCE, PRECISION IMPACT 🎯 #Precision #Excellence #Impact"
+          {
+            caption: "🔥 UNSTOPPABLE ENERGY CAPTURED IN ONE FRAME 🔥",
+            hashtags: ["#Bold", "#Energy", "#Unstoppable"],
+            keywords: ["energy", "unstoppable", "power"],
+            platform
+          },
+          {
+            caption: "💥 BREAKING BOUNDARIES, SETTING NEW STANDARDS 💥",
+            hashtags: ["#GameChanger", "#Bold", "#Revolutionary"],
+            keywords: ["boundaries", "standards", "revolutionary"],
+            platform
+          },
+          {
+            caption: "⚡ ELECTRIC VIBES, INFINITE POSSIBILITIES ⚡",
+            hashtags: ["#Electric", "#Limitless", "#Power"],
+            keywords: ["electric", "limitless", "possibilities"],
+            platform
+          }
         ],
         casual: [
-          "Just another day, just another awesome moment captured ✨ #ChillVibes #Casual #Life",
-          "Keeping it real, keeping it simple, keeping it good 😊 #KeepItReal #Simple #Good",
-          "Sometimes the best moments are the unplanned ones 🌟 #Spontaneous #Moments #Natural",
-          "Living life one photo at a time, and loving every second 📷 #LifeIsGood #Living #Moments",
-          "Good vibes only, always and forever 🌈 #GoodVibes #Positive #Forever"
+          {
+            caption: "Just another day, just another awesome moment captured ✨",
+            hashtags: ["#ChillVibes", "#Casual", "#Life"],
+            keywords: ["chill", "moment", "life"],
+            platform
+          },
+          {
+            caption: "Keeping it real, keeping it simple, keeping it good 😊",
+            hashtags: ["#KeepItReal", "#Simple", "#Good"],
+            keywords: ["real", "simple", "good"],
+            platform
+          },
+          {
+            caption: "Sometimes the best moments are the unplanned ones 🌟",
+            hashtags: ["#Spontaneous", "#Moments", "#Natural"],
+            keywords: ["spontaneous", "moments", "natural"],
+            platform
+          }
         ],
         inspiring: [
-          "✨ Every moment holds the potential for magic - we just need to believe ✨ #Believe #Magic #Potential",
-          "🌟 Dreams don't work unless you do - this is proof of what's possible 🌟 #Dreams #Work #Possible",
-          "💫 In every ordinary moment lies an extraordinary opportunity 💫 #Extraordinary #Opportunity #Moment",
-          "🦋 Like a butterfly, transformation begins with a single moment of courage 🦋 #Transformation #Courage #Growth",
-          "🌅 Rise and shine - your potential is limitless, your journey is just beginning 🌅 #Rise #Potential #Journey"
+          {
+            caption: "✨ Every moment holds the potential for magic - we just need to believe ✨",
+            hashtags: ["#Believe", "#Magic", "#Potential"],
+            keywords: ["believe", "magic", "potential"],
+            platform
+          },
+          {
+            caption: "🌟 Dreams don't work unless you do - this is proof of what's possible 🌟",
+            hashtags: ["#Dreams", "#Work", "#Possible"],
+            keywords: ["dreams", "work", "possible"],
+            platform
+          },
+          {
+            caption: "💫 In every ordinary moment lies an extraordinary opportunity 💫",
+            hashtags: ["#Extraordinary", "#Opportunity", "#Moment"],
+            keywords: ["extraordinary", "opportunity", "moment"],
+            platform
+          }
         ]
       };
       
-      const captions = toneVariations[tone as keyof typeof toneVariations] || toneVariations.professional;
-      setGeneratedCaptions(captions);
+      const variations = demoVariations[tone as keyof typeof demoVariations] || demoVariations.professional;
+      setGeneratedCaptions(variations);
       
       toast({
         title: hasApiKey ? "Captions generated!" : "Demo captions generated",
         description: hasApiKey 
-          ? `5 ${tone} captions created using AI.` 
-          : `5 ${tone} demo captions created. Add your API key for AI-powered captions.`,
+          ? `3 variations created for ${platform}.` 
+          : `3 demo variations created. Add your API key for AI-powered captions.`,
         variant: "default",
       });
     } catch (error) {
@@ -274,6 +331,7 @@ const Dashboard = () => {
                 onGenerate={generateCaptions}
                 generatedCaptions={generatedCaptions}
                 loading={loading}
+                imagePreview={imagePreview}
               />
             </div>
           </TabsContent>
