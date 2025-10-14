@@ -10,16 +10,13 @@ import {
   History, 
   Key,
   Wand2,
-  ArrowLeft,
-  Loader2
+  ArrowLeft
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
 import ImageUpload from '@/components/ImageUpload';
 import CaptionGenerator from '@/components/CaptionGenerator';
 import ApiKeyManager from '@/components/ApiKeyManager';
-import RazorpayPayment from '@/components/RazorpayPayment';
-import AccessCodeVerification from '@/components/AccessCodeVerification';
 
 interface CaptionVariation {
   caption: string;
@@ -37,31 +34,6 @@ const Dashboard = () => {
   const [generatedCaptions, setGeneratedCaptions] = useState<CaptionVariation[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasApiKey, setHasApiKey] = useState(false);
-  const [hasAccess, setHasAccess] = useState(false);
-  const [checkingAccess, setCheckingAccess] = useState(true);
-
-  useEffect(() => {
-    // Check if user has valid access code
-    const accessCode = localStorage.getItem('access_code');
-    setHasAccess(!!accessCode);
-    setCheckingAccess(false);
-  }, []);
-
-  const handleAccessVerified = () => {
-    setHasAccess(true);
-  };
-
-  if (checkingAccess) {
-    return (
-      <div className="min-h-screen bg-gradient-subtle flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!hasAccess) {
-    return <AccessCodeVerification onVerified={handleAccessVerified} />;
-  }
 
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);
@@ -380,8 +352,6 @@ const Dashboard = () => {
                   <Button>Save Settings</Button>
                 </CardContent>
               </Card>
-              
-              <RazorpayPayment />
             </div>
           </TabsContent>
         </Tabs>
