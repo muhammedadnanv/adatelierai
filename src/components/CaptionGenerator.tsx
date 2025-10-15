@@ -17,11 +17,10 @@ interface CaptionVariation {
 
 interface CaptionGeneratorProps {
   selectedImage: File | null;
-  hasApiKey: boolean;
-  onGenerate: (tone: string, platform: string) => Promise<void>;
+  onGenerate: (tone: string, prompt: string, platform: string) => Promise<void>;
   generatedCaptions: CaptionVariation[];
   loading: boolean;
-  imagePreview: string | null;
+  imagePreview: string;
 }
 
 const toneOptions = [
@@ -41,11 +40,10 @@ const platformOptions = [
 
 const CaptionGenerator = ({ 
   selectedImage, 
-  hasApiKey, 
   onGenerate, 
   generatedCaptions, 
   loading,
-  imagePreview
+  imagePreview 
 }: CaptionGeneratorProps) => {
   const [selectedTone, setSelectedTone] = useState('professional');
   const [selectedPlatform, setSelectedPlatform] = useState('instagram');
@@ -62,7 +60,7 @@ const CaptionGenerator = ({
       return;
     }
 
-    await onGenerate(selectedTone, selectedPlatform);
+    await onGenerate(selectedTone, '', selectedPlatform);
   };
 
   const copyToClipboard = (variation: CaptionVariation) => {
@@ -173,13 +171,6 @@ const CaptionGenerator = ({
             )}
           </Button>
 
-          {!hasApiKey && (
-            <div className="bg-accent/10 border border-accent/20 rounded-lg p-3">
-              <p className="text-xs md:text-sm text-accent-foreground">
-                💡 Add your Gemini API key for AI-powered captions. Demo captions available without key.
-              </p>
-            </div>
-          )}
         </CardContent>
       </Card>
 

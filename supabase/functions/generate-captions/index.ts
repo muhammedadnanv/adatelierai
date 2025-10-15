@@ -1,6 +1,5 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.50.5';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,11 +13,13 @@ serve(async (req) => {
   }
 
   try {
-    const { image_base64, tone, prompt, apiKey, platform = 'instagram' } = await req.json();
+    const { image_base64, tone, prompt, platform = 'instagram' } = await req.json();
     
-    if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'API key required' }), {
-        status: 400,
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    if (!LOVABLE_API_KEY) {
+      console.error('LOVABLE_API_KEY not configured');
+      return new Response(JSON.stringify({ error: 'AI service not configured' }), {
+        status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
@@ -60,9 +61,8 @@ serve(async (req) => {
 
     const rules = platformRules[platform] || platformRules.instagram;
 
-    // Generate captions with platform optimization
-    const geminiPrompt = `
-Generate 3 DISTINCT VARIATIONS of social media captions for this image optimized for ${platform.toUpperCase()} with a ${tone} tone.
+    // Generate captions with platform optimization using Lovable AI
+    const systemPrompt = `You are an expert social media content creator specializing in ${platform.toUpperCase()}. Generate 3 DISTINCT caption variations optimized for ${platform}'s algorithm.
 
 PLATFORM OPTIMIZATION FOR ${platform.toUpperCase()}:
 - Maximum length: ${rules.maxLength} characters
@@ -80,46 +80,65 @@ Each variation must include:
 2. Suggested hashtags (${rules.hashtagCount}) on a new line starting with "HASHTAGS:"
 3. Relevant keywords for discoverability on a new line starting with "KEYWORDS:"
 
-Format each variation as:
-VARIATION [A/B/C]:
+Format each variation exactly as:
+VARIATION A:
 [caption text]
 HASHTAGS: #tag1 #tag2 #tag3
 KEYWORDS: keyword1, keyword2, keyword3
 
-${prompt ? `Additional context: ${prompt}` : ''}
+VARIATION B:
+[caption text]
+HASHTAGS: #tag1 #tag2 #tag3
+KEYWORDS: keyword1, keyword2, keyword3
 
-Generate all 3 variations now.
-`;
+VARIATION C:
+[caption text]
+HASHTAGS: #tag1 #tag2 #tag3
+KEYWORDS: keyword1, keyword2, keyword3`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    const userPrompt = prompt ? `Additional context: ${prompt}\n\nAnalyze this image and generate captions with the ${tone} tone.` : `Analyze this image and generate captions with the ${tone} tone.`;
+
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        contents: [{
-          parts: [
-            { text: geminiPrompt },
-            {
-              inline_data: {
-                mime_type: "image/jpeg",
-                data: image_base64
+        model: 'google/gemini-2.5-flash',
+        messages: [
+          { 
+            role: 'user', 
+            content: [
+              { type: 'text', text: systemPrompt },
+              { type: 'text', text: userPrompt },
+              { 
+                type: 'image_url', 
+                image_url: { 
+                  url: `data:image/jpeg;base64,${image_base64}` 
+                } 
               }
-            }
-          ]
-        }],
-        generationConfig: {
-          temperature: 0.9,
-          topK: 1,
-          topP: 1,
-          maxOutputTokens: 3096,
-        },
+            ]
+          }
+        ],
       }),
     });
 
     if (!response.ok) {
+      if (response.status === 429) {
+        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Please try again in a moment.' }), {
+          status: 429,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      if (response.status === 402) {
+        return new Response(JSON.stringify({ error: 'AI credits depleted. Please contact support.' }), {
+          status: 402,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
       const errorData = await response.text();
-      console.error('Gemini API error:', errorData);
+      console.error('Lovable AI error:', response.status, errorData);
       return new Response(JSON.stringify({ error: 'Failed to generate captions' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -127,7 +146,7 @@ Generate all 3 variations now.
     }
 
     const data = await response.json();
-    const generatedText = data.candidates[0].content.parts[0].text;
+    const generatedText = data.choices[0].message.content;
     
     // Parse variations with hashtags and keywords
     const variations = [];

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,15 +8,14 @@ import {
   Sparkles, 
   Settings, 
   History, 
-  Key,
   Wand2,
   ArrowLeft
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 import ImageUpload from '@/components/ImageUpload';
 import CaptionGenerator from '@/components/CaptionGenerator';
-import ApiKeyManager from '@/components/ApiKeyManager';
 
 interface CaptionVariation {
   caption: string;
@@ -33,7 +32,6 @@ const Dashboard = () => {
   const [imagePreview, setImagePreview] = useState<string>('');
   const [generatedCaptions, setGeneratedCaptions] = useState<CaptionVariation[]>([]);
   const [loading, setLoading] = useState(false);
-  const [hasApiKey, setHasApiKey] = useState(false);
 
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);
@@ -50,7 +48,7 @@ const Dashboard = () => {
     setGeneratedCaptions([]);
   };
 
-  const generateCaptions = async (tone: string, platform: string) => {
+  const generateCaptions = async (tone: string, prompt: string, platform: string) => {
     if (!selectedImage) {
       toast({
         title: "Missing image",
@@ -61,174 +59,49 @@ const Dashboard = () => {
     }
 
     setLoading(true);
+    setGeneratedCaptions([]);
+
     try {
-      if (hasApiKey) {
-        // Try to use real API key for actual generation
-        const apiKey = localStorage.getItem('gemini-api-key');
-        if (apiKey) {
-          // Convert image to base64
-          const imageBase64 = await new Promise<string>((resolve) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-              const result = reader.result as string;
-              const base64 = result.split(',')[1];
-              resolve(base64);
-            };
-            reader.readAsDataURL(selectedImage);
-          });
-
-          // Call edge function
-          try {
-            const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-captions`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                image_base64: imageBase64,
-                tone,
-                platform,
-                apiKey
-              })
-            });
-
-            if (response.ok) {
-              const data = await response.json();
-              
-              if (data.variations) {
-                setGeneratedCaptions(data.variations);
-                toast({
-                  title: "Captions generated!",
-                  description: `${data.variations.length} variations created for ${platform}.`,
-                });
-                return;
-              }
-            }
-          } catch (error) {
-            console.error('API error:', error);
-          }
-        }
-      }
-      
-      // Fallback to demo captions with hashtags
-      const demoVariations: Record<string, CaptionVariation[]> = {
-        professional: [
-          {
-            caption: "Elevating excellence through strategic vision and innovative execution.",
-            hashtags: ["#Leadership", "#Excellence", "#Innovation"],
-            keywords: ["leadership", "strategy", "innovation"],
-            platform
-          },
-          {
-            caption: "When precision meets purpose, extraordinary results follow.",
-            hashtags: ["#Strategy", "#Success", "#Professional"],
-            keywords: ["precision", "purpose", "results"],
-            platform
-          },
-          {
-            caption: "Building bridges between vision and reality, one milestone at a time.",
-            hashtags: ["#Progress", "#Achievement", "#Business"],
-            keywords: ["vision", "reality", "milestones"],
-            platform
-          }
-        ],
-        witty: [
-          {
-            caption: "Plot twist: This wasn't supposed to look this good, but here we are! 😄",
-            hashtags: ["#PlotTwist", "#Unexpected", "#Surprise"],
-            keywords: ["unexpected", "surprise", "humor"],
-            platform
-          },
-          {
-            caption: "Me: Takes one photo. Also me: Becomes a photographer. How did this happen? 📸",
-            hashtags: ["#AccidentalGenius", "#Life", "#Photography"],
-            keywords: ["photography", "accidental", "life"],
-            platform
-          },
-          {
-            caption: "Breaking news: Local person takes decent photo, more at 11. 📰",
-            hashtags: ["#BreakingNews", "#Humble", "#Fun"],
-            keywords: ["news", "humble", "funny"],
-            platform
-          }
-        ],
-        bold: [
-          {
-            caption: "🔥 UNSTOPPABLE ENERGY CAPTURED IN ONE FRAME 🔥",
-            hashtags: ["#Bold", "#Energy", "#Unstoppable"],
-            keywords: ["energy", "unstoppable", "power"],
-            platform
-          },
-          {
-            caption: "💥 BREAKING BOUNDARIES, SETTING NEW STANDARDS 💥",
-            hashtags: ["#GameChanger", "#Bold", "#Revolutionary"],
-            keywords: ["boundaries", "standards", "revolutionary"],
-            platform
-          },
-          {
-            caption: "⚡ ELECTRIC VIBES, INFINITE POSSIBILITIES ⚡",
-            hashtags: ["#Electric", "#Limitless", "#Power"],
-            keywords: ["electric", "limitless", "possibilities"],
-            platform
-          }
-        ],
-        casual: [
-          {
-            caption: "Just another day, just another awesome moment captured ✨",
-            hashtags: ["#ChillVibes", "#Casual", "#Life"],
-            keywords: ["chill", "moment", "life"],
-            platform
-          },
-          {
-            caption: "Keeping it real, keeping it simple, keeping it good 😊",
-            hashtags: ["#KeepItReal", "#Simple", "#Good"],
-            keywords: ["real", "simple", "good"],
-            platform
-          },
-          {
-            caption: "Sometimes the best moments are the unplanned ones 🌟",
-            hashtags: ["#Spontaneous", "#Moments", "#Natural"],
-            keywords: ["spontaneous", "moments", "natural"],
-            platform
-          }
-        ],
-        inspiring: [
-          {
-            caption: "✨ Every moment holds the potential for magic - we just need to believe ✨",
-            hashtags: ["#Believe", "#Magic", "#Potential"],
-            keywords: ["believe", "magic", "potential"],
-            platform
-          },
-          {
-            caption: "🌟 Dreams don't work unless you do - this is proof of what's possible 🌟",
-            hashtags: ["#Dreams", "#Work", "#Possible"],
-            keywords: ["dreams", "work", "possible"],
-            platform
-          },
-          {
-            caption: "💫 In every ordinary moment lies an extraordinary opportunity 💫",
-            hashtags: ["#Extraordinary", "#Opportunity", "#Moment"],
-            keywords: ["extraordinary", "opportunity", "moment"],
-            platform
-          }
-        ]
-      };
-      
-      const variations = demoVariations[tone as keyof typeof demoVariations] || demoVariations.professional;
-      setGeneratedCaptions(variations);
-      
-      toast({
-        title: hasApiKey ? "Captions generated!" : "Demo captions generated",
-        description: hasApiKey 
-          ? `3 variations created for ${platform}.` 
-          : `3 demo variations created. Add your API key for AI-powered captions.`,
-        variant: "default",
+      // Convert image to base64
+      const imageBase64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          const base64 = result.split(',')[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(selectedImage);
       });
-    } catch (error) {
+
+      const { data, error } = await supabase.functions.invoke('generate-captions', {
+        body: {
+          image_base64: imageBase64,
+          tone,
+          prompt,
+          platform
+        }
+      });
+
+      if (error) {
+        console.error('Edge function error:', error);
+        throw error;
+      }
+
+      if (data?.variations && data.variations.length > 0) {
+        setGeneratedCaptions(data.variations);
+        toast({
+          title: "Captions generated!",
+          description: `Generated ${data.variations.length} AI-powered variations for ${platform}.`,
+        });
+      } else {
+        throw new Error('No captions generated');
+      }
+    } catch (error: any) {
       console.error('Caption generation error:', error);
       toast({
-        title: "Error generating captions",
-        description: "Please try again later.",
+        title: "Generation failed",
+        description: error.message || "Failed to generate captions. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -265,7 +138,7 @@ const Dashboard = () => {
 
       <div className="container mx-auto px-4 py-4 md:py-8">
         <Tabs defaultValue="create" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 text-sm md:text-base">
+          <TabsList className="grid w-full grid-cols-3 text-sm md:text-base">
             <TabsTrigger value="create" className="flex items-center gap-1 md:gap-2 px-2 md:px-4">
               <Wand2 className="w-3 h-3 md:w-4 md:h-4" />
               <span className="hidden sm:inline">Create</span>
@@ -281,11 +154,6 @@ const Dashboard = () => {
               <span className="hidden sm:inline">Settings</span>
               <span className="sm:hidden">Set</span>
             </TabsTrigger>
-            <TabsTrigger value="api-key" className="flex items-center gap-1 md:gap-2 px-2 md:px-4">
-              <Key className="w-3 h-3 md:w-4 md:h-4" />
-              <span className="hidden sm:inline">API Key</span>
-              <span className="sm:hidden">Key</span>
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="create" className="space-y-4 md:space-y-6">
@@ -299,17 +167,12 @@ const Dashboard = () => {
               
               <CaptionGenerator
                 selectedImage={selectedImage}
-                hasApiKey={hasApiKey}
                 onGenerate={generateCaptions}
                 generatedCaptions={generatedCaptions}
                 loading={loading}
                 imagePreview={imagePreview}
               />
             </div>
-          </TabsContent>
-
-          <TabsContent value="api-key" className="space-y-6">
-            <ApiKeyManager onApiKeyChange={setHasApiKey} />
           </TabsContent>
 
           <TabsContent value="history">
