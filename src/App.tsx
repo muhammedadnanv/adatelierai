@@ -20,7 +20,7 @@ const App = () => {
     isVisible: isAdVisible, 
     dismissPopup: dismissAdPopup 
   } = useAdvertisementPopup({
-    initialDelay: 30000, // 30 seconds
+    initialDelay: 10000, // 10 seconds
     repeatInterval: 900000, // 15 minutes
     maxDismissals: 3,
     sessionTimeout: 3600000, // 1 hour

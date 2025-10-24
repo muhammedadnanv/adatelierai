@@ -1,8 +1,4 @@
-import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { X, ExternalLink, ShoppingBag, Zap, TrendingUp } from 'lucide-react';
-import storeLinkLogo from '@/assets/storelink-logo.png';
+import { X, MessageCircle } from 'lucide-react';
 
 interface AdvertisementPopupProps {
   isOpen: boolean;
@@ -10,116 +6,54 @@ interface AdvertisementPopupProps {
 }
 
 const AdvertisementPopup = ({ isOpen, onClose }: AdvertisementPopupProps) => {
-  const handleVisitStore = () => {
-    window.open('https://store.link?via=Um4wGCfwh0xG', '_blank', 'noopener,noreferrer');
-    onClose();
+  const handleWhatsAppClick = () => {
+    window.open('https://wa.me/919656778508', '_blank', 'noopener,noreferrer');
   };
 
+  if (!isOpen) return null;
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden">
-        <div className="relative bg-gradient-subtle">
-          {/* Close button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-2 right-2 z-10 h-8 w-8 rounded-full bg-white/80 hover:bg-white"
-            onClick={onClose}
+    <div 
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 animate-fade-in"
+      onClick={onClose}
+    >
+      <div 
+        className="relative bg-white rounded-lg p-5 w-[90%] max-w-[400px] shadow-elegant animate-slide-up"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-foreground hover:text-destructive transition-colors text-2xl leading-none bg-transparent border-0 cursor-pointer p-1"
+          aria-label="Close popup"
+        >
+          <X className="w-6 h-6" />
+        </button>
+
+        {/* Content */}
+        <div className="text-center space-y-4">
+          <h2 className="text-2xl font-bold text-foreground mb-2">
+            🚀 Ready to Launch Your Digital Presence?
+          </h2>
+          
+          <p className="text-base text-muted-foreground mb-3">
+            Transform ideas into reality with cutting-edge web solutions.
+          </p>
+          
+          <p className="text-sm text-muted-foreground mb-5">
+            As a solo-run agency, I personally handle every project—no middle-men, no recurring fees—just one transparent investment for a professional website that you own for life.
+          </p>
+
+          <button
+            onClick={handleWhatsAppClick}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#25d366] hover:bg-[#128c7e] text-white rounded-md font-bold transition-colors duration-300 cursor-pointer"
           >
-            <X className="h-4 w-4" />
-          </Button>
-
-          {/* Header with logo */}
-          <div className="bg-gradient-hero p-6 text-white">
-            <div className="flex items-center justify-center mb-4">
-              <img 
-                src={storeLinkLogo} 
-                alt="store.link" 
-                className="h-12 w-auto"
-              />
-            </div>
-            <DialogTitle className="text-2xl text-center mb-2 text-white">
-              Turn Your Content Into Sales
-            </DialogTitle>
-            <DialogDescription className="text-center text-white/90">
-              You're creating viral content. Now monetize it!
-            </DialogDescription>
-          </div>
-
-          {/* Content */}
-          <div className="p-6 space-y-4">
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <ShoppingBag className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Launch Your Online Store</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Create a professional store in seconds without any coding
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                  <Zap className="w-5 h-5 text-accent" />
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Sell What You Promote</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Perfect for influencers, creators, and social sellers
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-success/10 flex items-center justify-center flex-shrink-0">
-                  <TrendingUp className="w-5 h-5 text-success" />
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Boost Your Revenue</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Convert your social media audience into paying customers
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-accent/5 border border-accent/20 rounded-lg p-4">
-              <p className="text-sm text-center font-medium">
-                🎉 <span className="text-accent">Special Offer:</span> Start selling in minutes, no setup fees!
-              </p>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="space-y-2 pt-2">
-              <Button 
-                onClick={handleVisitStore}
-                className="w-full"
-                size="lg"
-              >
-                <ShoppingBag className="w-4 h-4 mr-2" />
-                Create Your Store Now
-                <ExternalLink className="w-4 h-4 ml-2" />
-              </Button>
-              
-              <Button 
-                variant="ghost" 
-                onClick={onClose}
-                className="w-full"
-              >
-                Maybe Later
-              </Button>
-            </div>
-
-            <p className="text-xs text-center text-muted-foreground">
-              Powered by store.link - Trusted by thousands of creators
-            </p>
-          </div>
+            <MessageCircle className="w-5 h-5" />
+            Chat on WhatsApp
+          </button>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };
 
