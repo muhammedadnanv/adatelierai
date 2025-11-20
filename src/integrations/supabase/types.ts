@@ -55,10 +55,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      generate_access_code: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      generate_access_code: { Args: never; Returns: string }
     }
     Enums: {
       [_ in never]: never
