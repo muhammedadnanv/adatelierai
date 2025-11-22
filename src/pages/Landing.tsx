@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { useNavigate, Link } from 'react-router-dom';
 import { Sparkles, Upload, Wand2, Share2, Shield, Zap, Users, Star, ArrowRight, CheckCircle, Camera, MessageSquare, TrendingUp, Lock } from 'lucide-react';
 import heroImage from '@/assets/hero-image.jpg';
+import { useState, useEffect } from 'react';
 const features = [{
   icon: Upload,
   title: "Easy Upload",
@@ -60,6 +61,18 @@ const testimonials = [{
 }];
 const Landing = () => {
   const navigate = useNavigate();
+  const [activeUsers, setActiveUsers] = useState(127);
+  const [recentGenerations, setRecentGenerations] = useState(8);
+
+  useEffect(() => {
+    // Simulate live user activity
+    const interval = setInterval(() => {
+      setActiveUsers(prev => prev + (Math.random() > 0.5 ? 1 : -1));
+      setRecentGenerations(prev => Math.max(1, prev + (Math.random() > 0.7 ? 1 : 0)));
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
   return <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
       <header className="border-b bg-white/50 backdrop-blur-sm sticky top-0 z-50">
@@ -110,11 +123,37 @@ const Landing = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="xl" variant="hero" className="w-full sm:w-auto" onClick={() => navigate('/dashboard')}>
+                <Button 
+                  size="xl" 
+                  variant="hero" 
+                  className="w-full sm:w-auto hover-scale shadow-primary animate-fade-in" 
+                  onClick={() => navigate('/dashboard')}
+                >
                   <Camera className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                   <span className="text-sm md:text-base">Start Creating Now</span>
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
-                
+              </div>
+
+              {/* Social Proof - Live Activity */}
+              <div className="flex items-center gap-4 text-sm animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-xs font-bold border-2 border-background">
+                      {activeUsers.toString().slice(-2)}
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white text-xs font-bold border-2 border-background animate-pulse">
+                      <Users className="w-4 h-4" />
+                    </div>
+                  </div>
+                  <div className="text-muted-foreground">
+                    <span className="font-semibold text-foreground">{activeUsers}</span> creators online now
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+                  <span><span className="font-semibold text-foreground">{recentGenerations}</span> captions in the last minute</span>
+                </div>
               </div>
 
               {/* Stats */}
