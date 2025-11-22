@@ -9,13 +9,19 @@ import {
   Settings, 
   History, 
   Wand2,
-  ArrowLeft
+  ArrowLeft,
+  Trophy
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import ImageUpload from '@/components/ImageUpload';
 import CaptionGenerator from '@/components/CaptionGenerator';
+import { useBehaviorTracking } from '@/hooks/useBehaviorTracking';
+import StreakWidget from '@/components/StreakWidget';
+import AchievementBadges from '@/components/AchievementBadges';
+import SocialProofWidget from '@/components/SocialProofWidget';
+import ProgressTracker from '@/components/ProgressTracker';
 
 interface CaptionVariation {
   caption: string;
@@ -27,6 +33,7 @@ interface CaptionVariation {
 const Dashboard = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { behavior, trackCaptionGenerated, trackImageUploaded, ACHIEVEMENTS } = useBehaviorTracking();
   
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -35,6 +42,7 @@ const Dashboard = () => {
 
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);
+    trackImageUploaded();
     const reader = new FileReader();
     reader.onload = (e) => {
       setImagePreview(e.target?.result as string);
@@ -90,8 +98,9 @@ const Dashboard = () => {
 
       if (data?.variations && data.variations.length > 0) {
         setGeneratedCaptions(data.variations);
+        trackCaptionGenerated();
         toast({
-          title: "Captions generated!",
+          title: "✨ Captions generated!",
           description: `Generated ${data.variations.length} AI-powered variations for ${platform}.`,
         });
       } else {
@@ -138,11 +147,16 @@ const Dashboard = () => {
 
       <div className="container mx-auto px-4 py-4 md:py-8">
         <Tabs defaultValue="create" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 text-sm md:text-base">
+          <TabsList className="grid w-full grid-cols-4 text-sm md:text-base">
             <TabsTrigger value="create" className="flex items-center gap-1 md:gap-2 px-2 md:px-4">
               <Wand2 className="w-3 h-3 md:w-4 md:h-4" />
               <span className="hidden sm:inline">Create</span>
               <span className="sm:hidden">New</span>
+            </TabsTrigger>
+            <TabsTrigger value="progress" className="flex items-center gap-1 md:gap-2 px-2 md:px-4">
+              <Trophy className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">Progress</span>
+              <span className="sm:hidden">Stats</span>
             </TabsTrigger>
             <TabsTrigger value="history" className="flex items-center gap-1 md:gap-2 px-2 md:px-4">
               <History className="w-3 h-3 md:w-4 md:h-4" />
@@ -157,22 +171,50 @@ const Dashboard = () => {
           </TabsList>
 
           <TabsContent value="create" className="space-y-4 md:space-y-6">
-            <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
-              <ImageUpload
-                onImageSelect={handleImageSelect}
-                selectedImage={selectedImage}
-                imagePreview={imagePreview}
-                onClear={clearImage}
-              />
+            <SocialProofWidget />
+            
+            <div className="grid gap-4 md:gap-6 lg:grid-cols-3">
+              <div className="lg:col-span-2 space-y-4">
+                <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
+                  <ImageUpload
+                    onImageSelect={handleImageSelect}
+                    selectedImage={selectedImage}
+                    imagePreview={imagePreview}
+                    onClear={clearImage}
+                  />
+                  
+                  <CaptionGenerator
+                    selectedImage={selectedImage}
+                    onGenerate={generateCaptions}
+                    generatedCaptions={generatedCaptions}
+                    loading={loading}
+                    imagePreview={imagePreview}
+                  />
+                </div>
+              </div>
               
-              <CaptionGenerator
-                selectedImage={selectedImage}
-                onGenerate={generateCaptions}
-                generatedCaptions={generatedCaptions}
-                loading={loading}
-                imagePreview={imagePreview}
+              <div className="space-y-4">
+                <StreakWidget streakDays={behavior.streakDays} />
+                <ProgressTracker 
+                  captionsGenerated={behavior.captionsGenerated}
+                  imagesUploaded={behavior.imagesUploaded}
+                />
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="progress" className="space-y-6">
+            <div className="grid gap-6 lg:grid-cols-2">
+              <StreakWidget streakDays={behavior.streakDays} />
+              <ProgressTracker 
+                captionsGenerated={behavior.captionsGenerated}
+                imagesUploaded={behavior.imagesUploaded}
               />
             </div>
+            <AchievementBadges 
+              unlockedIds={behavior.achievements}
+              allAchievements={ACHIEVEMENTS}
+            />
           </TabsContent>
 
           <TabsContent value="history">
