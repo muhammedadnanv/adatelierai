@@ -1,43 +1,41 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Ad Atelier AI Design System - Professional creative AI platform theme */
+/* Ad Atelier AI Design System - Premium Brand Identity */
 
 @layer base {
   :root {
-    /* Core brand colors - Ad Atelier AI palette */
-    --background: 0 0% 96%;
-    --foreground: 0 0% 9%;
+    /* Core brand colors - Ad Atelier AI Official Palette */
+    --background: 0 0% 99%;
+    --foreground: 220 20% 8%;
 
-    /* Card system */
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 9%;
+    /* Card system - Elevated & Clean */
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 8%;
 
     /* Popover system */
-    --popover: 0 0% 89%;
-    --popover-foreground: 0 0% 9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 8%;
 
-    /* Primary - Deep Blue */
-    --primary: 20 90% 48%;
-    --primary-foreground: 33 100% 96%;
-    --primary-glow: 220 96% 53%;
+    /* Primary - Deep Blue #0057D9 (214, 100%, 43%) */
+    --primary: 214 100% 43%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 214 100% 53%;
 
-    /* Secondary - Light Gray */
-    --secondary: 0 0% 32%;
-    --secondary-foreground: 0 0% 98%;
+    /* Secondary - Dark Navy #0A0A0A */
+    --secondary: 220 20% 8%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Muted system */
-    --muted: 0 0% 63%;
-    --muted-foreground: 0 0% 9%;
+    /* Muted system - Light Gray #E0E0E0 */
+    --muted: 0 0% 88%;
+    --muted-foreground: 220 10% 40%;
 
-    /* Accent - Mid Blue */
-    --accent: 47 100% 96%;
-    --accent-foreground: 37 92% 50%;
-    --accent-glow: 212 100% 60%;
+    /* Accent - Mid Blue #007BFF (211, 100%, 50%) */
+    --accent: 211 100% 50%;
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 211 100% 60%;
 
     /* Success - Professional green */
     --success: 142 76% 36%;
@@ -49,137 +47,125 @@
 
     /* Destructive - Clear red */
     --destructive: 0 72% 50%;
-    --destructive-foreground: 0 85% 97%;
+    --destructive-foreground: 0 0% 100%;
 
-    /* Border and input */
-    --border: 0 0% 83%;
-    --input: 0 0% 83%;
-    --ring: 20 90% 48%;
+    /* Border and input - Refined */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 214 100% 43%;
 
     /* Layout */
     --radius: 0.75rem;
 
-    /* Ad Atelier AI specific colors and gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(220 96% 43%), hsl(220 96% 53%));
-    --gradient-accent: linear-gradient(135deg, hsl(212 100% 50%), hsl(212 100% 60%));
-    --gradient-hero: linear-gradient(135deg, hsl(220 96% 43%) 0%, hsl(212 100% 50%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 98%) 100%);
+    /* Ad Atelier AI Gradients - Bold & Impactful */
+    --gradient-primary: linear-gradient(135deg, hsl(214 100% 43%), hsl(211 100% 50%));
+    --gradient-accent: linear-gradient(135deg, hsl(211 100% 50%), hsl(211 100% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(214 100% 43%) 0%, hsl(211 100% 55%) 50%, hsl(214 100% 48%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 20% 98%) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+    --gradient-dark: linear-gradient(135deg, hsl(220 20% 8%) 0%, hsl(220 30% 15%) 100%);
 
-    /* Shadows */
-    --shadow-primary: 0 10px 30px -10px hsl(220 96% 43% / 0.3);
-    --shadow-accent: 0 10px 30px -10px hsl(212 100% 50% / 0.3);
-    --shadow-elegant: 0 4px 20px -4px hsl(0 0% 4% / 0.1);
-    --shadow-glow: 0 0 40px hsl(220 96% 53% / 0.4);
+    /* Shadows - Premium depth */
+    --shadow-primary: 0 10px 40px -10px hsl(214 100% 43% / 0.35);
+    --shadow-accent: 0 10px 40px -10px hsl(211 100% 50% / 0.35);
+    --shadow-elegant: 0 4px 24px -4px hsl(220 20% 8% / 0.08);
+    --shadow-glow: 0 0 60px hsl(214 100% 50% / 0.3);
+    --shadow-card: 0 1px 3px hsl(220 20% 8% / 0.04), 0 8px 24px -8px hsl(220 20% 8% / 0.08);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 20% 8%;
+    --sidebar-primary: 214 100% 43%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 211 100% 50%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 214 100% 43%;
 
-    --sidebar-foreground: 0 0% 9%;
+    --chart-1: 214 100% 43%;
+    --chart-2: 211 100% 50%;
+    --chart-3: 214 100% 55%;
+    --chart-4: 211 100% 60%;
+    --chart-5: 220 20% 50%;
 
-    --sidebar-primary: 20 90% 48%;
+    --sidebar: 0 0% 100%;
 
-    --sidebar-primary-foreground: 33 100% 96%;
+    --font-sans: 'Poppins', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --font-heading: 'Montserrat', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 
-    --sidebar-accent: 0 0% 32%;
-
-    --sidebar-accent-foreground: 0 0% 98%;
-
-    --sidebar-border: 0 0% 83%;
-
-    --sidebar-ring: 20 90% 48%;
-
-    --chart-1: 27 95% 60%;
-
-    --chart-2: 43 96% 56%;
-
-    --chart-3: 47 95% 53%;
-
-    --chart-4: 24 94% 53%;
-
-    --chart-5: 0 0% 45%;
-
-    --sidebar: 0 0% 98%;
-
-    --font-sans: 'Roboto', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-
-    --font-serif: 'Libre Caslon Text', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-
-    --font-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-
-    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-
-    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-
-    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-
-    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-
-    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-
-    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-
-    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-
-    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+    --shadow-2xs: 0 1px 2px 0 hsl(220 20% 8% / 0.03);
+    --shadow-xs: 0 1px 3px 0 hsl(220 20% 8% / 0.04);
+    --shadow-sm: 0 2px 4px -1px hsl(220 20% 8% / 0.06);
+    --shadow: 0 4px 8px -2px hsl(220 20% 8% / 0.08);
+    --shadow-md: 0 6px 16px -4px hsl(220 20% 8% / 0.1);
+    --shadow-lg: 0 12px 32px -8px hsl(220 20% 8% / 0.12);
+    --shadow-xl: 0 20px 48px -12px hsl(220 20% 8% / 0.15);
+    --shadow-2xl: 0 32px 64px -16px hsl(220 20% 8% / 0.2);
 
     --tracking-normal: 0em;
-
     --spacing: 0.25rem;
   }
 
   .dark {
-    --background: 0 0% 9%;
+    --background: 220 20% 6%;
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 14%;
+    --card: 220 20% 10%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 25%;
+    --popover: 220 20% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 27 95% 60%;
-    --primary-foreground: 12 81% 14%;
+    --primary: 211 100% 55%;
+    --primary-foreground: 220 20% 6%;
+    --primary-glow: 211 100% 65%;
 
-    --secondary: 0 0% 45%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 220 10% 80%;
+    --secondary-foreground: 220 20% 6%;
 
-    --muted: 0 0% 45%;
-    --muted-foreground: 0 0% 98%;
+    --muted: 220 15% 20%;
+    --muted-foreground: 220 10% 65%;
 
-    --accent: 20 91% 14%;
-    --accent-foreground: 43 96% 56%;
+    --accent: 214 100% 60%;
+    --accent-foreground: 220 20% 6%;
+    --accent-glow: 214 100% 70%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 85% 97%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 32%;
-    --input: 0 0% 32%;
-    --ring: 27 95% 60%;
-    --sidebar-background: 240 5.9% 10%;
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 211 100% 55%;
+
+    --sidebar-background: 220 20% 8%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 27 95% 60%;
-    --sidebar-primary-foreground: 12 81% 14%;
-    --sidebar-accent: 43 96% 56%;
-    --sidebar-accent-foreground: 20 91% 14%;
-    --sidebar-border: 0 0% 32%;
-    --sidebar-ring: 27 95% 60%;
-    --chart-1: 30 97% 72%;
-    --chart-2: 45 96% 64%;
-    --chart-3: 48 96% 76%;
-    --chart-4: 27 95% 60%;
-    --chart-5: 0 0% 45%;
-    --sidebar: 0 0% 14%;
-    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+    --sidebar-primary: 211 100% 55%;
+    --sidebar-primary-foreground: 220 20% 6%;
+    --sidebar-accent: 214 100% 60%;
+    --sidebar-accent-foreground: 220 20% 6%;
+    --sidebar-border: 220 15% 18%;
+    --sidebar-ring: 211 100% 55%;
+
+    --chart-1: 211 100% 60%;
+    --chart-2: 214 100% 55%;
+    --chart-3: 211 100% 70%;
+    --chart-4: 214 100% 65%;
+    --chart-5: 220 10% 60%;
+
+    --sidebar: 220 20% 10%;
+
+    --shadow-2xs: 0 1px 2px 0 hsl(0 0% 0% / 0.2);
+    --shadow-xs: 0 1px 3px 0 hsl(0 0% 0% / 0.25);
+    --shadow-sm: 0 2px 4px -1px hsl(0 0% 0% / 0.3);
+    --shadow: 0 4px 8px -2px hsl(0 0% 0% / 0.35);
+    --shadow-md: 0 6px 16px -4px hsl(0 0% 0% / 0.4);
+    --shadow-lg: 0 12px 32px -8px hsl(0 0% 0% / 0.45);
+    --shadow-xl: 0 20px 48px -12px hsl(0 0% 0% / 0.5);
+    --shadow-2xl: 0 32px 64px -16px hsl(0 0% 0% / 0.6);
   }
 }
 
@@ -189,15 +175,38 @@
   }
 
   body {
-    @apply bg-background text-foreground font-poppins;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    @apply font-bold tracking-tight;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
+/* Premium brand utilities */
+@layer utilities {
+  .text-gradient-brand {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-hero);
   }
-  body {
-    @apply bg-background text-foreground;
+
+  .bg-gradient-brand {
+    background-image: var(--gradient-hero);
+  }
+
+  .shadow-brand {
+    box-shadow: var(--shadow-primary);
+  }
+
+  .glow-brand {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .glass-card {
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 }

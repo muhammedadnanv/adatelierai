@@ -19,46 +19,17 @@ export default {
     	},
     	extend: {
     		fontFamily: {
-    			poppins: [
-    				'Poppins',
-    				'sans-serif'
-    			],
-    			montserrat: [
-    				'Montserrat',
-    				'sans-serif'
-    			],
-    			sans: [
-    				'Roboto',
-    				'ui-sans-serif',
-    				'system-ui',
-    				'-apple-system',
-    				'BlinkMacSystemFont',
-    				'Segoe UI',
-    				'Helvetica Neue',
-    				'Arial',
-    				'Noto Sans',
-    				'sans-serif'
-    			],
-    			serif: [
-    				'Libre Caslon Text',
-    				'ui-serif',
-    				'Georgia',
-    				'Cambria',
-    				'Times New Roman',
-    				'Times',
-    				'serif'
-    			],
-    			mono: [
-    				'Roboto Mono',
-    				'ui-monospace',
-    				'SFMono-Regular',
-    				'Menlo',
-    				'Monaco',
-    				'Consolas',
-    				'Liberation Mono',
-    				'Courier New',
-    				'monospace'
-    			]
+    			poppins: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    			montserrat: ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    			sans: ['Poppins', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+    			heading: ['Montserrat', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+    			mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace']
+    		},
+    		fontSize: {
+    			'display': ['4.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '800' }],
+    			'hero': ['3.5rem', { lineHeight: '1.15', letterSpacing: '-0.02em', fontWeight: '700' }],
+    			'title': ['2.25rem', { lineHeight: '1.2', letterSpacing: '-0.01em', fontWeight: '700' }],
+    			'subtitle': ['1.5rem', { lineHeight: '1.4', letterSpacing: '-0.01em', fontWeight: '600' }],
     		},
     		colors: {
     			border: 'hsl(var(--border))',
@@ -119,19 +90,24 @@ export default {
     			'gradient-primary': 'var(--gradient-primary)',
     			'gradient-accent': 'var(--gradient-accent)',
     			'gradient-hero': 'var(--gradient-hero)',
-    			'gradient-subtle': 'var(--gradient-subtle)'
+    			'gradient-subtle': 'var(--gradient-subtle)',
+    			'gradient-glass': 'var(--gradient-glass)',
+    			'gradient-dark': 'var(--gradient-dark)'
     		},
     		boxShadow: {
     			primary: 'var(--shadow-primary)',
     			accent: 'var(--shadow-accent)',
     			elegant: 'var(--shadow-elegant)',
-    			glow: 'var(--shadow-glow)'
+    			glow: 'var(--shadow-glow)',
+    			card: 'var(--shadow-card)'
     		},
     		transitionTimingFunction: {
     			smooth: 'var(--transition-smooth)',
     			bounce: 'var(--transition-bounce)'
     		},
     		borderRadius: {
+    			'2xl': 'calc(var(--radius) + 8px)',
+    			xl: 'calc(var(--radius) + 4px)',
     			lg: 'var(--radius)',
     			md: 'calc(var(--radius) - 2px)',
     			sm: 'calc(var(--radius) - 4px)'
