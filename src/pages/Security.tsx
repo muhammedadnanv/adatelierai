@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Sparkles, Shield, Lock, Key, Server, Eye, AlertCircle, CheckCircle, Zap } from 'lucide-react';
+import Footer from '@/components/Footer';
 
 const Security = () => {
   const securityFeatures = [
@@ -296,6 +297,9 @@ const Security = () => {
           </Card>
         </div>
       </main>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
