@@ -14,7 +14,8 @@ import AdvertisementPopup from "./components/AdvertisementPopup";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useAdvertisementPopup } from "./hooks/useAdvertisementPopup";
 import PageTransition from "./components/PageTransition";
-
+import { PersonalizationProvider } from "./contexts/PersonalizationContext";
+import VisitorInsightBadge from "./components/VisitorInsightBadge";
 const queryClient = new QueryClient();
 
 const AnimatedRoutes = () => {
@@ -48,6 +49,9 @@ const AnimatedRoutes = () => {
         isOpen={isAdVisible}
         onClose={dismissAdPopup}
       />
+      
+      {/* Visitor Insight Badge (dev mode only) */}
+      <VisitorInsightBadge />
     </>
   );
 };
@@ -57,11 +61,13 @@ const App = () => {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AnimatedRoutes />
-          </BrowserRouter>
+          <PersonalizationProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AnimatedRoutes />
+            </BrowserRouter>
+          </PersonalizationProvider>
         </TooltipProvider>
       </QueryClientProvider>
     </ErrorBoundary>
