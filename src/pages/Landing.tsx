@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import PersonalizedHero from '@/components/PersonalizedHero';
 import PersonalizedCTA from '@/components/PersonalizedCTA';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
-
+import Footer from '@/components/Footer';
 const features = [{
   icon: Upload,
   title: "Easy Upload",
@@ -268,39 +268,8 @@ const Landing = () => {
       {/* Personalized CTA Section */}
       <PersonalizedCTA />
 
-      {/* Footer - Clean & Professional */}
-      <footer className="py-12 md:py-16 border-t border-border/50 bg-card/30">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
-            <div className="space-y-4 md:col-span-2">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-hero rounded-xl flex items-center justify-center shadow-primary">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-xl font-heading font-bold text-gradient-brand">
-                  Ad Atelier AI
-                </h3>
-              </div>
-              <p className="text-muted-foreground max-w-sm leading-relaxed">
-                Transform your images into viral social media content with AI-powered captions.
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="font-heading font-semibold mb-4">Legal</h4>
-              <ul className="space-y-3 text-muted-foreground">
-                <li><Link to="/privacy" className="hover:text-primary transition-colors">Privacy</Link></li>
-                <li><Link to="/terms" className="hover:text-primary transition-colors">Terms</Link></li>
-                <li><Link to="/security" className="hover:text-primary transition-colors">Security</Link></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-border/50 mt-12 pt-8 text-center text-muted-foreground text-sm">
-            <p>&copy; {new Date().getFullYear()} Ad Atelier AI. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

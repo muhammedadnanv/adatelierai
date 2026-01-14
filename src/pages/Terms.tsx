@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Sparkles, FileText, Scale, AlertTriangle, Users, CreditCard, Gavel } from 'lucide-react';
-
+import Footer from '@/components/Footer';
 const Terms = () => {
   return (
     <div className="min-h-screen bg-gradient-subtle">
@@ -256,6 +256,9 @@ const Terms = () => {
           </Card>
         </div>
       </main>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
