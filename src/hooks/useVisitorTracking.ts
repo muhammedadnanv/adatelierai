@@ -260,5 +260,6 @@ export const useVisitorTracking = () => {
     intent: profile.intent,
     confidence: profile.confidence,
     device: profile.behavior.device,
+    updateBehavior,
   };
 };
