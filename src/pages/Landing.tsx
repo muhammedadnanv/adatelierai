@@ -8,6 +8,7 @@ import PersonalizedHero from '@/components/PersonalizedHero';
 import PersonalizedCTA from '@/components/PersonalizedCTA';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
 import Footer from '@/components/Footer';
+import ContactForm from '@/components/ContactForm';
 const features = [{
   icon: Upload,
   title: "Easy Upload",
@@ -264,6 +265,9 @@ const Landing = () => {
           </div>
         </div>
       </section>
+
+      {/* Contact Form Section */}
+      <ContactForm />
 
       {/* Personalized CTA Section */}
       <PersonalizedCTA />
