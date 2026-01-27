@@ -11,8 +11,11 @@ import Terms from "./pages/Terms";
 import Security from "./pages/Security";
 import NotFound from "./pages/NotFound";
 import AdvertisementPopup from "./components/AdvertisementPopup";
+import ExitIntentPopup from "./components/ExitIntentPopup";
+import WelcomeBackModal, { useWelcomeBack } from "./components/WelcomeBackModal";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useAdvertisementPopup } from "./hooks/useAdvertisementPopup";
+import { useExitIntent } from "./hooks/useExitIntent";
 import PageTransition from "./components/PageTransition";
 import { PersonalizationProvider } from "./contexts/PersonalizationContext";
 import VisitorInsightBadge from "./components/VisitorInsightBadge";
@@ -29,6 +32,17 @@ const AnimatedRoutes = () => {
     maxDismissals: 3,
     sessionTimeout: 3600000, // 1 hour
   });
+
+  const {
+    showExitIntent,
+    dismissExitIntent,
+  } = useExitIntent({
+    threshold: 50,
+    delayBeforeShow: 5000, // 5 seconds on page before triggering
+    cooldownPeriod: 86400000, // 24 hours
+  });
+
+  const { showWelcomeBack, dismissWelcomeBack } = useWelcomeBack();
 
   return (
     <>
@@ -48,6 +62,18 @@ const AnimatedRoutes = () => {
       <AdvertisementPopup
         isOpen={isAdVisible}
         onClose={dismissAdPopup}
+      />
+
+      {/* Exit Intent Popup */}
+      <ExitIntentPopup
+        isOpen={showExitIntent && !isAdVisible}
+        onClose={dismissExitIntent}
+      />
+
+      {/* Welcome Back Modal for Returning Visitors */}
+      <WelcomeBackModal
+        isOpen={showWelcomeBack && !isAdVisible && !showExitIntent}
+        onClose={dismissWelcomeBack}
       />
       
       {/* Visitor Insight Badge (dev mode only) */}
