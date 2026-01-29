@@ -97,7 +97,7 @@ const ExitIntentPopup = ({ isOpen, onClose, onAccept }: ExitIntentPopupProps) =>
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 50 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative bg-card rounded-2xl p-8 w-[90%] max-w-[480px] shadow-2xl border border-border overflow-hidden"
+            className="relative bg-card rounded-2xl p-5 sm:p-8 w-[92%] max-w-[480px] shadow-2xl border border-border overflow-hidden mx-4"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Background gradient accent */}
@@ -154,7 +154,7 @@ const ExitIntentPopup = ({ isOpen, onClose, onAccept }: ExitIntentPopupProps) =>
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-2xl font-bold text-foreground"
+                className="text-xl sm:text-2xl font-bold text-foreground"
               >
                 {offer.title}
               </motion.h2>
@@ -164,7 +164,7 @@ const ExitIntentPopup = ({ isOpen, onClose, onAccept }: ExitIntentPopupProps) =>
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 }}
-                className="text-lg font-medium text-primary"
+                className="text-base sm:text-lg font-medium text-primary"
               >
                 {offer.subtitle}
               </motion.p>
@@ -174,7 +174,7 @@ const ExitIntentPopup = ({ isOpen, onClose, onAccept }: ExitIntentPopupProps) =>
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-muted-foreground"
+                className="text-sm sm:text-base text-muted-foreground"
               >
                 {offer.description}
               </motion.p>
@@ -189,10 +189,10 @@ const ExitIntentPopup = ({ isOpen, onClose, onAccept }: ExitIntentPopupProps) =>
                 <Button
                   onClick={handleAccept}
                   size="lg"
-                  className={`w-full bg-gradient-to-r ${offer.gradient} hover:opacity-90 text-primary-foreground font-semibold py-6 text-lg group`}
+                  className={`w-full bg-gradient-to-r ${offer.gradient} hover:opacity-90 text-primary-foreground font-semibold py-5 sm:py-6 text-base sm:text-lg group`}
                 >
                   {offer.ctaText}
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
 

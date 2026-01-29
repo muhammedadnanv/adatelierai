@@ -67,38 +67,38 @@ const PersonalizedOnboarding = ({ onGetStarted, currentStep = 0 }: PersonalizedO
       transition={{ duration: 0.3 }}
     >
       <Card className="shadow-card border-border/50 bg-gradient-to-br from-primary/5 to-accent/5 overflow-hidden">
-        <CardContent className="p-6 md:p-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div className="space-y-4">
+        <CardContent className="p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col gap-4 sm:gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="space-y-3 sm:space-y-4">
               <div className="flex items-center gap-2">
-                <Badge className="bg-primary/10 text-primary border-primary/20">
+                <Badge className="bg-primary/10 text-primary border-primary/20 text-xs sm:text-sm">
                   <Sparkles className="w-3 h-3 mr-1" />
                   {content.featureHighlight}
                 </Badge>
               </div>
-              <h3 className="font-heading text-xl font-semibold">{getHeadline()}</h3>
+              <h3 className="font-heading text-lg sm:text-xl font-semibold">{getHeadline()}</h3>
               
               {/* Steps */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto pb-2">
                 {steps.map((step, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
+                  <div key={index} className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                    <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center transition-all ${
                       index <= currentStep 
                         ? 'bg-gradient-hero text-white shadow-primary' 
                         : 'bg-muted text-muted-foreground'
                     }`}>
                       {index < currentStep ? (
-                        <CheckCircle className="w-5 h-5" />
+                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                       ) : (
-                        <step.icon className="w-5 h-5" />
+                        <step.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                       )}
                     </div>
-                    <div className="hidden sm:block">
-                      <div className="text-sm font-medium">{step.title}</div>
-                      <div className="text-xs text-muted-foreground">{step.description}</div>
+                    <div className="hidden xs:block sm:block">
+                      <div className="text-xs sm:text-sm font-medium">{step.title}</div>
+                      <div className="text-[10px] sm:text-xs text-muted-foreground">{step.description}</div>
                     </div>
                     {index < steps.length - 1 && (
-                      <ArrowRight className="w-4 h-4 text-muted-foreground mx-2 hidden md:block" />
+                      <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground mx-0.5 sm:mx-2 hidden md:block" />
                     )}
                   </div>
                 ))}
@@ -107,7 +107,7 @@ const PersonalizedOnboarding = ({ onGetStarted, currentStep = 0 }: PersonalizedO
 
             <Button 
               onClick={onGetStarted}
-              className="bg-gradient-hero hover:opacity-90 shadow-primary font-semibold whitespace-nowrap"
+              className="bg-gradient-hero hover:opacity-90 shadow-primary font-semibold whitespace-nowrap w-full md:w-auto text-sm sm:text-base"
             >
               {getButtonText()}
               <ArrowRight className="w-4 h-4 ml-2" />

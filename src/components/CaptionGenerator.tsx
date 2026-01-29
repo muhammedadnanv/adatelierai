@@ -258,29 +258,34 @@ const CaptionGenerator = ({
                       </div>
 
                       {/* Actions */}
-                      <div className="flex flex-wrap gap-2 pt-2">
+                      <div className="flex flex-col sm:flex-row flex-wrap gap-2 pt-2">
                         <Button
                           variant="default"
                           size="sm"
+                          className="w-full sm:w-auto"
                           onClick={() => copyToClipboard(generatedCaptions[selectedVariation])}
                         >
                           <Copy className="w-3 h-3 mr-1" />
                           Copy Caption
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => shareToSocial('twitter', generatedCaptions[selectedVariation].caption)}
-                        >
-                          Share to X
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => shareToSocial('linkedin', generatedCaptions[selectedVariation].caption)}
-                        >
-                          Share to LinkedIn
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 sm:flex-initial"
+                            onClick={() => shareToSocial('twitter', generatedCaptions[selectedVariation].caption)}
+                          >
+                            Share to X
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 sm:flex-initial"
+                            onClick={() => shareToSocial('linkedin', generatedCaptions[selectedVariation].caption)}
+                          >
+                            Share to LinkedIn
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>

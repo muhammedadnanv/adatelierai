@@ -77,13 +77,13 @@ const PersonalizedCTA = () => {
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
           
-          <CardContent className="p-8 md:p-16 text-center space-y-6 relative z-10">
+          <CardContent className="p-5 sm:p-8 md:p-12 lg:p-16 text-center space-y-4 sm:space-y-6 relative z-10">
             <motion.h2 
               key={visitorType + '-cta-headline'}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="font-heading text-3xl lg:text-title"
+              className="font-heading text-2xl sm:text-3xl lg:text-title"
             >
               {getHeadline()}
             </motion.h2>
@@ -93,13 +93,13 @@ const PersonalizedCTA = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
-              className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed"
+              className="text-base sm:text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed px-2"
             >
               {getDescription()}
             </motion.p>
             
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4"
+              className="flex flex-col gap-4 justify-center items-center pt-2 sm:pt-4"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.2 }}
@@ -107,18 +107,18 @@ const PersonalizedCTA = () => {
               <Button 
                 size="lg" 
                 variant="secondary" 
-                className="bg-white text-primary hover:bg-white/90 font-semibold text-base px-8 py-6 shadow-lg" 
+                className="bg-white text-primary hover:bg-white/90 font-semibold text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 shadow-lg w-full sm:w-auto" 
                 onClick={handleCTA}
               >
-                <Sparkles className="w-5 h-5 mr-2" />
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 {content.ctaText}
-                {visitorType === 'action-taker' && <ArrowRight className="w-5 h-5 ml-2" />}
+                {visitorType === 'action-taker' && <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />}
               </Button>
               
-              <div className="flex flex-wrap items-center justify-center gap-4 text-sm opacity-90">
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs sm:text-sm opacity-90">
                 {indicators.map((indicator, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <indicator.icon className="w-4 h-4" />
+                  <div key={index} className="flex items-center gap-1 sm:gap-2">
+                    <indicator.icon className="w-3 h-3 sm:w-4 sm:h-4" />
                     <span>{indicator.text}</span>
                   </div>
                 ))}

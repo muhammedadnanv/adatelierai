@@ -32,22 +32,22 @@ const Footer = () => {
         </div>
         
         {/* FounderHunt Branding */}
-        <div className="border-t border-border/50 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="border-t border-border/50 mt-8 md:mt-12 pt-6 md:pt-8">
+          <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between md:gap-6">
             {/* FounderHunt Attribution */}
             <a 
               href="https://founderhuntai.vercel.app/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
+              className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity group text-center sm:text-left"
             >
               <img 
                 src={founderhuntLogo} 
                 alt="FounderHunt" 
-                className="h-8 w-auto"
+                className="h-7 sm:h-8 w-auto"
               />
-              <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                This MVP was developed by <span className="font-semibold text-foreground">FounderHunt</span> — Turning startup ideas into MVPs
+              <span className="text-xs sm:text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                Developed by <span className="font-semibold text-foreground">FounderHunt</span> — Turning ideas into MVPs
               </span>
             </a>
             
