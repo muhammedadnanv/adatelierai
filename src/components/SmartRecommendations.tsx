@@ -119,40 +119,40 @@ const SmartRecommendations = ({
       transition={{ duration: 0.3 }}
     >
       <Card className="shadow-card border-border/50">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-base font-heading flex items-center gap-2">
-              <Lightbulb className="w-4 h-4 text-warning" />
+        <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6 pt-3 sm:pt-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <CardTitle className="text-sm sm:text-base font-heading flex items-center gap-2">
+              <Lightbulb className="w-4 h-4 text-warning flex-shrink-0" />
               Smart Recommendations
             </CardTitle>
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs w-fit">
               Personalized for you
             </Badge>
           </div>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-2 sm:space-y-3 px-3 sm:px-6 pb-3 sm:pb-6">
           {recommendations.map((rec, index) => (
             <motion.div
               key={rec.id}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.2, delay: index * 0.1 }}
-              className="flex items-center justify-between gap-4 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 p-2.5 sm:p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
             >
-              <div className="flex items-start gap-3">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${getPriorityColor(rec.priority)}`}>
-                  <rec.icon className="w-4 h-4" />
+              <div className="flex items-start gap-2 sm:gap-3">
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${getPriorityColor(rec.priority)}`}>
+                  <rec.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <div>
-                  <div className="font-medium text-sm">{rec.title}</div>
-                  <div className="text-xs text-muted-foreground">{rec.description}</div>
+                <div className="min-w-0">
+                  <div className="font-medium text-xs sm:text-sm">{rec.title}</div>
+                  <div className="text-xs text-muted-foreground line-clamp-2">{rec.description}</div>
                 </div>
               </div>
               <Button 
                 size="sm" 
                 variant="ghost"
                 onClick={() => onRecommendationClick?.(rec.id)}
-                className="flex-shrink-0"
+                className="flex-shrink-0 text-xs sm:text-sm h-8 px-2 sm:px-3 self-end sm:self-auto"
               >
                 {rec.action}
                 <ArrowRight className="w-3 h-3 ml-1" />

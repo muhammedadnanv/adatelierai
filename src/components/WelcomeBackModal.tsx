@@ -134,7 +134,7 @@ const WelcomeBackModal = ({ isOpen, onClose }: WelcomeBackModalProps) => {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 30 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative bg-card rounded-2xl p-6 w-[90%] max-w-[500px] shadow-2xl border border-border"
+            className="relative bg-card rounded-2xl p-4 sm:p-6 w-[92%] max-w-[500px] shadow-2xl border border-border mx-4"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -147,7 +147,7 @@ const WelcomeBackModal = ({ isOpen, onClose }: WelcomeBackModalProps) => {
             </button>
 
             {/* Header */}
-            <div className="text-center mb-6">
+            <div className="text-center mb-4 sm:mb-6">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -164,7 +164,7 @@ const WelcomeBackModal = ({ isOpen, onClose }: WelcomeBackModalProps) => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 }}
-                className="text-2xl font-bold text-foreground mb-2"
+                className="text-xl sm:text-2xl font-bold text-foreground mb-2"
               >
                 {welcomeMessage.greeting}
               </motion.h2>
@@ -180,7 +180,7 @@ const WelcomeBackModal = ({ isOpen, onClose }: WelcomeBackModalProps) => {
             </div>
 
             {/* Personalized Recommendations */}
-            <div className="space-y-3 mb-6">
+            <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -199,16 +199,16 @@ const WelcomeBackModal = ({ isOpen, onClose }: WelcomeBackModalProps) => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 + index * 0.1 }}
                     onClick={() => handleRecommendationClick(index)}
-                    className="w-full flex items-center gap-4 p-4 rounded-xl bg-muted/50 hover:bg-muted border border-border hover:border-primary/30 transition-all group text-left"
+                    className="w-full flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-muted/50 hover:bg-muted border border-border hover:border-primary/30 transition-all group text-left"
                   >
-                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                      <IconComponent className="w-5 h-5" />
+                    <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-foreground group-hover:text-primary transition-colors">
+                      <p className="font-medium text-sm sm:text-base text-foreground group-hover:text-primary transition-colors">
                         {rec.title}
                       </p>
-                      <p className="text-sm text-muted-foreground truncate">
+                      <p className="text-xs sm:text-sm text-muted-foreground truncate">
                         {rec.description}
                       </p>
                     </div>
