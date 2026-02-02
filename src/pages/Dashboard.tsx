@@ -9,7 +9,10 @@ import {
   Settings, 
   History, 
   Wand2,
-  Trophy
+  Trophy,
+  Moon,
+  Sun,
+  Monitor
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +28,7 @@ import PersonalizedDashboardHeader from '@/components/PersonalizedDashboardHeade
 import PersonalizedOnboarding from '@/components/PersonalizedOnboarding';
 import SmartRecommendations from '@/components/SmartRecommendations';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
+import { useTheme } from '@/hooks/useTheme';
 
 interface CaptionVariation {
   caption: string;
@@ -38,6 +42,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { behavior, trackCaptionGenerated, trackImageUploaded, ACHIEVEMENTS } = useBehaviorTracking();
   const { trackClick, trackPageVisit, visitorType, engagementLevel, device } = usePersonalization();
+  const { theme, setTheme, isDark } = useTheme();
   
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -270,8 +275,59 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="settings">
-            <div className="space-y-6">
-              <Card className="shadow-card border-border/50 max-w-2xl">
+            <div className="space-y-6 max-w-2xl">
+              {/* Theme Settings */}
+              <Card className="shadow-card border-border/50">
+                <CardHeader>
+                  <CardTitle className="font-heading flex items-center gap-2">
+                    {isDark ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+                    Appearance
+                  </CardTitle>
+                  <CardDescription>
+                    Choose your preferred theme for the interface
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-3 gap-3">
+                    <button
+                      onClick={() => setTheme('light')}
+                      className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                        theme === 'light' 
+                          ? 'border-primary bg-primary/10' 
+                          : 'border-border hover:border-primary/50'
+                      }`}
+                    >
+                      <Sun className="w-6 h-6" />
+                      <span className="text-sm font-medium">Light</span>
+                    </button>
+                    <button
+                      onClick={() => setTheme('dark')}
+                      className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                        theme === 'dark' 
+                          ? 'border-primary bg-primary/10' 
+                          : 'border-border hover:border-primary/50'
+                      }`}
+                    >
+                      <Moon className="w-6 h-6" />
+                      <span className="text-sm font-medium">Dark</span>
+                    </button>
+                    <button
+                      onClick={() => setTheme('system')}
+                      className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                        theme === 'system' 
+                          ? 'border-primary bg-primary/10' 
+                          : 'border-border hover:border-primary/50'
+                      }`}
+                    >
+                      <Monitor className="w-6 h-6" />
+                      <span className="text-sm font-medium">System</span>
+                    </button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Other Settings */}
+              <Card className="shadow-card border-border/50">
                 <CardHeader>
                   <CardTitle className="font-heading">Application Settings</CardTitle>
                   <CardDescription>
