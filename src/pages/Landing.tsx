@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate, Link } from 'react-router-dom';
-import { Sparkles, Upload, Wand2, Share2, Shield, Zap, Star, MessageSquare, TrendingUp } from 'lucide-react';
+import { Sparkles, Upload, Wand2, Share2, Shield, Zap, Star, MessageSquare, TrendingUp, Crown, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import PersonalizedHero from '@/components/PersonalizedHero';
 import PersonalizedCTA from '@/components/PersonalizedCTA';
@@ -120,6 +120,24 @@ const Landing = () => {
               height: '54px'
             }} width="250" height="54" />
             </a>
+            
+            {/* Creator Portal Link */}
+            <Link to="/creators" className="hidden md:flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+              <Crown className="w-4 h-4 text-warning" />
+              Creators
+            </Link>
+
+            {/* Donate Link */}
+            <a 
+              href="https://razorpay.me/@adnan4402" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Heart className="w-4 h-4 text-destructive" />
+              <span className="hidden md:inline">Support</span>
+            </a>
+
             <ThemeToggle variant="dropdown" />
             <Button 
               variant="default" 
