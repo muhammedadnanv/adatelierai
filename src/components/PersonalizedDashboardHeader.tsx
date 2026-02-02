@@ -4,6 +4,7 @@ import { Sparkles, ArrowLeft, Lightbulb, Zap, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from '@/components/ThemeToggle';
 
 interface PersonalizedDashboardHeaderProps {
   streakDays?: number;
@@ -75,7 +76,7 @@ const PersonalizedDashboardHeader = ({ streakDays = 0, captionsGenerated = 0 }: 
             </div>
           </div>
 
-          {/* Personalized status badges */}
+          {/* Personalized status badges & theme toggle */}
           <div className="flex items-center gap-2">
             {streakDays > 0 && device !== 'mobile' && (
               <Badge variant="outline" className="bg-warning/10 text-warning border-warning/20">
@@ -88,6 +89,7 @@ const PersonalizedDashboardHeader = ({ streakDays = 0, captionsGenerated = 0 }: 
                 Power User
               </Badge>
             )}
+            <ThemeToggle />
           </div>
         </div>
 
