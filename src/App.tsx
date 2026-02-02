@@ -9,10 +9,12 @@ import Dashboard from "./pages/Dashboard";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Security from "./pages/Security";
+import CreatorPortal from "./pages/CreatorPortal";
 import NotFound from "./pages/NotFound";
 import AdvertisementPopup from "./components/AdvertisementPopup";
 import ExitIntentPopup from "./components/ExitIntentPopup";
 import WelcomeBackModal, { useWelcomeBack } from "./components/WelcomeBackModal";
+import DonationPopup, { useDonationPopup } from "./components/DonationPopup";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useAdvertisementPopup } from "./hooks/useAdvertisementPopup";
 import { useExitIntent } from "./hooks/useExitIntent";
@@ -43,6 +45,7 @@ const AnimatedRoutes = () => {
   });
 
   const { showWelcomeBack, dismissWelcomeBack } = useWelcomeBack();
+  const { isVisible: isDonationVisible, dismissPopup: dismissDonation } = useDonationPopup();
 
   return (
     <>
@@ -53,6 +56,7 @@ const AnimatedRoutes = () => {
           <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
           <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
           <Route path="/security" element={<PageTransition><Security /></PageTransition>} />
+          <Route path="/creators" element={<PageTransition><CreatorPortal /></PageTransition>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
         </Routes>
@@ -74,6 +78,12 @@ const AnimatedRoutes = () => {
       <WelcomeBackModal
         isOpen={showWelcomeBack && !isAdVisible && !showExitIntent}
         onClose={dismissWelcomeBack}
+      />
+
+      {/* Donation Popup */}
+      <DonationPopup
+        isOpen={isDonationVisible && !isAdVisible && !showExitIntent && !showWelcomeBack}
+        onClose={dismissDonation}
       />
       
       {/* Visitor Insight Badge (dev mode only) */}
