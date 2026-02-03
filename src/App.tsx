@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Privacy from "./pages/Privacy";
@@ -19,9 +20,22 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { useAdvertisementPopup } from "./hooks/useAdvertisementPopup";
 import { useExitIntent } from "./hooks/useExitIntent";
 import PageTransition from "./components/PageTransition";
-import { PersonalizationProvider } from "./contexts/PersonalizationContext";
+import { PersonalizationProvider, usePersonalization } from "./contexts/PersonalizationContext";
 import VisitorInsightBadge from "./components/VisitorInsightBadge";
+
 const queryClient = new QueryClient();
+
+// Component to track route changes
+const RouteTracker = () => {
+  const location = useLocation();
+  const { trackPageVisit } = usePersonalization();
+
+  useEffect(() => {
+    trackPageVisit(location.pathname);
+  }, [location.pathname, trackPageVisit]);
+
+  return null;
+};
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -49,6 +63,9 @@ const AnimatedRoutes = () => {
 
   return (
     <>
+      {/* Track route changes for personalization */}
+      <RouteTracker />
+      
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageTransition><Index /></PageTransition>} />
