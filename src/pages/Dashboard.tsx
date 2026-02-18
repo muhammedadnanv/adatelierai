@@ -158,7 +158,12 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Global ambient glass overlay */}
+      <div className="fixed inset-0 pointer-events-none z-[1]">
+        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-1/4 right-1/3 w-[350px] h-[350px] bg-accent/5 rounded-full blur-[80px]"></div>
+      </div>
       <PersonalizedDashboardHeader 
         streakDays={behavior.streakDays}
         captionsGenerated={behavior.captionsGenerated}

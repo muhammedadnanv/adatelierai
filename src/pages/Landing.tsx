@@ -99,9 +99,14 @@ const Landing = () => {
   const orderedFeatures = getOrderedFeatures();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Global ambient glass overlay */}
+      <div className="fixed inset-0 pointer-events-none z-[1]">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px]"></div>
+      </div>
       {/* Header - Premium glassmorphism */}
-      <header className="border-b border-border/50 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-border/30 glass-overlay sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-hero rounded-xl flex items-center justify-center shadow-primary">
@@ -162,7 +167,7 @@ const Landing = () => {
       />
 
       {/* Features Section - Clean & Elevated */}
-      <section id="features" className="py-20 md:py-28 bg-card/50">
+      <section id="features" className="py-20 md:py-28 glass-section relative z-[2]">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
             <Badge className="bg-accent/10 text-accent border-accent/20 font-medium px-4 py-1.5">
@@ -183,7 +188,8 @@ const Landing = () => {
             {orderedFeatures.map((feature, index) => (
               <Card 
                 key={index} 
-                className="shadow-card border-border/50 hover:shadow-elegant hover:border-primary/20 transition-all duration-300 bg-card cursor-pointer"
+                className="glass-card hover:shadow-elegant hover:border-primary/30 hover:scale-[1.03] transition-all duration-300 cursor-pointer animate-glass-enter"
+                style={{ animationDelay: `${index * 0.08}s`, animationFillMode: 'both' }}
                 onClick={() => trackClick('feature')}
               >
                 <CardHeader>
@@ -204,7 +210,7 @@ const Landing = () => {
       </section>
 
       {/* How It Works - Bold steps */}
-      <section className="py-20 md:py-28">
+      <section className="py-20 md:py-28 relative z-[2]">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
             <h2 className="font-heading text-3xl lg:text-title">
@@ -248,7 +254,7 @@ const Landing = () => {
       </section>
 
       {/* Testimonials - Premium cards */}
-      <section className="py-20 md:py-28 bg-card/50">
+      <section className="py-20 md:py-28 glass-section relative z-[2]">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
             <h2 className="font-heading text-3xl lg:text-title">
@@ -263,7 +269,7 @@ const Landing = () => {
             {testimonials.map((testimonial, index) => (
               <Card 
                 key={index} 
-                className="shadow-card border-border/50 bg-card cursor-pointer hover:shadow-elegant transition-all duration-300"
+                className="glass-card cursor-pointer hover:shadow-elegant hover:scale-[1.03] transition-all duration-300"
                 onClick={() => trackClick('testimonial')}
               >
                 <CardHeader>

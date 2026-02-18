@@ -89,7 +89,7 @@ const ExitIntentPopup = ({ isOpen, onClose, onAccept }: ExitIntentPopupProps) =>
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-md"
           onClick={onClose}
         >
           <motion.div
@@ -97,7 +97,7 @@ const ExitIntentPopup = ({ isOpen, onClose, onAccept }: ExitIntentPopupProps) =>
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 50 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative bg-card rounded-2xl p-5 sm:p-8 w-[92%] max-w-[480px] shadow-2xl border border-border overflow-hidden mx-4"
+            className="relative glass-card rounded-2xl p-5 sm:p-8 w-[92%] max-w-[480px] shadow-2xl overflow-hidden mx-4"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Background gradient accent */}

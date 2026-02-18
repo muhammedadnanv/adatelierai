@@ -62,7 +62,9 @@
     --gradient-accent: linear-gradient(135deg, hsl(211 100% 50%), hsl(211 100% 60%));
     --gradient-hero: linear-gradient(135deg, hsl(214 100% 43%) 0%, hsl(211 100% 55%) 50%, hsl(214 100% 48%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 20% 98%) 100%);
-    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.6) 100%);
+    --gradient-glass-card: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.4) 100%);
+    --gradient-glass-overlay: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
     --gradient-dark: linear-gradient(135deg, hsl(220 20% 8%) 0%, hsl(220 30% 15%) 100%);
 
     /* Shadows - Premium depth */
@@ -71,6 +73,7 @@
     --shadow-elegant: 0 4px 24px -4px hsl(220 20% 8% / 0.08);
     --shadow-glow: 0 0 60px hsl(214 100% 50% / 0.3);
     --shadow-card: 0 1px 3px hsl(220 20% 8% / 0.04), 0 8px 24px -8px hsl(220 20% 8% / 0.08);
+    --shadow-glass: 0 8px 32px -4px hsl(220 20% 8% / 0.06), inset 0 1px 0 hsl(0 0% 100% / 0.5);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -166,6 +169,10 @@
     --shadow-lg: 0 12px 32px -8px hsl(0 0% 0% / 0.45);
     --shadow-xl: 0 20px 48px -12px hsl(0 0% 0% / 0.5);
     --shadow-2xl: 0 32px 64px -16px hsl(0 0% 0% / 0.6);
+    --shadow-glass: 0 8px 32px -4px hsl(0 0% 0% / 0.15), inset 0 1px 0 hsl(0 0% 100% / 0.08);
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+    --gradient-glass-card: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    --gradient-glass-overlay: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
   }
 }
 
@@ -208,5 +215,28 @@
     background: var(--gradient-glass);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-glass);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  .glass-card-subtle {
+    background: var(--gradient-glass-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-glass);
+    border: 1px solid hsl(var(--border) / 0.3);
+  }
+
+  .glass-overlay {
+    background: var(--gradient-glass-overlay);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  .glass-section {
+    background: var(--gradient-glass-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--border) / 0.2);
   }
 }

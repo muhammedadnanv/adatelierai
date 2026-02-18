@@ -121,9 +121,14 @@ const CreatorPortal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Global ambient glass overlay */}
+      <div className="fixed inset-0 pointer-events-none z-[1]">
+        <div className="absolute top-1/4 right-1/4 w-[450px] h-[450px] bg-primary/5 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-[350px] h-[350px] bg-accent/5 rounded-full blur-[100px]"></div>
+      </div>
       {/* Header */}
-      <header className="border-b border-border/50 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-border/30 glass-overlay sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
@@ -207,7 +212,7 @@ const CreatorPortal = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="h-full shadow-card border-border/50 hover:shadow-elegant hover:border-primary/20 transition-all">
+                <Card className="h-full glass-card hover:shadow-elegant hover:border-primary/20 hover:scale-[1.03] transition-all duration-300">
                   <CardHeader>
                     <div className="w-12 h-12 bg-gradient-hero rounded-xl flex items-center justify-center mb-4 shadow-primary">
                       <benefit.icon className="w-6 h-6 text-white" />
@@ -230,7 +235,7 @@ const CreatorPortal = () => {
       </section>
 
       {/* How It Works */}
-      <section className="py-16 md:py-20 bg-card/50">
+      <section className="py-16 md:py-20 glass-section relative z-[2]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl lg:text-4xl font-bold mb-4">
@@ -286,7 +291,7 @@ const CreatorPortal = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="h-full shadow-card border-border/50">
+                <Card className="h-full glass-card">
                   <CardHeader>
                     <Badge className="w-fit bg-primary/10 text-primary border-0 mb-2">
                       {idea.type}
@@ -336,7 +341,7 @@ const CreatorPortal = () => {
       </section>
 
       {/* Application Form */}
-      <section id="apply" className="py-16 md:py-20 bg-card/50">
+      <section id="apply" className="py-16 md:py-20 glass-section relative z-[2]">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8">
