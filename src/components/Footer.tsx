@@ -4,7 +4,7 @@ import founderhuntLogo from '@/assets/founderhunt-logo.png';
 
 const Footer = () => {
   return (
-    <footer className="py-12 md:py-16 border-t border-border/50 bg-card/30">
+    <footer className="py-12 md:py-16 border-t border-border/30 glass-section relative z-[2]">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           <div className="space-y-4 col-span-2 md:col-span-1">

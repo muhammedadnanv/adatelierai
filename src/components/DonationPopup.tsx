@@ -19,7 +19,7 @@ const DonationPopup = ({ isOpen, onClose }: DonationPopupProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-card border-border/50 p-0 overflow-hidden">
+      <DialogContent className="sm:max-w-md glass-card p-0 overflow-hidden">
         {/* Gradient header */}
         <div className="bg-gradient-hero p-6 text-center relative">
           <motion.div

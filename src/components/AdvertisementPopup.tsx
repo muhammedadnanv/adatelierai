@@ -14,11 +14,11 @@ const AdvertisementPopup = ({ isOpen, onClose }: AdvertisementPopupProps) => {
 
   return (
     <div 
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 animate-fade-in"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-md animate-fade-in"
       onClick={onClose}
     >
       <div 
-        className="relative bg-white rounded-lg p-4 sm:p-5 w-[92%] max-w-[400px] shadow-elegant animate-slide-up mx-4"
+        className="relative glass-card rounded-2xl p-4 sm:p-5 w-[92%] max-w-[400px] animate-scale-in mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}

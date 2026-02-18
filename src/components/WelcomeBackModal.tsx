@@ -126,7 +126,7 @@ const WelcomeBackModal = ({ isOpen, onClose }: WelcomeBackModalProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/50 backdrop-blur-md"
           onClick={onClose}
         >
           <motion.div
@@ -134,7 +134,7 @@ const WelcomeBackModal = ({ isOpen, onClose }: WelcomeBackModalProps) => {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 30 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative bg-card rounded-2xl p-4 sm:p-6 w-[92%] max-w-[500px] shadow-2xl border border-border mx-4"
+            className="relative glass-card rounded-2xl p-4 sm:p-6 w-[92%] max-w-[500px] shadow-2xl mx-4"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}

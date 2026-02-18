@@ -138,14 +138,14 @@ const ContactForm = () => {
 
   if (isSubmitted) {
     return (
-      <section id="contact" className="py-20 md:py-28 bg-card/50">
+      <section id="contact" className="py-20 md:py-28 glass-section relative z-[2]">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="max-w-2xl mx-auto shadow-card border-border/50 bg-card">
+            <Card className="max-w-2xl mx-auto glass-card">
               <CardContent className="pt-12 pb-12 text-center space-y-6">
                 <div className="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-10 h-10 text-success" />
@@ -176,7 +176,7 @@ const ContactForm = () => {
   const trustIndicators = getTrustIndicators();
 
   return (
-    <section id="contact" className="py-20 md:py-28 bg-card/50">
+    <section id="contact" className="py-20 md:py-28 glass-section relative z-[2]">
       <div className="container mx-auto px-4">
         <AnimatePresence mode="wait">
           <motion.div
@@ -221,7 +221,7 @@ const ContactForm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <Card className="max-w-2xl mx-auto shadow-card border-border/50 bg-card hover:shadow-elegant transition-shadow duration-300">
+          <Card className="max-w-2xl mx-auto glass-card hover:shadow-elegant transition-shadow duration-300">
             <CardHeader className="text-center pb-2">
               <CardTitle className="font-heading text-xl">
                 {visitorType === 'action-taker' ? "Let's Make It Happen" : "Send Us a Message"}
