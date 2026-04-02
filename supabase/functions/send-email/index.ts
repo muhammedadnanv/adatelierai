@@ -42,7 +42,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         from: 'Ad Atelier AI <onboarding@resend.dev>',
-        to: ['adnan4402business@gmail.com'],
+        to: ['iamadnanvv@gmail.com'],
         subject: `[${inquiryType}] ${subject}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -50,12 +50,12 @@ serve(async (req) => {
               <h1 style="color: white; margin: 0; font-size: 22px;">New Contact Form Submission</h1>
             </div>
             <div style="background: #ffffff; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
-              <p><strong>Name:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${to}</p>
-              <p><strong>Inquiry Type:</strong> ${inquiryType}</p>
-              <p><strong>Subject:</strong> ${subject}</p>
+              <p style="color: #374151;"><strong>Name:</strong> ${name}</p>
+              <p style="color: #374151;"><strong>Email:</strong> ${to}</p>
+              <p style="color: #374151;"><strong>Inquiry Type:</strong> ${inquiryType}</p>
+              <p style="color: #374151;"><strong>Subject:</strong> ${subject}</p>
               <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0;" />
-              <p><strong>Message:</strong></p>
+              <p style="color: #374151;"><strong>Message:</strong></p>
               <p style="white-space: pre-wrap; color: #374151;">${message}</p>
             </div>
           </div>
