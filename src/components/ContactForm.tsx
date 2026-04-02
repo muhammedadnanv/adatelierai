@@ -25,6 +25,7 @@ import {
 import { Mail, Send, MessageSquare, Handshake, HelpCircle, CheckCircle2, Zap, Users, Clock } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
+import { supabase } from '@/integrations/supabase/client';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const contactSchema = z.object({
