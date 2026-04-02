@@ -106,6 +106,9 @@ const AnimatedRoutes = () => {
       
       {/* Visitor Insight Badge (dev mode only) */}
       <VisitorInsightBadge />
+      
+      {/* UPI Payment Widget */}
+      <PaymentWidget />
     </>
   );
 };

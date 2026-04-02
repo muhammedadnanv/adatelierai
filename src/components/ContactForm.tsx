@@ -80,7 +80,17 @@ const ContactForm = () => {
     trackClick('cta');
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const { error } = await supabase.functions.invoke('send-email', {
+        body: {
+          to: data.email,
+          subject: data.subject,
+          name: data.name,
+          inquiryType: data.inquiryType,
+          message: data.message,
+        },
+      });
+
+      if (error) throw error;
       
       setIsSubmitted(true);
       toast({
