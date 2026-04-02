@@ -16,6 +16,7 @@ import AdvertisementPopup from "./components/AdvertisementPopup";
 import ExitIntentPopup from "./components/ExitIntentPopup";
 import WelcomeBackModal, { useWelcomeBack } from "./components/WelcomeBackModal";
 import DonationPopup, { useDonationPopup } from "./components/DonationPopup";
+import PaymentWidget from "./components/PaymentWidget";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useAdvertisementPopup } from "./hooks/useAdvertisementPopup";
 import { useExitIntent } from "./hooks/useExitIntent";
