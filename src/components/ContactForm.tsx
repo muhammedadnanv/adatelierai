@@ -25,6 +25,7 @@ import {
 import { Mail, Send, MessageSquare, Handshake, HelpCircle, CheckCircle2, Zap, Users, Clock } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
+import { supabase } from '@/integrations/supabase/client';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const contactSchema = z.object({
@@ -79,7 +80,17 @@ const ContactForm = () => {
     trackClick('cta');
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const { error } = await supabase.functions.invoke('send-email', {
+        body: {
+          to: data.email,
+          subject: data.subject,
+          name: data.name,
+          inquiryType: data.inquiryType,
+          message: data.message,
+        },
+      });
+
+      if (error) throw error;
       
       setIsSubmitted(true);
       toast({
