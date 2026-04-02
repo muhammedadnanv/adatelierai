@@ -68,33 +68,36 @@ serve(async (req) => {
       throw new Error(`Resend admin email failed [${adminRes.status}]: ${err}`);
     }
 
-    // Send auto-reply to the user
-    const userRes = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: 'Ad Atelier AI <onboarding@resend.dev>',
-        to: [to],
-        subject: 'Thanks for reaching out — Ad Atelier AI',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-            <div style="background: linear-gradient(135deg, #0057D9, #007BFF); padding: 24px; border-radius: 12px 12px 0 0;">
-              <h1 style="color: white; margin: 0; font-size: 22px;">Thank You, ${name}!</h1>
+    // Send auto-reply to the user (best-effort, may fail without verified domain)
+    try {
+      const userRes = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: 'Ad Atelier AI <onboarding@resend.dev>',
+          to: [to],
+          subject: 'Thanks for reaching out — Ad Atelier AI',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <div style="background: linear-gradient(135deg, #0057D9, #007BFF); padding: 24px; border-radius: 12px 12px 0 0;">
+                <h1 style="color: white; margin: 0; font-size: 22px;">Thank You, ${name}!</h1>
+              </div>
+              <div style="background: #ffffff; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
+                <p style="color: #374151; line-height: 1.6;">We've received your message and our team will get back to you within 24-48 hours.</p>
+                <p style="color: #6b7280; font-size: 14px;">— The Ad Atelier AI Team</p>
+              </div>
             </div>
-            <div style="background: #ffffff; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
-              <p style="color: #374151; line-height: 1.6;">We've received your message and our team will get back to you within 24-48 hours.</p>
-              <p style="color: #6b7280; font-size: 14px;">— The Ad Atelier AI Team</p>
-            </div>
-          </div>
-        `,
-      }),
-    });
-
-    if (!userRes.ok) {
-      console.error('Auto-reply failed:', await userRes.text());
+          `,
+        }),
+      });
+      if (!userRes.ok) {
+        console.warn('Auto-reply skipped (no verified domain):', await userRes.text());
+      }
+    } catch (autoReplyErr) {
+      console.warn('Auto-reply error:', autoReplyErr);
     }
 
     return new Response(
