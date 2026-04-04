@@ -1,20 +1,96 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CreditCard, QrCode, IndianRupee, Shield } from 'lucide-react';
+import { X, CreditCard, IndianRupee, Shield, CheckCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
+const RAZORPAY_KEY_ID = 'rzp_live_SZIYgnAQN4Bg5n';
 
 const PaymentWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [accessCode, setAccessCode] = useState('');
 
-  const upiId = 'muhammed.39@superyes';
-  const payeeName = 'Muhammed Adnan';
   const amount = 39;
-  const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+
+  const handlePayment = async () => {
+    setLoading(true);
+    try {
+      // Create order via edge function
+      const { data, error } = await supabase.functions.invoke('razorpay-order', {
+        body: { action: 'create_order', amount },
+      });
+
+      if (error || !data?.order_id) {
+        throw new Error(error?.message || 'Failed to create order');
+      }
+
+      // Load Razorpay script if not loaded
+      if (!window.Razorpay) {
+        await new Promise<void>((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+          script.onload = () => resolve();
+          script.onerror = () => reject(new Error('Failed to load Razorpay'));
+          document.head.appendChild(script);
+        });
+      }
+
+      const options = {
+        key: RAZORPAY_KEY_ID,
+        amount: data.amount,
+        currency: 'INR',
+        name: 'Ad Atelier AI',
+        description: 'Premium Access',
+        order_id: data.order_id,
+        handler: async (response: any) => {
+          // Verify payment
+          const { data: verifyData, error: verifyError } = await supabase.functions.invoke('razorpay-order', {
+            body: {
+              action: 'verify_payment',
+              payment_id: response.razorpay_payment_id,
+              order_id: response.razorpay_order_id,
+              signature: response.razorpay_signature,
+            },
+          });
+
+          if (verifyError || !verifyData?.verified) {
+            toast({ title: 'Payment verification failed', description: 'Please contact support.', variant: 'destructive' });
+            return;
+          }
+
+          setPaymentSuccess(true);
+          setAccessCode(verifyData.access_code || '');
+          toast({ title: '🎉 Payment Successful!', description: 'Thank you for your support.' });
+        },
+        prefill: { name: '', email: '', contact: '' },
+        theme: { color: '#9b87f5' },
+        modal: { ondismiss: () => setLoading(false) },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', (response: any) => {
+        toast({ title: 'Payment Failed', description: response.error?.description || 'Please try again.', variant: 'destructive' });
+        setLoading(false);
+      });
+      rzp.open();
+      setLoading(false);
+    } catch (err: any) {
+      toast({ title: 'Error', description: err.message || 'Something went wrong', variant: 'destructive' });
+      setLoading(false);
+    }
+  };
 
   return (
     <>
-      {/* Floating Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-5 right-5 z-[1000] w-14 h-14 md:w-[60px] md:h-[60px] rounded-full bg-success text-success-foreground flex items-center justify-center shadow-lg border-0 outline-none cursor-pointer"
@@ -25,7 +101,6 @@ const PaymentWidget = () => {
         <CreditCard className="w-6 h-6" />
       </motion.button>
 
-      {/* Payment Popup */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -50,48 +125,64 @@ const PaymentWidget = () => {
               </button>
             </div>
 
-            {/* Content */}
             <div className="p-5 space-y-4">
-              <h4 className="text-xl font-heading font-semibold text-center text-foreground flex items-center justify-center gap-2">
-                <QrCode className="w-5 h-5 text-primary" />
-                Pay with UPI
-              </h4>
+              {paymentSuccess ? (
+                <div className="text-center space-y-4">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', delay: 0.1 }}
+                  >
+                    <CheckCircle className="w-16 h-16 text-success mx-auto" />
+                  </motion.div>
+                  <h4 className="text-xl font-heading font-semibold text-foreground">Payment Successful!</h4>
+                  <p className="text-sm text-muted-foreground">Thank you for your support.</p>
+                  {accessCode && (
+                    <div className="bg-muted/50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground mb-1">Your Access Code</p>
+                      <p className="text-lg font-mono font-bold text-primary tracking-wider">{accessCode}</p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <h4 className="text-xl font-heading font-semibold text-center text-foreground">
+                    Premium Access
+                  </h4>
 
-              {/* QR Code */}
-              <div className="flex justify-center">
-                <img
-                  src={qrUrl}
-                  alt="UPI QR Code"
-                  className="w-[200px] h-[200px] rounded-lg border-2 border-border/50"
-                  loading="lazy"
-                />
-              </div>
+                  <div className="bg-muted/30 rounded-lg p-4 text-center">
+                    <p className="text-3xl font-bold text-primary">₹{amount}</p>
+                    <p className="text-xs text-muted-foreground mt-1">One-time payment</p>
+                  </div>
 
-              <p className="text-xs text-muted-foreground text-center">Scan with any UPI app</p>
+                  <ul className="space-y-2 text-sm text-foreground">
+                    {['Unlimited AI captions', 'All platforms supported', 'Priority generation', 'Premium templates'].map((item) => (
+                      <li key={item} className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
 
-              {/* Payment Details */}
-              <div className="space-y-1.5 text-sm text-foreground">
-                <p><span className="text-muted-foreground">UPI ID:</span> {upiId}</p>
-                <p><span className="text-muted-foreground">Payee:</span> {payeeName}</p>
-                <p><span className="text-muted-foreground">Amount:</span> ₹{amount}</p>
-              </div>
+                  <Button
+                    onClick={handlePayment}
+                    disabled={loading}
+                    className="w-full bg-success hover:bg-success/90 text-success-foreground font-semibold py-5 text-base"
+                  >
+                    {loading ? (
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                    ) : (
+                      <CreditCard className="w-5 h-5 mr-2" />
+                    )}
+                    {loading ? 'Processing...' : `Pay ₹${amount} with Razorpay`}
+                  </Button>
 
-              {/* Pay Button */}
-              <a
-                href={upiLink}
-                className="block w-full"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button className="w-full bg-success hover:bg-success/90 text-success-foreground font-semibold py-5 text-base">
-                  💳 Pay ₹{amount} via UPI
-                </Button>
-              </a>
-
-              <p className="text-[11px] text-muted-foreground text-center flex items-center justify-center gap-1">
-                <Shield className="w-3 h-3" />
-                Secure UPI payment · Powered by Widgetify
-              </p>
+                  <p className="text-[11px] text-muted-foreground text-center flex items-center justify-center gap-1">
+                    <Shield className="w-3 h-3" />
+                    Secure payment powered by Razorpay
+                  </p>
+                </>
+              )}
             </div>
           </motion.div>
         )}
