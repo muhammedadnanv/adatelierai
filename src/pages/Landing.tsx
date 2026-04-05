@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { useNavigate, Link } from 'react-router-dom';
 import { Sparkles, Upload, Wand2, Share2, Shield, Zap, Star, MessageSquare, TrendingUp, Crown, Heart } from 'lucide-react';
+import PricingPlans from '@/components/PricingPlans';
 import { useState, useEffect } from 'react';
 import PersonalizedHero from '@/components/PersonalizedHero';
 import PersonalizedCTA from '@/components/PersonalizedCTA';
