@@ -20,7 +20,7 @@ serve(async (req) => {
   }
 
   try {
-    const { action, payment_id, order_id, signature, amount } = await req.json();
+    const { action, payment_id, order_id, signature, amount, email, name } = await req.json();
 
     if (action === "create_order") {
       const orderAmount = (amount || 39) * 100; // paise
