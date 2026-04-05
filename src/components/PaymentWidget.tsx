@@ -52,13 +52,15 @@ const PaymentWidget = () => {
         description: 'Premium Access',
         order_id: data.order_id,
         handler: async (response: any) => {
-          // Verify payment
+          const userEmail = prompt('Enter your email for the receipt (optional):') || '';
           const { data: verifyData, error: verifyError } = await supabase.functions.invoke('razorpay-order', {
             body: {
               action: 'verify_payment',
               payment_id: response.razorpay_payment_id,
               order_id: response.razorpay_order_id,
               signature: response.razorpay_signature,
+              email: userEmail,
+              name: '',
             },
           });
 

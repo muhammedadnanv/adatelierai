@@ -91,15 +91,6 @@ serve(async (req) => {
       });
 
       // Send email receipt via Resend (best-effort)
-      const { email, name } = await (async () => {
-        try {
-          const body = req.clone ? await req.clone().json() : {};
-          return { email: body.email || "", name: body.name || "" };
-        } catch { return { email: "", name: "" }; }
-      })();
-
-      // We already parsed the body above, so use the original parsed values
-      // Re-read from the request isn't possible after consuming. Pass email/name from client.
       if (email) {
         try {
           const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
