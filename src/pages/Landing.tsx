@@ -293,6 +293,9 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Pricing Plans Section */}
+      <PricingPlans />
+
       {/* Contact Form Section */}
       <ContactForm />
 
