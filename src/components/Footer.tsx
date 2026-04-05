@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, Instagram, Heart, Crown } from 'lucide-react';
+import { Sparkles, Instagram, Heart, Crown, IndianRupee, KeyRound } from 'lucide-react';
 import founderhuntLogo from '@/assets/founderhunt-logo.png';
 
 const Footer = () => {
@@ -25,6 +25,12 @@ const Footer = () => {
             <h4 className="font-heading font-semibold mb-4">Product</h4>
             <ul className="space-y-3 text-muted-foreground text-sm">
               <li><Link to="/dashboard" className="hover:text-primary transition-colors">Dashboard</Link></li>
+              <li>
+                <Link to="/subscription" className="hover:text-primary transition-colors flex items-center gap-1.5">
+                  <KeyRound className="w-3.5 h-3.5 text-primary" />
+                  My Subscription
+                </Link>
+              </li>
               <li>
                 <Link to="/creators" className="hover:text-primary transition-colors flex items-center gap-1.5">
                   <Crown className="w-3.5 h-3.5 text-warning" />

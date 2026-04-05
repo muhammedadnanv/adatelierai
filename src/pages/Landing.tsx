@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate, Link } from 'react-router-dom';
-import { Sparkles, Upload, Wand2, Share2, Shield, Zap, Star, MessageSquare, TrendingUp, Crown, Heart } from 'lucide-react';
+import { Sparkles, Upload, Wand2, Share2, Shield, Zap, Star, MessageSquare, TrendingUp, Crown, Heart, IndianRupee } from 'lucide-react';
 import PricingPlans from '@/components/PricingPlans';
 import { useState, useEffect } from 'react';
 import PersonalizedHero from '@/components/PersonalizedHero';
@@ -127,6 +127,15 @@ const Landing = () => {
             }} width="250" height="54" />
             </a>
             
+            {/* Pricing Link */}
+            <button
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+              className="hidden md:flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+            >
+              <IndianRupee className="w-4 h-4 text-success" />
+              Pricing
+            </button>
+
             {/* Creator Portal Link */}
             <Link to="/creators" className="hidden md:flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
               <Crown className="w-4 h-4 text-warning" />
