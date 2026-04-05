@@ -26,6 +26,12 @@ const Footer = () => {
             <ul className="space-y-3 text-muted-foreground text-sm">
               <li><Link to="/dashboard" className="hover:text-primary transition-colors">Dashboard</Link></li>
               <li>
+                <Link to="/subscription" className="hover:text-primary transition-colors flex items-center gap-1.5">
+                  <KeyRound className="w-3.5 h-3.5 text-primary" />
+                  My Subscription
+                </Link>
+              </li>
+              <li>
                 <Link to="/creators" className="hover:text-primary transition-colors flex items-center gap-1.5">
                   <Crown className="w-3.5 h-3.5 text-warning" />
                   Creator Portal

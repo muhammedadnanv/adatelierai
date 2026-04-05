@@ -127,6 +127,15 @@ const Landing = () => {
             }} width="250" height="54" />
             </a>
             
+            {/* Pricing Link */}
+            <button
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+              className="hidden md:flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+            >
+              <IndianRupee className="w-4 h-4 text-success" />
+              Pricing
+            </button>
+
             {/* Creator Portal Link */}
             <Link to="/creators" className="hidden md:flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
               <Crown className="w-4 h-4 text-warning" />
