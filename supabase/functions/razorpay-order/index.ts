@@ -79,16 +79,69 @@ serve(async (req) => {
 
       const { data: accessCode } = await supabase.rpc("generate_access_code");
 
+      const finalAccessCode = accessCode || `AC-${Date.now()}`;
+
       await supabase.from("payments").insert({
-        amount: 39,
+        amount: amount || 39,
         razorpay_payment_id: payment_id,
         razorpay_order_id: order_id,
         status: "verified",
         verified_at: new Date().toISOString(),
-        access_code: accessCode || `AC-${Date.now()}`,
+        access_code: finalAccessCode,
       });
 
-      return new Response(JSON.stringify({ verified: true, access_code: accessCode }), {
+      // Send email receipt via Resend (best-effort)
+      const { email, name } = await (async () => {
+        try {
+          const body = req.clone ? await req.clone().json() : {};
+          return { email: body.email || "", name: body.name || "" };
+        } catch { return { email: "", name: "" }; }
+      })();
+
+      // We already parsed the body above, so use the original parsed values
+      // Re-read from the request isn't possible after consuming. Pass email/name from client.
+      if (email) {
+        try {
+          const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+          if (RESEND_API_KEY) {
+            await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${RESEND_API_KEY}`,
+              },
+              body: JSON.stringify({
+                from: "Ad Atelier AI <onboarding@resend.dev>",
+                to: [email],
+                subject: "Payment Receipt — Ad Atelier AI",
+                html: `
+                  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <div style="background: linear-gradient(135deg, #0057D9, #007BFF); padding: 24px; border-radius: 12px 12px 0 0; text-align: center;">
+                      <h1 style="color: white; margin: 0; font-size: 22px;">Payment Receipt</h1>
+                    </div>
+                    <div style="background: #ffffff; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
+                      <p style="color: #374151;">Hi ${name || "there"},</p>
+                      <p style="color: #374151;">Thank you for your payment! Here are the details:</p>
+                      <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+                        <tr><td style="padding: 8px 0; color: #6b7280;">Amount</td><td style="padding: 8px 0; font-weight: bold; color: #374151; text-align: right;">₹${amount || 39}</td></tr>
+                        <tr><td style="padding: 8px 0; color: #6b7280;">Payment ID</td><td style="padding: 8px 0; font-family: monospace; color: #374151; text-align: right; font-size: 12px;">${payment_id}</td></tr>
+                        <tr><td style="padding: 8px 0; color: #6b7280;">Order ID</td><td style="padding: 8px 0; font-family: monospace; color: #374151; text-align: right; font-size: 12px;">${order_id}</td></tr>
+                        <tr style="border-top: 1px solid #e5e7eb;"><td style="padding: 12px 0; color: #6b7280;">Access Code</td><td style="padding: 12px 0; font-weight: bold; color: #0057D9; text-align: right; font-size: 16px; letter-spacing: 2px;">${finalAccessCode}</td></tr>
+                      </table>
+                      <p style="color: #6b7280; font-size: 13px;">Keep this email for your records. Your access code is your key to premium features.</p>
+                      <p style="color: #6b7280; font-size: 14px; margin-top: 20px;">— The Ad Atelier AI Team</p>
+                    </div>
+                  </div>
+                `,
+              }),
+            });
+          }
+        } catch (emailErr) {
+          console.warn("Receipt email failed:", emailErr);
+        }
+      }
+
+      return new Response(JSON.stringify({ verified: true, access_code: finalAccessCode }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
