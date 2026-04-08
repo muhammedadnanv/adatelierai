@@ -101,16 +101,34 @@ const CreatorPortal = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const { error } = await supabase.functions.invoke('send-email', {
+        body: {
+          to: formData.email,
+          subject: `Creator Application — @${formData.instagram}`,
+          name: formData.name,
+          inquiryType: 'partnership',
+          message: `Creator Application\n\nInstagram: @${formData.instagram}\nFollowers: ${formData.followers}\n\nWhy they want to join:\n${formData.why}`,
+        },
+      });
 
-    toast({
-      title: '🎉 Application Submitted!',
-      description: 'We\'ll review your application and get back to you within 48 hours.',
-    });
+      if (error) throw error;
 
-    setFormData({ name: '', email: '', instagram: '', followers: '', why: '' });
-    setIsSubmitting(false);
+      toast({
+        title: '🎉 Application Submitted!',
+        description: 'We\'ll review your application and get back to you within 48 hours.',
+      });
+
+      setFormData({ name: '', email: '', instagram: '', followers: '', why: '' });
+    } catch {
+      toast({
+        title: 'Submission failed',
+        description: 'Please try again later or email us directly.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const copyReferralLink = () => {
