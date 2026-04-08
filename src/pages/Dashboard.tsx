@@ -29,6 +29,7 @@ import PersonalizedOnboarding from '@/components/PersonalizedOnboarding';
 import SmartRecommendations from '@/components/SmartRecommendations';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
 import { useTheme } from '@/hooks/useTheme';
+import SEOHead from '@/components/SEOHead';
 
 interface CaptionVariation {
   caption: string;
@@ -159,6 +160,11 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEOHead
+        title="Dashboard — Ad Atelier AI Caption Generator"
+        description="Generate AI-powered captions for your social media images. Upload, choose a tone, and get viral captions instantly."
+        canonical="https://adatelierai.lovable.app/dashboard"
+      />
       {/* Global ambient glass overlay */}
       <div className="fixed inset-0 pointer-events-none z-[1]">
         <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px]"></div>

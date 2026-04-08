@@ -11,6 +11,7 @@ import { usePersonalization } from '@/contexts/PersonalizationContext';
 import Footer from '@/components/Footer';
 import ContactForm from '@/components/ContactForm';
 import ThemeToggle from '@/components/ThemeToggle';
+import SEOHead from '@/components/SEOHead';
 const features = [{
   icon: Upload,
   title: "Easy Upload",
@@ -101,6 +102,11 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEOHead
+        title="Ad Atelier AI — AI-Powered Caption Generator for Social Media"
+        description="Transform your images into viral social media content. Generate AI-powered captions for Instagram, LinkedIn, Twitter & more. Free to start."
+        canonical="https://adatelierai.lovable.app/"
+      />
       {/* Global ambient glass overlay */}
       <div className="fixed inset-0 pointer-events-none z-[1]">
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]"></div>

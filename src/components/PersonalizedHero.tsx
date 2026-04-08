@@ -167,7 +167,7 @@ const PersonalizedHero = ({ activeUsers, recentGenerations, stats }: Personalize
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-hero rounded-3xl blur-3xl opacity-15 scale-105"></div>
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-border/20">
-              <img src={heroImage} alt="Ad Atelier AI Hero" className="w-full h-auto" />
+              <img src={heroImage} alt="Ad Atelier AI — Transform images into viral social media captions with AI" className="w-full h-auto" loading="lazy" />
             </div>
           </div>
         </div>
