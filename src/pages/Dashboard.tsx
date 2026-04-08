@@ -29,6 +29,7 @@ import PersonalizedOnboarding from '@/components/PersonalizedOnboarding';
 import SmartRecommendations from '@/components/SmartRecommendations';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
 import { useTheme } from '@/hooks/useTheme';
+import SEOHead from '@/components/SEOHead';
 
 interface CaptionVariation {
   caption: string;
