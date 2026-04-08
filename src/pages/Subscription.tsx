@@ -77,6 +77,11 @@ const Subscription = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEOHead
+        title="My Subscription — Ad Atelier AI"
+        description="View your active plan details and access code for Ad Atelier AI."
+        canonical="https://adatelierai.lovable.app/subscription"
+      />
       {/* Ambient glow */}
       <div className="fixed inset-0 pointer-events-none z-[1]">
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]" />

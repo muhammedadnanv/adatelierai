@@ -142,6 +142,11 @@ const CreatorPortal = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEOHead
+        title="Creator Portal — Become a Verified Ad Atelier AI Creator"
+        description="Join our Instagram creator program. Promote Ad Atelier AI, earn rewards, and get a verified creator badge."
+        canonical="https://adatelierai.lovable.app/creators"
+      />
       {/* Global ambient glass overlay */}
       <div className="fixed inset-0 pointer-events-none z-[1]">
         <div className="absolute top-1/4 right-1/4 w-[450px] h-[450px] bg-primary/5 rounded-full blur-[120px]"></div>
