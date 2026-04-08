@@ -10,6 +10,7 @@ import { toast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
 import ThemeToggle from '@/components/ThemeToggle';
 import Footer from '@/components/Footer';
+import SEOHead from '@/components/SEOHead';
 
 interface PaymentRecord {
   id: string;
