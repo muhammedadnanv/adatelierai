@@ -27,6 +27,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
 import ThemeToggle from '@/components/ThemeToggle';
+import SEOHead from '@/components/SEOHead';
 
 const benefits = [
   {
