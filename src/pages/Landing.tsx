@@ -11,6 +11,7 @@ import { usePersonalization } from '@/contexts/PersonalizationContext';
 import Footer from '@/components/Footer';
 import ContactForm from '@/components/ContactForm';
 import ThemeToggle from '@/components/ThemeToggle';
+import SEOHead from '@/components/SEOHead';
 const features = [{
   icon: Upload,
   title: "Easy Upload",
