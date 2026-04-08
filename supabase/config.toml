@@ -2,3 +2,9 @@ project_id = "qdpyoqukrxeailawgecx"
 
 [functions.generate-captions]
 verify_jwt = false
+
+[functions.send-email]
+verify_jwt = false
+
+[functions.razorpay-order]
+verify_jwt = false
