@@ -12,6 +12,7 @@ import Terms from "./pages/Terms";
 import Security from "./pages/Security";
 import CreatorPortal from "./pages/CreatorPortal";
 import Subscription from "./pages/Subscription";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 import AdvertisementPopup from "./components/AdvertisementPopup";
 import ExitIntentPopup from "./components/ExitIntentPopup";
@@ -79,6 +80,7 @@ const AnimatedRoutes = () => {
           <Route path="/security" element={<PageTransition><Security /></PageTransition>} />
           <Route path="/creators" element={<PageTransition><CreatorPortal /></PageTransition>} />
           <Route path="/subscription" element={<PageTransition><Subscription /></PageTransition>} />
+          <Route path="/analytics" element={<PageTransition><Analytics /></PageTransition>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
         </Routes>
