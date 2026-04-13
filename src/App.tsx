@@ -24,13 +24,15 @@ import { useExitIntent } from "./hooks/useExitIntent";
 import PageTransition from "./components/PageTransition";
 import { PersonalizationProvider, usePersonalization } from "./contexts/PersonalizationContext";
 import VisitorInsightBadge from "./components/VisitorInsightBadge";
+import { useAnalytics } from "./hooks/useAnalytics";
 
 const queryClient = new QueryClient();
 
-// Component to track route changes
+// Component to track route changes and analytics
 const RouteTracker = () => {
   const location = useLocation();
   const { trackPageVisit } = usePersonalization();
+  useAnalytics(); // Tracks page views to database
 
   useEffect(() => {
     trackPageVisit(location.pathname);
