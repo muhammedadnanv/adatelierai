@@ -12,6 +12,7 @@ import Terms from "./pages/Terms";
 import Security from "./pages/Security";
 import CreatorPortal from "./pages/CreatorPortal";
 import Subscription from "./pages/Subscription";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 import AdvertisementPopup from "./components/AdvertisementPopup";
 import ExitIntentPopup from "./components/ExitIntentPopup";
