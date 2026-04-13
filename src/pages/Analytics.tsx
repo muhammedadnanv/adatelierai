@@ -123,6 +123,7 @@ const Analytics = () => {
     '/dashboard': 'Dashboard',
     '/subscription': 'Subscription',
     '/creators': 'Creator Portal',
+    '/analytics': 'Analytics',
     '/privacy': 'Privacy',
     '/terms': 'Terms',
     '/security': 'Security',
