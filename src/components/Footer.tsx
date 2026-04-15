@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, Instagram, Heart, Crown, IndianRupee, KeyRound } from 'lucide-react';
+import { Sparkles, Instagram, Heart, Crown, IndianRupee, KeyRound, BarChart3 } from 'lucide-react';
 import founderhuntLogo from '@/assets/founderhunt-logo.png';
 
 const Footer = () => {
@@ -35,6 +35,12 @@ const Footer = () => {
                 <Link to="/creators" className="hover:text-primary transition-colors flex items-center gap-1.5">
                   <Crown className="w-3.5 h-3.5 text-warning" />
                   Creator Portal
+                </Link>
+              </li>
+              <li>
+                <Link to="/analytics" className="hover:text-primary transition-colors flex items-center gap-1.5">
+                  <BarChart3 className="w-3.5 h-3.5 text-primary" />
+                  Analytics
                 </Link>
               </li>
               <li>
