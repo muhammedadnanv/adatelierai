@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, Instagram, Heart, Crown, IndianRupee, KeyRound } from 'lucide-react';
+import { Sparkles, Instagram, Heart, Crown, IndianRupee, KeyRound, BarChart3 } from 'lucide-react';
 import founderhuntLogo from '@/assets/founderhunt-logo.png';
 
 const Footer = () => {
