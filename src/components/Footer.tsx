@@ -38,6 +38,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/analytics" className="hover:text-primary transition-colors flex items-center gap-1.5">
+                  <BarChart3 className="w-3.5 h-3.5 text-primary" />
+                  Analytics
+                </Link>
+              </li>
+              <li>
                 <a 
                   href="https://razorpay.me/@adnan4402" 
                   target="_blank" 
