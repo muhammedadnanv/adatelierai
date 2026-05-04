@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      caption_history: {
+        Row: {
+          created_at: string
+          id: string
+          image_preview: string | null
+          is_favorite: boolean
+          platform: string
+          session_id: string
+          tone: string
+          variations: Json
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_preview?: string | null
+          is_favorite?: boolean
+          platform: string
+          session_id: string
+          tone: string
+          variations?: Json
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_preview?: string | null
+          is_favorite?: boolean
+          platform?: string
+          session_id?: string
+          tone?: string
+          variations?: Json
+        }
+        Relationships: []
+      }
       page_views: {
         Row: {
           created_at: string
