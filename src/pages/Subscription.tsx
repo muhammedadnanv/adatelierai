@@ -47,17 +47,14 @@ const Subscription = () => {
     setPayment(null);
 
     try {
-      const { data, error } = await supabase
-        .from('payments')
-        .select('*')
-        .eq('access_code', accessCode.trim().toUpperCase())
-        .eq('status', 'verified')
-        .maybeSingle();
+      const { data, error } = await supabase.functions.invoke('verify-access-code', {
+        body: { access_code: accessCode.trim().toUpperCase() },
+      });
 
       if (error) throw error;
 
-      if (data) {
-        setPayment(data as PaymentRecord);
+      if (data?.payment) {
+        setPayment(data.payment as PaymentRecord);
       } else {
         setNotFound(true);
       }
