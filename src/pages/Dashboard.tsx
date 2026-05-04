@@ -30,6 +30,8 @@ import SmartRecommendations from '@/components/SmartRecommendations';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
 import { useTheme } from '@/hooks/useTheme';
 import SEOHead from '@/components/SEOHead';
+import CaptionHistoryList from '@/components/CaptionHistoryList';
+import { useCaptionHistory } from '@/hooks/useCaptionHistory';
 
 interface CaptionVariation {
   caption: string;
@@ -44,6 +46,7 @@ const Dashboard = () => {
   const { behavior, trackCaptionGenerated, trackImageUploaded, ACHIEVEMENTS } = useBehaviorTracking();
   const { trackClick, trackPageVisit, visitorType, engagementLevel, device } = usePersonalization();
   const { theme, setTheme, isDark } = useTheme();
+  const { saveGeneration } = useCaptionHistory();
   
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -118,7 +121,15 @@ const Dashboard = () => {
       if (data?.variations && data.variations.length > 0) {
         setGeneratedCaptions(data.variations);
         trackCaptionGenerated();
-        
+
+        // Persist to backend history (non-blocking)
+        saveGeneration({
+          tone,
+          platform,
+          imagePreview,
+          variations: data.variations,
+        });
+
         // Personalized success messages
         const successMessages = {
           'explorer': "Amazing! See how different tones can transform your content.",
@@ -267,20 +278,13 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="font-heading">Caption History</CardTitle>
                 <CardDescription>
-                  {visitorType === 'action-taker' 
+                  {visitorType === 'action-taker'
                     ? "Quick access to your recent captions"
-                    : "View and manage your previously generated captions"}
+                    : "View, favorite, and re-use your previously generated captions"}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8 text-muted-foreground">
-                  <History className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>
-                    {behavior.captionsGenerated === 0 
-                      ? "No caption history yet. Generate some captions to see them here!"
-                      : "Your caption history will appear here in a future update."}
-                  </p>
-                </div>
+                <CaptionHistoryList />
               </CardContent>
             </Card>
           </TabsContent>
